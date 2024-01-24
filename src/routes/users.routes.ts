@@ -1,18 +1,9 @@
 import { Router } from 'express';
+import { registerValidator } from '~/middlewares/user.middlewares';
+import { wrapAsync } from '~/utils/handlers';
 
 const usersRouter = Router();
 
-usersRouter.use(
-  (req, res, next) => {
-    console.log('Time: ', Date.now());
-    next();
-    // res.status(400).send('not allowed')
-    // console.log(12345)
-  },
-  (req, res, next) => {
-    console.log('Time 2: ', Date.now());
-    next();
-  }
-);
+usersRouter.post('/users/register', registerValidator, wrapAsync(registerController));
 
 export default usersRouter;

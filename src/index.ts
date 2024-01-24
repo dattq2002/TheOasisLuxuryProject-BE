@@ -6,16 +6,7 @@ const app = express();
 const port = 5000;
 
 app.get('/', (req, res) => {
-  res.send('hello world');
-});
-usersRouter.get('/tweets', (req, res) => {
-  res.json({
-    data: [
-      { fname: 'Điệp', yob: 1999 },
-      { fname: 'Hùng', yob: 2003 },
-      { fname: 'Được', yob: 1994 }
-    ]
-  });
+  res.send('Welcome to OaSis Luxury API');
 });
 app.use('/api/v1', usersRouter);
 app.listen(port, () => {
