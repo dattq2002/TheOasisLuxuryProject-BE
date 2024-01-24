@@ -4,7 +4,7 @@ import Account from './Account.schemas';
 interface UserType {
   _id?: ObjectId;
   full_name: string;
-  birthday?: Date;
+  birthday: Date;
   phone_number: string;
   gender?: string;
   email_verify_token?: string;
@@ -14,7 +14,7 @@ interface UserType {
   update_date?: Date;
   account_id: string;
   url_image?: string;
-  Account: Account;
+  account: Account;
 }
 
 export default class User {
@@ -30,10 +30,10 @@ export default class User {
   update_date: Date;
   account_id: string;
   url_image: string;
-  Account: Account;
+  account: Account;
   constructor(user: UserType) {
     this.full_name = user.full_name;
-    this.birthday = user.birthday || new Date();
+    this.birthday = user.birthday;
     this.phone_number = user.phone_number;
     this.gender = user.gender || '';
     this.email_verify_token = user.email_verify_token || '';
@@ -43,6 +43,6 @@ export default class User {
     this.update_date = user.update_date || new Date();
     this.account_id = user.account_id;
     this.url_image = user.url_image || '';
-    this.Account = user.Account;
+    this.account = user.account;
   }
 }
