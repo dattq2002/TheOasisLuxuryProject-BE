@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { registerController } from '~/controllers/users.controllers';
 import { registerValidator } from '~/middlewares/user.middlewares';
 import { wrapAsync } from '~/utils/handlers';
 

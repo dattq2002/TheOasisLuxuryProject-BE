@@ -1,0 +1,40 @@
+components:
+   schemas:
+     RegisterReqBody:
+       type: object
+       properties:
+         user_name:
+           type: string
+         email:
+           type: string
+         password:
+           type: string
+         confirm_password:
+           type: string
+         full_name:
+           type: string
+         phone_number:
+           type: string
+         date_of_birth:
+           type: string
+           format: ISO8601
+     SuccessAuthentication:
+       type: object
+       properties:
+         access_token:
+           type: string
+         refresh_token:
+           type: string
+     User:
+       type: object
+       properties:
+         _id:
+           type: string
+           format: MongoId
+         full_name:
+           type: string
+         birthday:
+           type: string
+           format: ISO8601
+         phone_number:
+           type: string

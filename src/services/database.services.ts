@@ -1,6 +1,6 @@
 import { config } from 'dotenv';
 import { MongoClient, Db, Collection } from 'mongodb';
-import RefreshToken from '~/models/requests/RefreshToken.schema';
+import RefreshToken from '~/models/schemas/RefreshToken.schema';
 import Account from '~/models/schemas/Account.schemas';
 import Role from '~/models/schemas/Role.schemas';
 import User from '~/models/schemas/User.schemas';

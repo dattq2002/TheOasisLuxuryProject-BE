@@ -7,7 +7,7 @@ import { AccountStatus, TokenType, UserVerifyStatus } from '~/constants/enum';
 import { hashPassword } from '~/utils/helpers';
 import { signToken, verifyToken } from '~/utils/jwt';
 import User from '~/models/schemas/User.schemas';
-import RefreshToken from '~/models/requests/RefreshToken.schema';
+import RefreshToken from '~/models/schemas/RefreshToken.schema';
 
 config();
 
