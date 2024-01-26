@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { USERS_MESSAGES } from '~/constants/message';
 import { ParamsDictionary } from 'express-serve-static-core';
 import usersService from '~/services/users.services';
-import { LoginReqBody, RegisterReqBody } from '~/models/requests/register.request';
+import { LoginReqBody, LogoutReqBody, RegisterReqBody, UpdateUserReqBody } from '~/models/requests/register.request';
 import User from '~/models/schemas/User.schemas';
 import { ObjectId } from 'mongodb';
 import { UserVerifyStatus } from '~/constants/enum';
@@ -40,4 +40,24 @@ export const loginController = async (req: Request<ParamsDictionary, any, LoginR
     message: USERS_MESSAGES.LOGIN_SUCCESS,
     result
   });
+};
+
+export const updateUserByIdController = async (
+  req: Request<ParamsDictionary, any, UpdateUserReqBody>,
+  res: Response
+) => {
+  const { id } = req.params;
+  const result = await usersService.updateUserProfileById(id, req.body);
+  return res.json({
+    message: USERS_MESSAGES.UPDATE_USER_SUCCESS,
+    result
+  });
+};
+
+export const logoutController = async (req: Request<ParamsDictionary, any, LogoutReqBody>, res: Response) => {
+  //lấy refresh token từ req.body
+  const { refresh_token } = req.body;
+  //và vào db xoá cái refresh token đó đi
+  const result = await usersService.logout(refresh_token);
+  res.json(result);
 };

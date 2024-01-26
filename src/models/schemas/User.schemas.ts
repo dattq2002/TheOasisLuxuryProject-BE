@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb';
-import { AccountStatus, RoleName } from '~/constants/enum';
+import { AccountStatus, GenderType, RoleName } from '~/constants/enum';
 
 interface UserType {
   _id?: ObjectId;
@@ -41,7 +41,7 @@ export default class User {
     this.full_name = user.full_name;
     this.birthday = user.birthday;
     this.phone_number = user.phone_number;
-    this.gender = user.gender || '';
+    this.gender = user.gender || GenderType.OTHER;
     this.email_verify_token = user.email_verify_token || '';
     this.forgot_password_token = user.forgot_password_token || '';
     this.email_verify = user.email_verify || false;

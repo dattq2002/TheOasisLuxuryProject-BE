@@ -29,5 +29,9 @@ export const USERS_MESSAGES = {
   GET_USER_BY_ID_SUCCESS: 'Get user by id success',
   EMAIL_OR_PASSWORD_IS_INCORRECT: 'Email or password is incorrect',
   LOGIN_SUCCESS: 'Login success',
-  USER_NAME_IS_REQUIRED: 'User name is required'
+  USER_NAME_IS_REQUIRED: 'User name is required',
+  UPDATE_USER_SUCCESS: 'Update user success',
+  ACCESS_TOKEN_IS_REQUIRED: 'Access token is required',
+  USED_REFRESH_TOKEN_OR_NOT_EXIST: 'Used refresh token or not exist',
+  LOGOUT_SUCCESS: 'Logout success'
 } as const;

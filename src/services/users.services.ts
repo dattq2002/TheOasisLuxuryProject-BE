@@ -1,12 +1,13 @@
 import { config } from 'dotenv';
 import databaseService from './database.services';
-import { RegisterReqBody } from '~/models/requests/register.request';
+import { RegisterReqBody, UpdateUserReqBody } from '~/models/requests/register.request';
 import { ObjectId } from 'mongodb';
 import { AccountStatus, TokenType, UserVerifyStatus } from '~/constants/enum';
 import { hashPassword } from '~/utils/helpers';
 import { signToken, verifyToken } from '~/utils/jwt';
 import User from '~/models/schemas/User.schemas';
 import RefreshToken from '~/models/schemas/RefreshToken.schema';
+import { USERS_MESSAGES } from '~/constants/message';
 
 config();
 
@@ -118,6 +119,26 @@ class UsersServices {
       })
     );
     return { access_token, refesh_token };
+  }
+  async updateUserProfileById(id: string, payload: UpdateUserReqBody) {
+    const result = await databaseService.users.updateOne(
+      {
+        _id: new ObjectId(id)
+      },
+      [
+        {
+          $set: {
+            ...payload,
+            updated_at: '$$NOW'
+          }
+        }
+      ]
+    );
+    return result;
+  }
+  async logout(refresh_token: string) {
+    await databaseService.refreshTokens.deleteOne({ token: refresh_token });
+    return { message: USERS_MESSAGES.LOGOUT_SUCCESS };
   }
 }
 const usersService = new UsersServices();
