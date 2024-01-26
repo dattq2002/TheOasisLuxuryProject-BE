@@ -7,6 +7,9 @@ import swaggerUi from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
 import databaseService from './services/database.services';
 import { defaultErrorHandler } from './middlewares/error.middlewares';
+import accountRouter from './routes/accounts.routes';
+import projectRouter from './routes/projects.routes';
+import subdivisionRouter from './routes/subdivisions.routes';
 
 // const file = fs.readFileSync(path.resolve('the-oasis-luxury-api.yaml'), 'utf8');
 // const swaggerDocument = YAML.parse(file);
@@ -41,6 +44,9 @@ app.get('/', (req, res) => {
   res.send('Welcome to OaSis Luxury API');
 });
 app.use('/api/v1/users', usersRouter);
+app.use('/api/v1/accounts', accountRouter);
+app.use('/api/v1/projects', projectRouter);
+app.use('/api/v1/subdivisions', subdivisionRouter);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification));
 app.use(defaultErrorHandler);

@@ -1,6 +1,8 @@
 import { config } from 'dotenv';
 import { MongoClient, Db, Collection } from 'mongodb';
+import Project from '~/models/schemas/Project.schemas';
 import RefreshToken from '~/models/schemas/RefreshToken.schema';
+import Subdivision from '~/models/schemas/Subdivision.schemas';
 import User from '~/models/schemas/User.schemas';
 config();
 const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@theoasisluxury.vuzyle1.mongodb.net/?retryWrites=true&w=majority`;
@@ -27,6 +29,12 @@ class DatabaseService {
   }
   get refreshTokens(): Collection<RefreshToken> {
     return this.db.collection(process.env.DB_COLLECTION_REFRESHTOKEN as string);
+  }
+  get projects(): Collection<Project> {
+    return this.db.collection(process.env.DB_COLLECTION_PROJECT as string);
+  }
+  get subdivisions(): Collection<Subdivision> {
+    return this.db.collection(process.env.DB_COLLECTION_SUBDIVISION as string);
   }
 }
 const databaseService = new DatabaseService();

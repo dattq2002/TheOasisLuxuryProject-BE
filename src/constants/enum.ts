@@ -2,6 +2,14 @@ export class AccountStatus {
   public static readonly ACTIVE = 'ACTIVE';
   public static readonly BAN = 'BANNED';
 }
+export class ProjectStatus {
+  public static readonly ACTIVE = 'ACTIVE';
+  public static readonly BAN = 'INACTIVE';
+}
+export class SubdivisionStatus {
+  public static readonly ACTIVE = 'ACTIVE';
+  public static readonly BAN = 'INACTIVE';
+}
 export class GenderType {
   public static readonly MALE = 'MALE';
   public static readonly FEMALE = 'FEMALE';

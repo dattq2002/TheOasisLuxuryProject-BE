@@ -33,5 +33,24 @@ export const USERS_MESSAGES = {
   UPDATE_USER_SUCCESS: 'Update user success',
   ACCESS_TOKEN_IS_REQUIRED: 'Access token is required',
   USED_REFRESH_TOKEN_OR_NOT_EXIST: 'Used refresh token or not exist',
-  LOGOUT_SUCCESS: 'Logout success'
+  LOGOUT_SUCCESS: 'Logout success',
+  CREATE_ACCOUNT_SUCCESS: 'Create account success',
+  UPDATE_ACCOUNT_SUCCESS: 'Update account success',
+  GET_ACCOUNT_SUCCESS: 'Get account success',
+  DELETE_ACCOUNT_SUCCESS: 'Delete account success'
+} as const;
+
+export const PROJECTS_MESSAGES = {
+  GET_PROJECT_SUCCESS: 'Get project success',
+  CREATE_PROJECT_SUCCESS: 'Create project success',
+  UPDATE_PROJECT_SUCCESS: 'Update project success',
+  DELETE_PROJECT_SUCCESS: 'Delete project success',
+  ADD_SUBDIVISION_TO_PROJECT_SUCCESS: 'Add subdivision to project success'
+} as const;
+
+export const SUBDIVISION_MESSAGES = {
+  GET_SUBDIVISION_SUCCESS: 'Get subdivision success',
+  CREATE_SUBDIVISION_SUCCESS: 'Create subdivision success',
+  UPDATE_SUBDIVISION_SUCCESS: 'Update subdivision success',
+  DELETE_SUBDIVISION_SUCCESS: 'Delete subdivision success'
 } as const;

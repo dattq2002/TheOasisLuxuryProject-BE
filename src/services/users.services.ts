@@ -2,12 +2,13 @@ import { config } from 'dotenv';
 import databaseService from './database.services';
 import { RegisterReqBody, UpdateUserReqBody } from '~/models/requests/register.request';
 import { ObjectId } from 'mongodb';
-import { AccountStatus, TokenType, UserVerifyStatus } from '~/constants/enum';
+import { AccountStatus, RoleName, TokenType, UserVerifyStatus } from '~/constants/enum';
 import { hashPassword } from '~/utils/helpers';
 import { signToken, verifyToken } from '~/utils/jwt';
 import User from '~/models/schemas/User.schemas';
 import RefreshToken from '~/models/schemas/RefreshToken.schema';
 import { USERS_MESSAGES } from '~/constants/message';
+import { createAccountReq, updateAccountReq } from '~/models/requests/account.request';
 
 config();
 
@@ -139,6 +140,47 @@ class UsersServices {
   async logout(refresh_token: string) {
     await databaseService.refreshTokens.deleteOne({ token: refresh_token });
     return { message: USERS_MESSAGES.LOGOUT_SUCCESS };
+  }
+  //create account dành cho admin
+  async createAccount(payload: createAccountReq) {
+    const _id = new ObjectId();
+    const newUser = await databaseService.users.insertOne(
+      new User({
+        _id,
+        ...payload,
+        password: await hashPassword('123456'),
+        status: AccountStatus.ACTIVE,
+        role_name: RoleName.STAFF,
+        full_name: `staffuser${_id.toString()}`,
+        email_verify: true
+      })
+    );
+    return newUser;
+  }
+  //update account dành cho admin
+  async updateAccountById(id: string, payload: updateAccountReq) {
+    const result = await databaseService.users.updateOne(
+      {
+        _id: new ObjectId(id)
+      },
+      [
+        {
+          $set: {
+            ...payload,
+            updated_at: '$$NOW'
+          }
+        }
+      ]
+    );
+    return result;
+  }
+  async getAccount() {
+    const result = await databaseService.users.find({}).toArray();
+    return result;
+  }
+  async deleteAccountById(id: string) {
+    const result = await databaseService.users.deleteOne({ _id: new ObjectId(id) });
+    return result;
   }
 }
 const usersService = new UsersServices();
