@@ -4,11 +4,16 @@ export class AccountStatus {
 }
 export class ProjectStatus {
   public static readonly ACTIVE = 'ACTIVE';
-  public static readonly BAN = 'INACTIVE';
+  public static readonly INACTIVE = 'INACTIVE';
 }
 export class SubdivisionStatus {
   public static readonly ACTIVE = 'ACTIVE';
-  public static readonly BAN = 'INACTIVE';
+  public static readonly INACTIVE = 'INACTIVE';
+}
+export class VillaStatus {
+  public static readonly ACTIVE = 'ACTIVE';
+  public static readonly INACTIVE = 'INACTIVE';
+  public static readonly SOLD = 'SOLD';
 }
 export class GenderType {
   public static readonly MALE = 'MALE';

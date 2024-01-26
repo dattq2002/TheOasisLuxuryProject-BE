@@ -10,6 +10,7 @@ import { defaultErrorHandler } from './middlewares/error.middlewares';
 import accountRouter from './routes/accounts.routes';
 import projectRouter from './routes/projects.routes';
 import subdivisionRouter from './routes/subdivisions.routes';
+import villaRouter from './routes/villas.routes';
 
 // const file = fs.readFileSync(path.resolve('the-oasis-luxury-api.yaml'), 'utf8');
 // const swaggerDocument = YAML.parse(file);
@@ -47,6 +48,7 @@ app.use('/api/v1/users', usersRouter);
 app.use('/api/v1/accounts', accountRouter);
 app.use('/api/v1/projects', projectRouter);
 app.use('/api/v1/subdivisions', subdivisionRouter);
+app.use('/api/v1/villas', villaRouter);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification));
 app.use(defaultErrorHandler);
