@@ -5,6 +5,8 @@ import usersRouter from './routes/users.routes';
 // import path from 'path';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
+import databaseService from './services/database.services';
+import { defaultErrorHandler } from './middlewares/error.middlewares';
 
 // const file = fs.readFileSync(path.resolve('the-oasis-luxury-api.yaml'), 'utf8');
 // const swaggerDocument = YAML.parse(file);
@@ -31,14 +33,17 @@ const options: swaggerJSDoc.Options = {
 const openapiSpecification = swaggerJSDoc(options);
 
 const app = express();
-
+app.use(express.json());
 const port = 5000;
-
+//kết nối database
+databaseService.connect();
 app.get('/', (req, res) => {
   res.send('Welcome to OaSis Luxury API');
 });
-app.use('/api/v1', usersRouter);
+app.use('/api/v1/users', usersRouter);
+
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification));
+app.use(defaultErrorHandler);
 app.listen(port, () => {
   console.log(`The OaSis Luxury này đang chạy swagger trên http://localhost:${port}/api-docs`);
 });

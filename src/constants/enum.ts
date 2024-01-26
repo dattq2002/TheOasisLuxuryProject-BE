@@ -1,6 +1,11 @@
 export class AccountStatus {
   public static readonly ACTIVE = 'ACTIVE';
-  public static readonly INACTIVE = 'INACTIVE';
+  public static readonly BAN = 'BANNED';
+}
+export class RoleName {
+  public static readonly ADMIN = 'ADMIN';
+  public static readonly USER = 'USER';
+  public static readonly STAFF = 'STAFF';
 }
 export enum TokenType {
   AccessToken,
@@ -10,6 +15,5 @@ export enum TokenType {
 }
 export enum UserVerifyStatus {
   Unverified, // chưa xác thực email, mặc định = 0
-  Verified, // đã xác thực email
-  Banned // bị khóa
+  Verified // đã xác thực email
 }

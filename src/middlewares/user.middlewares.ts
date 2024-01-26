@@ -1,6 +1,8 @@
 import { ParamSchema, checkSchema } from 'express-validator';
 import { USERS_MESSAGES } from '~/constants/message';
+import databaseService from '~/services/database.services';
 import usersService from '~/services/users.services';
+import { hashPassword } from '~/utils/helpers';
 import { validate } from '~/utils/validation';
 
 const nameSchema: ParamSchema = {
@@ -113,6 +115,59 @@ export const registerValidator = validate(
       password: passwordSchema,
       confirm_password: confirmPasswordSchema,
       date_of_birth: dateOfBirthSchema
+    },
+    ['body']
+  )
+);
+
+export const loginValidator = validate(
+  checkSchema(
+    {
+      user_name: {
+        notEmpty: {
+          errorMessage: USERS_MESSAGES.USER_NAME_IS_REQUIRED
+        },
+        trim: true,
+        custom: {
+          options: async (value, { req }) => {
+            //tìm user nào có email và password giống client gửi lên không
+            const user = await databaseService.users.findOne({
+              user_name: req.body.user_name,
+              password: hashPassword(req.body.password)
+            });
+            if (user === null) {
+              throw new Error(USERS_MESSAGES.EMAIL_OR_PASSWORD_IS_INCORRECT);
+            }
+            req.user = user; //req giữ giùm cái user này nhé
+            return true;
+          }
+        }
+      },
+      password: {
+        notEmpty: {
+          errorMessage: USERS_MESSAGES.PASSWORD_IS_REQUIRED
+        },
+        isString: {
+          errorMessage: USERS_MESSAGES.PASSWORD_MUST_BE_A_STRING
+        },
+        isLength: {
+          options: {
+            min: 8,
+            max: 50
+          },
+          errorMessage: USERS_MESSAGES.PASSWORD_LENGTH_MUST_BE_FROM_8_TO_50
+        },
+        isStrongPassword: {
+          options: {
+            minLength: 8,
+            minLowercase: 1,
+            minUppercase: 1,
+            minNumbers: 1,
+            minSymbols: 1
+          },
+          errorMessage: USERS_MESSAGES.PASSWORD_MUST_BE_STRONG
+        }
+      }
     },
     ['body']
   )

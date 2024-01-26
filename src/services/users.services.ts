@@ -2,7 +2,6 @@ import { config } from 'dotenv';
 import databaseService from './database.services';
 import { RegisterReqBody } from '~/models/requests/register.request';
 import { ObjectId } from 'mongodb';
-import Account from '~/models/schemas/Account.schemas';
 import { AccountStatus, TokenType, UserVerifyStatus } from '~/constants/enum';
 import { hashPassword } from '~/utils/helpers';
 import { signToken, verifyToken } from '~/utils/jwt';
@@ -13,7 +12,7 @@ config();
 
 class UsersServices {
   async checkEmailExists(email: string) {
-    const user = await databaseService.accounts.findOne({ email });
+    const user = await databaseService.users.findOne({ email });
     return Boolean(user);
   }
   private decodeRefreshToken(refresh_token: string) {
@@ -64,41 +63,24 @@ class UsersServices {
     return Promise.all([this.signAccessToken({ user_id, verify }), this.signRefreshToken({ user_id, verify })]);
   }
   async register(payload: RegisterReqBody) {
-    const account_id = new ObjectId();
-    // tạo email verify token
-    const account = new Account({
-      ...payload,
-      _id: account_id,
-      email: payload.email,
-      password: hashPassword(payload.password),
-      insert_date: new Date(),
-      update_date: new Date(),
-      status: AccountStatus.ACTIVE,
-      role_id: '65b0811c41fd14b580f08ac7',
-      user_name: `user${account_id.toString()}`
-    });
-    await databaseService.accounts.insertOne(account);
+    const _id = new ObjectId();
 
     //tạo mới 1 user
     const newUser = await databaseService.users.insertOne(
       new User({
-        full_name: payload.full_name,
-        phone_number: payload.phone_number,
-        _id: account_id,
-        account_id: account_id.toString(),
-        birthday: payload.date_of_birth,
-        insert_date: new Date(),
-        update_date: new Date(),
-        account: account
+        _id,
+        ...payload,
+        password: await hashPassword(payload.password),
+        status: AccountStatus.ACTIVE
       })
     );
     const email_verify_token = await this.signEmailVerifyToken({
-      user_id: account_id.toString(),
+      user_id: _id.toString(),
       verify: UserVerifyStatus.Unverified
     });
     //lay user_id từ user vừa tạo
     const [access_token, refesh_token] = await this.signAccessTokenAndRefreshToken({
-      user_id: account_id.toString(),
+      user_id: _id.toString(),
       verify: UserVerifyStatus.Unverified
     });
     const { exp, iat } = await this.decodeRefreshToken(refesh_token);
@@ -106,14 +88,35 @@ class UsersServices {
     await databaseService.refreshTokens.insertOne(
       new RefreshToken({
         token: refesh_token,
-        user_id: account_id,
+        user_id: _id,
         exp,
         iat
       })
     );
     // giả lập gửi email verify token
-    // console.log(email_verify_token);
+    console.log(email_verify_token);
 
+    return { access_token, refesh_token };
+  }
+  async getUserById(id: string) {
+    const user = await databaseService.users.findOne({ _id: new ObjectId(id) });
+    return user;
+  }
+  async login({ user_id, verify }: { user_id: string; verify: UserVerifyStatus }) {
+    const [access_token, refesh_token] = await this.signAccessTokenAndRefreshToken({
+      user_id,
+      verify
+    });
+    const { exp, iat } = await this.decodeRefreshToken(refesh_token);
+    //lưu refesh token vào db
+    await databaseService.refreshTokens.insertOne(
+      new RefreshToken({
+        token: refesh_token,
+        user_id: new ObjectId(user_id),
+        exp,
+        iat
+      })
+    );
     return { access_token, refesh_token };
   }
 }

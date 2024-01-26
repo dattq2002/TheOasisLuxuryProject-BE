@@ -1,20 +1,23 @@
 import { ObjectId } from 'mongodb';
-import Account from './Account.schemas';
+import { AccountStatus, RoleName } from '~/constants/enum';
 
 interface UserType {
   _id?: ObjectId;
   full_name: string;
   birthday: Date;
   phone_number: string;
+  user_name: string;
+  email: string;
+  password: string;
   gender?: string;
   email_verify_token?: string;
   forgot_password_token?: string;
   email_verify?: boolean;
   insert_date?: Date;
   update_date?: Date;
-  account_id: string;
   url_image?: string;
-  account: Account;
+  status?: string;
+  role_name?: string;
 }
 
 export default class User {
@@ -22,15 +25,18 @@ export default class User {
   full_name: string;
   birthday: Date;
   phone_number: string;
+  user_name: string;
+  email: string;
+  password: string;
   gender: string;
   email_verify_token: string;
   forgot_password_token: string;
   email_verify: boolean;
   insert_date: Date;
   update_date: Date;
-  account_id: string;
   url_image: string;
-  account: Account;
+  status: string;
+  role_name: string;
   constructor(user: UserType) {
     this.full_name = user.full_name;
     this.birthday = user.birthday;
@@ -41,8 +47,11 @@ export default class User {
     this.email_verify = user.email_verify || false;
     this.insert_date = user.insert_date || new Date();
     this.update_date = user.update_date || new Date();
-    this.account_id = user.account_id;
     this.url_image = user.url_image || '';
-    this.account = user.account;
+    this.email = user.email;
+    this.password = user.password;
+    this.status = user.status || AccountStatus.ACTIVE;
+    this.user_name = user.user_name;
+    this.role_name = user.role_name || RoleName.USER;
   }
 }

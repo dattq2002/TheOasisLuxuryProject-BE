@@ -25,5 +25,9 @@ export const USERS_MESSAGES = {
   CONFIRM_PASSWORD_MUST_BE_STRONG: 'Confirm password must be strong',
   CONFIRM_PASSWORD_MUST_BE_THE_SAME_AS_PASSWORD: 'Confirm password must be the same as password',
   DATE_OF_BIRTH_BE_ISO8601: 'Date of birth be ISO8601',
-  REGISTER_SUCCESS: 'Register success'
+  REGISTER_SUCCESS: 'Register success',
+  GET_USER_BY_ID_SUCCESS: 'Get user by id success',
+  EMAIL_OR_PASSWORD_IS_INCORRECT: 'Email or password is incorrect',
+  LOGIN_SUCCESS: 'Login success',
+  USER_NAME_IS_REQUIRED: 'User name is required'
 } as const;

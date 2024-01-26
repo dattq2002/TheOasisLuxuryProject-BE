@@ -1,10 +1,14 @@
 import { Router } from 'express';
-import { registerController } from '~/controllers/users.controllers';
-import { registerValidator } from '~/middlewares/user.middlewares';
+import { getUserByIdController, loginController, registerController } from '~/controllers/users.controllers';
+import { loginValidator, registerValidator } from '~/middlewares/user.middlewares';
 import { wrapAsync } from '~/utils/handlers';
 
 const usersRouter = Router();
 
-usersRouter.post('/users/register', registerValidator, wrapAsync(registerController));
+usersRouter.post('/register', registerValidator, wrapAsync(registerController));
+
+usersRouter.get('/:id', wrapAsync(getUserByIdController));
+
+usersRouter.post('/login', loginValidator, wrapAsync(loginController));
 
 export default usersRouter;
