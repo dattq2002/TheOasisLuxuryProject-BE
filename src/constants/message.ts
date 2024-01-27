@@ -48,17 +48,3 @@ export const PROJECTS_MESSAGES = {
   ADD_SUBDIVISION_TO_PROJECT_SUCCESS: 'Add subdivision to project success'
 } as const;
 
-export const SUBDIVISION_MESSAGES = {
-  GET_SUBDIVISION_SUCCESS: 'Get subdivision success',
-  CREATE_SUBDIVISION_SUCCESS: 'Create subdivision success',
-  UPDATE_SUBDIVISION_SUCCESS: 'Update subdivision success',
-  DELETE_SUBDIVISION_SUCCESS: 'Delete subdivision success'
-} as const;
-
-export const VILLAS_MESSAGES = {
-  GET_VILLAS_SUCCESS: 'Get villas success',
-  CREATE_VILLA_SUCCESS: 'Create villa success',
-  UPDATE_VILLA_SUCCESS: 'Update villa success',
-  DELETE_VILLA_SUCCESS: 'Delete villa success',
-  GET_VILLA_SUCCESS: 'Get villa success'
-} as const;

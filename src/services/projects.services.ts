@@ -15,14 +15,14 @@ class ProjectsService {
   async createProject(payload: createProjectReq) {
     const _id = new ObjectId();
 
-    const newPrject = await databaseService.projects.insertOne(
+    const newProject = await databaseService.projects.insertOne(
       new Project({
         _id,
         ...payload,
         subdivisions: payload.subdivisions || []
       })
     );
-    return newPrject;
+    return newProject;
   }
   async updateProjectById(id: string, payload: updateProjectReq) {
     const result = await databaseService.projects.updateOne(
