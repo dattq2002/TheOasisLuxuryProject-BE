@@ -18,11 +18,11 @@ const usersRouter = Router();
 
 usersRouter.post('/register', registerValidator, wrapAsync(registerController));
 
-usersRouter.get('/:id', wrapAsync(getUserByIdController));
+usersRouter.get('/:id', accessTokenValidator, wrapAsync(getUserByIdController));
 
 usersRouter.post('/login', loginValidator, wrapAsync(loginController));
 
-usersRouter.patch('/update-profile/:id', wrapAsync(updateUserByIdController));
+usersRouter.patch('/:id', accessTokenValidator, wrapAsync(updateUserByIdController));
 
 usersRouter.post('/logout', accessTokenValidator, refreshTokenValidator, wrapAsync(logoutController));
 

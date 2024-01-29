@@ -12,7 +12,7 @@ const villaRouter = Router();
 
 villaRouter.get('/get-villas', getVillasController);
 
-villaRouter.get('/get-villas/:id', getVillaByIdController);
+villaRouter.get('/get-villa/:id', getVillaByIdController);
 
 villaRouter.post('/create-villa', wrapAsync(createVillaController));
 

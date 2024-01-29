@@ -3,7 +3,7 @@ import { GenderType, TokenType, UserVerifyStatus } from '~/constants/enum';
 
 export interface RegisterReqBody {
   full_name: string;
-  birthday: Date;
+  birthday: string;
   phone_number: string;
   user_name: string;
   email: string;

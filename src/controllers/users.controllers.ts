@@ -2,10 +2,16 @@ import { Request, Response } from 'express';
 import { USERS_MESSAGES } from '~/constants/message';
 import { ParamsDictionary } from 'express-serve-static-core';
 import usersService from '~/services/users.services';
-import { LoginReqBody, LogoutReqBody, RegisterReqBody, UpdateUserReqBody } from '~/models/requests/register.request';
+import {
+  LoginReqBody,
+  LogoutReqBody,
+  RegisterReqBody,
+  TokenPayload,
+  UpdateUserReqBody
+} from '~/models/requests/register.request';
 import User from '~/models/schemas/User.schemas';
 import { ObjectId } from 'mongodb';
-import { UserVerifyStatus } from '~/constants/enum';
+import { RoleName, UserVerifyStatus } from '~/constants/enum';
 import databaseService from '~/services/database.services';
 import { hashPassword } from '~/utils/helpers';
 
@@ -20,6 +26,12 @@ export const registerController = async (req: Request<ParamsDictionary, any, Reg
 
 export const getUserByIdController = async (req: Request, res: Response) => {
   const { id } = req.params;
+  const { user_id } = req.decoded_authorization as TokenPayload;
+  //validate role
+  const roleUser = await usersService.getRole(user_id);
+  if (roleUser !== RoleName.USER) {
+    throw new Error(USERS_MESSAGES.USER_NOT_ACCESS);
+  }
   const user = await usersService.getUserById(id);
   return res.json({
     message: USERS_MESSAGES.GET_USER_BY_ID_SUCCESS,
@@ -34,7 +46,7 @@ export const loginController = async (req: Request<ParamsDictionary, any, LoginR
   //server phải tạo ra access token và refresh token để đưa về cho client
   const result = await usersService.login({
     user_id: user_id.toString(),
-    verify: user.email_verify ? UserVerifyStatus.Verified : UserVerifyStatus.Unverified
+    verify: user.verify ? UserVerifyStatus.Verified : UserVerifyStatus.Unverified
   }); //
   return res.json({
     message: USERS_MESSAGES.LOGIN_SUCCESS,
@@ -47,6 +59,12 @@ export const updateUserByIdController = async (
   res: Response
 ) => {
   const { id } = req.params;
+  const { user_id } = req.decoded_authorization as TokenPayload;
+  //validate role
+  const roleUser = await usersService.getRole(user_id);
+  if (roleUser !== RoleName.USER) {
+    throw new Error(USERS_MESSAGES.USER_NOT_ACCESS);
+  }
   const result = await usersService.updateUserProfileById(id, req.body);
   return res.json({
     message: USERS_MESSAGES.UPDATE_USER_SUCCESS,

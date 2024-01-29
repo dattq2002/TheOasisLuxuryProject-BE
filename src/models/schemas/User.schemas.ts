@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb';
-import { AccountStatus, GenderType, RoleName } from '~/constants/enum';
+import { AccountStatus, GenderType, RoleName, UserVerifyStatus } from '~/constants/enum';
 
 interface UserType {
   _id?: ObjectId;
@@ -12,7 +12,7 @@ interface UserType {
   gender?: string;
   email_verify_token?: string;
   forgot_password_token?: string;
-  email_verify?: boolean;
+  verify?: UserVerifyStatus;
   insert_date?: Date;
   update_date?: Date;
   url_image?: string;
@@ -31,7 +31,7 @@ export default class User {
   gender: string;
   email_verify_token: string;
   forgot_password_token: string;
-  email_verify: boolean;
+  verify: UserVerifyStatus;
   insert_date: Date;
   update_date: Date;
   url_image: string;
@@ -44,7 +44,7 @@ export default class User {
     this.gender = user.gender || GenderType.OTHER;
     this.email_verify_token = user.email_verify_token || '';
     this.forgot_password_token = user.forgot_password_token || '';
-    this.email_verify = user.email_verify || false;
+    this.verify = user.verify || UserVerifyStatus.Unverified;
     this.insert_date = user.insert_date || new Date();
     this.update_date = user.update_date || new Date();
     this.url_image = user.url_image || '';

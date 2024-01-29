@@ -99,7 +99,7 @@ const dateOfBirthSchema: ParamSchema = {
 export const registerValidator = validate(
   checkSchema(
     {
-      name: nameSchema,
+      full_name: nameSchema,
       email: {
         notEmpty: {
           errorMessage: USERS_MESSAGES.EMAIL_IS_REQUIRED
@@ -120,7 +120,13 @@ export const registerValidator = validate(
       },
       password: passwordSchema,
       confirm_password: confirmPasswordSchema,
-      date_of_birth: dateOfBirthSchema
+      birthday: dateOfBirthSchema,
+      phone_number: {
+        notEmpty: {
+          errorMessage: USERS_MESSAGES.PHONE_NUMBER_IS_REQUIRED
+        },
+        trim: true
+      }
     },
     ['body']
   )
@@ -138,7 +144,7 @@ export const loginValidator = validate(
           options: async (value, { req }) => {
             //tìm user nào có email và password giống client gửi lên không
             const user = await databaseService.users.findOne({
-              user_name: req.body.user_name,
+              user_name: value,
               password: hashPassword(req.body.password)
             });
             if (user === null) {
@@ -155,23 +161,6 @@ export const loginValidator = validate(
         },
         isString: {
           errorMessage: USERS_MESSAGES.PASSWORD_MUST_BE_A_STRING
-        },
-        isLength: {
-          options: {
-            min: 8,
-            max: 50
-          },
-          errorMessage: USERS_MESSAGES.PASSWORD_LENGTH_MUST_BE_FROM_8_TO_50
-        },
-        isStrongPassword: {
-          options: {
-            minLength: 8,
-            minLowercase: 1,
-            minUppercase: 1,
-            minNumbers: 1,
-            minSymbols: 1
-          },
-          errorMessage: USERS_MESSAGES.PASSWORD_MUST_BE_STRONG
         }
       }
     },

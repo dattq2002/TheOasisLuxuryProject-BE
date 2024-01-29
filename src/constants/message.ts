@@ -27,7 +27,7 @@ export const USERS_MESSAGES = {
   DATE_OF_BIRTH_BE_ISO8601: 'Date of birth be ISO8601',
   REGISTER_SUCCESS: 'Register success',
   GET_USER_BY_ID_SUCCESS: 'Get user by id success',
-  EMAIL_OR_PASSWORD_IS_INCORRECT: 'Email or password is incorrect',
+  EMAIL_OR_PASSWORD_IS_INCORRECT: 'user_name or password is incorrect',
   LOGIN_SUCCESS: 'Login success',
   USER_NAME_IS_REQUIRED: 'User name is required',
   UPDATE_USER_SUCCESS: 'Update user success',
@@ -37,7 +37,12 @@ export const USERS_MESSAGES = {
   CREATE_ACCOUNT_SUCCESS: 'Create account success',
   UPDATE_ACCOUNT_SUCCESS: 'Update account success',
   GET_ACCOUNT_SUCCESS: 'Get account success',
-  DELETE_ACCOUNT_SUCCESS: 'Delete account success'
+  DELETE_ACCOUNT_SUCCESS: 'Delete account success',
+  DELETE_ACCOUNT_FAIL: 'Delete account fail',
+  PHONE_NUMBER_IS_REQUIRED: 'Phone number is required',
+  PHONE_NUMBER_IS_INVALID: 'Phone number is invalid',
+  USER_NOT_FOUND: 'User not found',
+  USER_NOT_ACCESS: 'User not access'
 } as const;
 
 export const PROJECTS_MESSAGES = {

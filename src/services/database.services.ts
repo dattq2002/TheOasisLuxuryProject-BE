@@ -7,7 +7,7 @@ import User from '~/models/schemas/User.schemas';
 import Villa from '~/models/schemas/Villa.schemas';
 config();
 const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@theoasisluxury.vuzyle1.mongodb.net/?retryWrites=true&w=majority`;
-
+// const uri = 'mongodb+srv://bichphuong13042002:bipu13042002@bipu1304.kbgoy1k.mongodb.net/?retryWrites=true&w=majority';
 class DatabaseService {
   private client: MongoClient;
   private db: Db;

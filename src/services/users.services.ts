@@ -73,7 +73,8 @@ class UsersServices {
         _id,
         ...payload,
         password: await hashPassword(payload.password),
-        status: AccountStatus.ACTIVE
+        status: AccountStatus.ACTIVE,
+        birthday: new Date(payload.birthday)
       })
     );
     const email_verify_token = await this.signEmailVerifyToken({
@@ -119,6 +120,7 @@ class UsersServices {
         iat
       })
     );
+
     return { access_token, refesh_token };
   }
   async updateUserProfileById(id: string, payload: UpdateUserReqBody) {
@@ -144,7 +146,7 @@ class UsersServices {
   //create account dành cho admin
   async createAccount(payload: createAccountReq) {
     const _id = new ObjectId();
-    const newUser = await databaseService.users.insertOne(
+    const result = await databaseService.users.insertOne(
       new User({
         _id,
         ...payload,
@@ -152,10 +154,12 @@ class UsersServices {
         status: AccountStatus.ACTIVE,
         role_name: RoleName.STAFF,
         full_name: `staffuser${_id.toString()}`,
-        email_verify: true
+        verify: UserVerifyStatus.Verified
       })
     );
-    return newUser;
+    //trả ra thông tin user vừa tạo
+    const user = await databaseService.users.findOne({ _id: new ObjectId(result.insertedId) });
+    return user;
   }
   //update account dành cho admin
   async updateAccountById(id: string, payload: updateAccountReq) {
@@ -172,7 +176,9 @@ class UsersServices {
         }
       ]
     );
-    return result;
+    //trả ra thông tin user vừa update
+    const user = await databaseService.users.findOne({ _id: new ObjectId(id) });
+    return user;
   }
   async getAccount() {
     const result = await databaseService.users.find({}).toArray();
@@ -180,7 +186,17 @@ class UsersServices {
   }
   async deleteAccountById(id: string) {
     const result = await databaseService.users.deleteOne({ _id: new ObjectId(id) });
-    return result;
+    if (!result.acknowledged)
+      throw {
+        message: USERS_MESSAGES.DELETE_ACCOUNT_FAIL
+      };
+    return id;
+  }
+  //hàm lấy ra role của user
+  async getRole(user_id: string) {
+    const user = await databaseService.users.findOne({ _id: new ObjectId(user_id) });
+    if (!user) throw new Error(USERS_MESSAGES.USER_NOT_FOUND);
+    return user?.role_name;
   }
 }
 const usersService = new UsersServices();
