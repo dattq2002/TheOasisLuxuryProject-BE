@@ -66,21 +66,22 @@ class UsersServices {
   }
   async register(payload: RegisterReqBody) {
     const _id = new ObjectId();
-
+    const email_verify_token = await this.signEmailVerifyToken({
+      user_id: _id.toString(),
+      verify: UserVerifyStatus.Unverified
+    });
     //tạo mới 1 user
-    const newUser = await databaseService.users.insertOne(
+    await databaseService.users.insertOne(
       new User({
         _id,
         ...payload,
         password: await hashPassword(payload.password),
         status: AccountStatus.ACTIVE,
-        birthday: new Date(payload.birthday)
+        birthday: new Date(payload.birthday),
+        email_verify_token: email_verify_token
       })
     );
-    const email_verify_token = await this.signEmailVerifyToken({
-      user_id: _id.toString(),
-      verify: UserVerifyStatus.Unverified
-    });
+
     //lay user_id từ user vừa tạo
     const [access_token, refesh_token] = await this.signAccessTokenAndRefreshToken({
       user_id: _id.toString(),
@@ -154,7 +155,8 @@ class UsersServices {
         status: AccountStatus.ACTIVE,
         role_name: RoleName.STAFF,
         full_name: `staffuser${_id.toString()}`,
-        verify: UserVerifyStatus.Verified
+        verify: UserVerifyStatus.Verified,
+        birthday: new Date(payload.birthday)
       })
     );
     //trả ra thông tin user vừa tạo

@@ -6,16 +6,17 @@ import {
   updateAccountController
 } from '~/controllers/accounts.controller';
 import { accountValidator } from '~/middlewares/accounts.middlewares';
+import { accessTokenValidator } from '~/middlewares/user.middlewares';
 import { wrapAsync } from '~/utils/handlers';
 
 const accountRouter = Router();
+//API dành cho admin
+accountRouter.post('/', accessTokenValidator, accountValidator, wrapAsync(createAccountController));
 
-accountRouter.post('/create-account', accountValidator, wrapAsync(createAccountController));
+accountRouter.patch('/:id', accessTokenValidator, accountValidator, wrapAsync(updateAccountController));
 
-accountRouter.patch('/update-account/:id', accountValidator, wrapAsync(updateAccountController));
+accountRouter.get('/', accessTokenValidator, wrapAsync(getAccountController));
 
-accountRouter.get('/get-account', wrapAsync(getAccountController));
-
-accountRouter.delete('/delete-account/:id', wrapAsync(deleteAccountController));
+accountRouter.delete('/:id', accessTokenValidator, wrapAsync(deleteAccountController));
 
 export default accountRouter;

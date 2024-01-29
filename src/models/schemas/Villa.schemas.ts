@@ -12,7 +12,8 @@ interface VillaType {
   url_image?: string[];
   fluctuates_price: number;
   stiff_price: number;
-  villas_detail?: string[];
+  villa_detail_id: ObjectId;
+  subdivision_id: ObjectId;
 }
 
 export default class Villa {
@@ -26,7 +27,8 @@ export default class Villa {
   url_image: string[];
   fluctuates_price: number;
   stiff_price: number;
-  villas_detail: string[];
+  villa_detail_id: ObjectId;
+  subdivision_id: ObjectId;
   constructor(data: VillaType) {
     this._id = data._id;
     this.villa_name = data.villa_name;
@@ -38,6 +40,7 @@ export default class Villa {
     this.url_image = data.url_image || [];
     this.fluctuates_price = data.fluctuates_price;
     this.stiff_price = data.stiff_price;
-    this.villas_detail = data.villas_detail || [];
+    this.villa_detail_id = data.villa_detail_id;
+    this.subdivision_id = data.subdivision_id;
   }
 }

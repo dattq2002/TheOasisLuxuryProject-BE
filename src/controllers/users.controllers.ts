@@ -26,12 +26,6 @@ export const registerController = async (req: Request<ParamsDictionary, any, Reg
 
 export const getUserByIdController = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { user_id } = req.decoded_authorization as TokenPayload;
-  //validate role
-  const roleUser = await usersService.getRole(user_id);
-  if (roleUser !== RoleName.USER) {
-    throw new Error(USERS_MESSAGES.USER_NOT_ACCESS);
-  }
   const user = await usersService.getUserById(id);
   return res.json({
     message: USERS_MESSAGES.GET_USER_BY_ID_SUCCESS,
@@ -59,12 +53,7 @@ export const updateUserByIdController = async (
   res: Response
 ) => {
   const { id } = req.params;
-  const { user_id } = req.decoded_authorization as TokenPayload;
-  //validate role
-  const roleUser = await usersService.getRole(user_id);
-  if (roleUser !== RoleName.USER) {
-    throw new Error(USERS_MESSAGES.USER_NOT_ACCESS);
-  }
+
   const result = await usersService.updateUserProfileById(id, req.body);
   return res.json({
     message: USERS_MESSAGES.UPDATE_USER_SUCCESS,

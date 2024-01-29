@@ -9,7 +9,7 @@ interface SubdivisionType {
   update_date?: Date;
   quantityVilla: number;
   status: SubdivisionStatus;
-  villas: ObjectId[];
+  project_id: ObjectId;
 }
 
 export default class Subdivision {
@@ -20,14 +20,14 @@ export default class Subdivision {
   update_date: Date;
   quantityVilla: number;
   status: SubdivisionStatus;
-  villas: ObjectId[];
+  project_id: ObjectId;
   constructor(subdivision: SubdivisionType) {
     this.subdivision_name = subdivision.subdivision_name;
     this.location = subdivision.location;
     this.insert_date = subdivision.insert_date || new Date();
     this.update_date = subdivision.update_date || new Date();
     this.quantityVilla = subdivision.quantityVilla;
-    this.villas = subdivision.villas || [];
     this.status = subdivision.status;
+    this.project_id = subdivision.project_id;
   }
 }

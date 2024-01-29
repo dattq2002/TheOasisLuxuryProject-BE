@@ -45,14 +45,7 @@ export const accountValidator = validate(
         isString: {
           errorMessage: 'Birthday must be a string'
         },
-        trim: true,
-        isLength: {
-          options: {
-            min: 1,
-            max: 100
-          },
-          errorMessage: 'Birthday wrong format'
-        }
+        trim: true
       },
       phone_number: {
         notEmpty: {

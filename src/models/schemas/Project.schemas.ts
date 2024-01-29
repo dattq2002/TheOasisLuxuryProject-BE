@@ -11,7 +11,6 @@ interface ProjectType {
   status: ProjectStatus;
   description?: string;
   deflag?: boolean;
-  subdivisions: ObjectId[];
 }
 
 export default class Project {
@@ -24,7 +23,6 @@ export default class Project {
   status: ProjectStatus;
   description: string;
   deflag: boolean;
-  subdivisions: ObjectId[];
   constructor(project: ProjectType) {
     this.project_name = project.project_name;
     this.start_date = project.start_date;
@@ -34,6 +32,5 @@ export default class Project {
     this.status = project.status;
     this.description = project.description || '';
     this.deflag = project.deflag || false;
-    this.subdivisions = project.subdivisions || [];
   }
 }

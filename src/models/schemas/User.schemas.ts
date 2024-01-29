@@ -1,20 +1,21 @@
 import { ObjectId } from 'mongodb';
 import { AccountStatus, GenderType, RoleName, UserVerifyStatus } from '~/constants/enum';
+import BlogPost from './BlogPost.schemas';
 
 interface UserType {
   _id?: ObjectId;
   full_name: string;
   birthday: Date;
   phone_number: string;
-  user_name: string;
-  email: string;
-  password: string;
   gender?: string;
   email_verify_token?: string;
   forgot_password_token?: string;
   verify?: UserVerifyStatus;
   insert_date?: Date;
   update_date?: Date;
+  user_name: string;
+  email: string;
+  password: string;
   url_image?: string;
   status?: string;
   role_name?: string;
@@ -25,15 +26,15 @@ export default class User {
   full_name: string;
   birthday: Date;
   phone_number: string;
-  user_name: string;
-  email: string;
-  password: string;
   gender: string;
   email_verify_token: string;
   forgot_password_token: string;
   verify: UserVerifyStatus;
   insert_date: Date;
   update_date: Date;
+  user_name: string;
+  email: string;
+  password: string;
   url_image: string;
   status: string;
   role_name: string;

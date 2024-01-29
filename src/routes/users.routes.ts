@@ -22,6 +22,7 @@ usersRouter.get('/:id', accessTokenValidator, wrapAsync(getUserByIdController));
 
 usersRouter.post('/login', loginValidator, wrapAsync(loginController));
 
+//update profile
 usersRouter.patch('/:id', accessTokenValidator, wrapAsync(updateUserByIdController));
 
 usersRouter.post('/logout', accessTokenValidator, refreshTokenValidator, wrapAsync(logoutController));

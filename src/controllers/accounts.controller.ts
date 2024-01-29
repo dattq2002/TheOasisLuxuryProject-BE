@@ -2,8 +2,13 @@ import { Request, Response } from 'express';
 import { ParamsDictionary } from 'express-serve-static-core';
 import { USERS_MESSAGES } from '~/constants/message';
 import { createAccountReq, updateAccountReq } from '~/models/requests/account.request';
+import { TokenPayload } from '~/models/requests/register.request';
 import usersService from '~/services/users.services';
 export const createAccountController = async (req: Request<ParamsDictionary, any, createAccountReq>, res: Response) => {
+  const { user_id } = req.decoded_authorization as TokenPayload;
+  if ((await usersService.getRole(user_id)) !== 'admin') {
+    throw new Error(USERS_MESSAGES.USER_NOT_ACCESS);
+  }
   const result = await usersService.createAccount(req.body);
   return res.json({
     message: USERS_MESSAGES.CREATE_ACCOUNT_SUCCESS,
