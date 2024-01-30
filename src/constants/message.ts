@@ -38,7 +38,12 @@ export const USERS_MESSAGES = {
   PHONE_NUMBER_IS_REQUIRED: 'Phone number is required',
   PHONE_NUMBER_IS_INVALID: 'Phone number is invalid',
   USER_NOT_FOUND: 'User not found',
-  USER_NOT_ACCESS: 'User not access'
+  USER_NOT_ACCESS: 'User not access',
+  EMAIL_VERIFY_TOKEN_IS_REQUIRED: 'Email verify token is required',
+  USER_BANNED: 'User banned',
+  EMAIL_VERIFY_TOKEN_IS_NOT_MATCH: 'Email verify token is not match',
+  EMAIL_ALREADY_VERIFIED_BEFORE: 'Email already verified before',
+  EMAIL_VERIFY_SUCCESS: 'Email verify success'
 } as const;
 
 export const PROJECTS_MESSAGES = {
@@ -46,7 +51,9 @@ export const PROJECTS_MESSAGES = {
   CREATE_PROJECT_SUCCESS: 'Create project success',
   UPDATE_PROJECT_SUCCESS: 'Update project success',
   DELETE_PROJECT_SUCCESS: 'Delete project success',
-  ADD_SUBDIVISION_TO_PROJECT_SUCCESS: 'Add subdivision to project success'
+  ADD_SUBDIVISION_TO_PROJECT_SUCCESS: 'Add subdivision to project success',
+  PROJECT_NOT_FOUND: 'Project not found',
+  UPDATE_PROJECT_FAIL: 'Update project fail'
 } as const;
 
 export const SUBDIVISION_MESSAGES = {

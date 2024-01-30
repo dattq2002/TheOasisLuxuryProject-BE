@@ -19,6 +19,7 @@ export default class Contract {
   user_id: ObjectId;
   order_id: ObjectId;
   constructor(contract: ContractType) {
+    this._id = contract._id;
     this.contract_name = contract.contract_name;
     this.insert_date = contract.insert_date || new Date();
     this.update_date = contract.update_date || new Date();

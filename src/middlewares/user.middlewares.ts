@@ -2,6 +2,8 @@ import { Request } from 'express';
 import { ParamSchema, checkSchema } from 'express-validator';
 import { JsonWebTokenError } from 'jsonwebtoken';
 import { capitalize } from 'lodash';
+import { ObjectId } from 'mongodb';
+import { UserVerifyStatus } from '~/constants/enum';
 import HTTP_STATUS from '~/constants/httpStatus';
 import { USERS_MESSAGES } from '~/constants/message';
 import { ErrorWithStatus } from '~/models/Error';
@@ -227,6 +229,74 @@ export const refreshTokenValidator = validate(
                 });
               }
               (req as Request).decoded_refresh_token = decoded_refresh_token;
+            } catch (error) {
+              if (error instanceof JsonWebTokenError) {
+                throw new ErrorWithStatus({
+                  message: capitalize((error as JsonWebTokenError).message),
+                  status: HTTP_STATUS.UNAUTHORIZED
+                });
+              }
+              throw error;
+            }
+            return true;
+          }
+        }
+      }
+    },
+    ['body']
+  )
+);
+
+export const emailVerifyTokenValidator = validate(
+  checkSchema(
+    {
+      email_verify_token: {
+        trim: true,
+        custom: {
+          options: async (value, { req }) => {
+            // nếu ko truyền email_verify_token lên thì sẽ báo lỗi
+            if (!value) {
+              throw new ErrorWithStatus({
+                message: USERS_MESSAGES.EMAIL_VERIFY_TOKEN_IS_REQUIRED,
+                status: HTTP_STATUS.UNAUTHORIZED
+              });
+            }
+            try {
+              //verify token này để lấy decoded_email_verify_token
+              const decoded_email_verify_token = await verifyToken({
+                token: value,
+                secretOrPublicKey: process.env.JWT_SECRET_EMAIL_VERIFY_TOKEN as string
+              });
+
+              // lưu cái decoded_email_verify_token này vào req
+              (req as Request).decoded_email_verify_token = decoded_email_verify_token;
+              //lấy cái user_id từ cái decoded_email_verify_token này để tìm user sở hữu
+              const user_id = decoded_email_verify_token.user_id;
+              //tìm user sở hữu cái email_verify_token này
+              const user = await databaseService.users.findOne({
+                _id: new ObjectId(user_id)
+              });
+              if (!user) {
+                throw new ErrorWithStatus({
+                  message: USERS_MESSAGES.USER_NOT_FOUND,
+                  status: HTTP_STATUS.NOT_FOUND
+                });
+              }
+              //nếu có user thì xem thử user đó có bị banned
+              req.user = user; //lưu lại để sử dụng
+              if (user.verify === UserVerifyStatus.Banned) {
+                throw new ErrorWithStatus({
+                  message: USERS_MESSAGES.USER_BANNED,
+                  status: HTTP_STATUS.FORBIDDEN
+                });
+              }
+              //nếu truyền lên ko đúng với database thì báo lỗi
+              if (user.verify != UserVerifyStatus.Verified && value !== user.email_verify_token) {
+                throw new ErrorWithStatus({
+                  message: USERS_MESSAGES.EMAIL_VERIFY_TOKEN_IS_NOT_MATCH,
+                  status: HTTP_STATUS.UNAUTHORIZED
+                });
+              }
             } catch (error) {
               if (error instanceof JsonWebTokenError) {
                 throw new ErrorWithStatus({

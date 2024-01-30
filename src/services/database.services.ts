@@ -1,5 +1,9 @@
 import { config } from 'dotenv';
 import { MongoClient, Db, Collection } from 'mongodb';
+import BlogPost from '~/models/schemas/BlogPost.schemas';
+import Contract from '~/models/schemas/Contract.schemas';
+import Order from '~/models/schemas/Order.schemas';
+import OwnerVilla from '~/models/schemas/OwnerVilla.schemas';
 import Project from '~/models/schemas/Project.schemas';
 import RefreshToken from '~/models/schemas/RefreshToken.schema';
 import Subdivision from '~/models/schemas/Subdivision.schemas';
@@ -39,6 +43,18 @@ class DatabaseService {
   }
   get villas(): Collection<Villa> {
     return this.db.collection(process.env.DB_COLLECTION_VILLA as string);
+  }
+  get blogPosts(): Collection<BlogPost> {
+    return this.db.collection(process.env.DB_COLLECTION_BLOGPOST as string);
+  }
+  get contracts(): Collection<Contract> {
+    return this.db.collection(process.env.DB_COLLECTION_CONTRACT as string);
+  }
+  get ownerVillas(): Collection<OwnerVilla> {
+    return this.db.collection(process.env.DB_COLLECTION_OWNERVILLA as string);
+  }
+  get orders(): Collection<Order> {
+    return this.db.collection(process.env.DB_COLLECTION_ORDER as string);
   }
 }
 const databaseService = new DatabaseService();

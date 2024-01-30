@@ -21,6 +21,7 @@ export default class Payment {
   amount: number;
   order_id: ObjectId;
   constructor(payment: PaymentType) {
+    this._id = payment._id;
     this.payment_type = payment.payment_type;
     this.insert_date = payment.insert_date || new Date();
     this.update_date = payment.update_date || new Date();

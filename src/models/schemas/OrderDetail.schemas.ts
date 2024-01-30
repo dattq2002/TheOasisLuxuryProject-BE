@@ -15,6 +15,7 @@ export default class OrderDetail {
   order_id: ObjectId;
   owner_villa_id: ObjectId;
   constructor(orderDetail: OrderDetailType) {
+    this._id = orderDetail._id;
     this.insert_date = orderDetail.insert_date || new Date();
     this.update_date = orderDetail.update_date || new Date();
     this.order_id = orderDetail.order_id;

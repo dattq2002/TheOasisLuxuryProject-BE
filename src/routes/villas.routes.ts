@@ -6,17 +6,18 @@ import {
   getVillasController,
   updateVillaController
 } from '~/controllers/villas.controller';
+import { accessTokenValidator } from '~/middlewares/user.middlewares';
 import { wrapAsync } from '~/utils/handlers';
 
 const villaRouter = Router();
 
-villaRouter.get('/get-villas', getVillasController);
+villaRouter.get('/', accessTokenValidator, getVillasController);
 
-villaRouter.get('/get-villa/:id', getVillaByIdController);
+villaRouter.get('/:id', accessTokenValidator, getVillaByIdController);
 
-villaRouter.post('/create-villa', wrapAsync(createVillaController));
+villaRouter.post('/', accessTokenValidator, wrapAsync(createVillaController));
 
-villaRouter.patch('/update-villa/:id', wrapAsync(updateVillaController));
+villaRouter.patch('/:id', accessTokenValidator, wrapAsync(updateVillaController));
 
-villaRouter.delete('/delete-villa/:id', wrapAsync(deleteVillaController));
+villaRouter.delete('/:id', accessTokenValidator, wrapAsync(deleteVillaController));
 export default villaRouter;

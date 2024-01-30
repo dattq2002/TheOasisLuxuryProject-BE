@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import {
+  emailVerifyController,
   getUserByIdController,
   loginController,
   logoutController,
@@ -8,6 +9,7 @@ import {
 } from '~/controllers/users.controllers';
 import {
   accessTokenValidator,
+  emailVerifyTokenValidator,
   loginValidator,
   refreshTokenValidator,
   registerValidator
@@ -26,5 +28,9 @@ usersRouter.post('/login', loginValidator, wrapAsync(loginController));
 usersRouter.patch('/:id', accessTokenValidator, wrapAsync(updateUserByIdController));
 
 usersRouter.post('/logout', accessTokenValidator, refreshTokenValidator, wrapAsync(logoutController));
+
+usersRouter.post('/verify-email', emailVerifyTokenValidator, wrapAsync(emailVerifyController));
+
+//------------------------------------------------------------
 
 export default usersRouter;

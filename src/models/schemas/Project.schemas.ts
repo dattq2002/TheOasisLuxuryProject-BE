@@ -1,5 +1,6 @@
 import { ObjectId } from 'mongodb';
 import { ProjectStatus } from '~/constants/enum';
+import Subdivision from './Subdivision.schemas';
 
 interface ProjectType {
   _id?: ObjectId;
@@ -11,6 +12,7 @@ interface ProjectType {
   status: ProjectStatus;
   description?: string;
   deflag?: boolean;
+  subdivisions?: Subdivision[];
 }
 
 export default class Project {
@@ -23,7 +25,9 @@ export default class Project {
   status: ProjectStatus;
   description: string;
   deflag: boolean;
+  subdivisions: Subdivision[];
   constructor(project: ProjectType) {
+    this._id = project._id;
     this.project_name = project.project_name;
     this.start_date = project.start_date;
     this.end_date = project.end_date;
@@ -32,5 +36,6 @@ export default class Project {
     this.status = project.status;
     this.description = project.description || '';
     this.deflag = project.deflag || false;
+    this.subdivisions = project.subdivisions || [];
   }
 }

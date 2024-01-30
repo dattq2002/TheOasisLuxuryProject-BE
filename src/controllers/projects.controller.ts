@@ -3,6 +3,7 @@ import { PROJECTS_MESSAGES } from '~/constants/message';
 import { ParamsDictionary } from 'express-serve-static-core';
 import projectsService from '~/services/projects.services';
 import { addSubdivisionToProjectReq, createProjectReq, updateProjectReq } from '~/models/requests/project.request';
+import HTTP_STATUS from '~/constants/httpStatus';
 
 export const getProjectController = async (req: Request, res: Response) => {
   const result = await projectsService.getProjects();
@@ -14,6 +15,11 @@ export const getProjectController = async (req: Request, res: Response) => {
 export const getProjectByIdController = async (req: Request, res: Response) => {
   const { id } = req.params;
   const result = await projectsService.getProjectById(id);
+  if (!result)
+    return res.status(HTTP_STATUS.NOT_FOUND).json({
+      message: PROJECTS_MESSAGES.PROJECT_NOT_FOUND,
+      result
+    });
   return res.json({
     message: PROJECTS_MESSAGES.GET_PROJECT_SUCCESS,
     result
@@ -23,7 +29,7 @@ export const getProjectByIdController = async (req: Request, res: Response) => {
 export const createProjectController = async (req: Request<ParamsDictionary, any, createProjectReq>, res: Response) => {
   const payload = req.body;
   const result = await projectsService.createProject(payload);
-  return res.json({
+  return res.status(HTTP_STATUS.CREATED).json({
     message: PROJECTS_MESSAGES.CREATE_PROJECT_SUCCESS,
     result
   });
@@ -33,6 +39,12 @@ export const updateProjectController = async (req: Request<ParamsDictionary, any
   const { id } = req.params;
   const payload = req.body;
   const result = await projectsService.updateProjectById(id, payload);
+  if (!result) {
+    return res.status(HTTP_STATUS.BAD_REQUEST).json({
+      message: PROJECTS_MESSAGES.UPDATE_PROJECT_FAIL,
+      result
+    });
+  }
   return res.json({
     message: PROJECTS_MESSAGES.UPDATE_PROJECT_SUCCESS,
     result

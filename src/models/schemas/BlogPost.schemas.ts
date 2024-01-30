@@ -19,6 +19,7 @@ export default class BlogPost {
   update_date: Date;
   deflag: boolean;
   constructor(blogPost: BlogPostType) {
+    this._id = blogPost._id;
     this.title = blogPost.title;
     this.description_detail = blogPost.description_detail;
     this.insert_date = blogPost.insert_date || new Date();

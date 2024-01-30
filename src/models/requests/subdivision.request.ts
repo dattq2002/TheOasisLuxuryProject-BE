@@ -5,14 +5,13 @@ export interface createSubdivisionReq {
   subdivision_name: string;
   location: string;
   quantityVilla?: number;
-  villas?: ObjectId[];
   status: SubdivisionStatus;
+  project_id: ObjectId;
 }
 
 export interface updateSubdivisionReq {
   subdivision_name?: string;
   location?: string;
   quantityVilla?: number;
-  villas?: ObjectId[];
   status?: SubdivisionStatus;
 }

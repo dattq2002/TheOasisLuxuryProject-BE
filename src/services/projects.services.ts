@@ -14,15 +14,15 @@ class ProjectsService {
   }
   async createProject(payload: createProjectReq) {
     const _id = new ObjectId();
-
     const newPrject = await databaseService.projects.insertOne(
       new Project({
         _id,
         ...payload,
-        subdivisions: payload.subdivisions || []
+        subdivisions: []
       })
     );
-    return newPrject;
+    const project = await databaseService.projects.findOne({ _id: newPrject.insertedId });
+    return project;
   }
   async updateProjectById(id: string, payload: updateProjectReq) {
     const result = await databaseService.projects.updateOne(
@@ -38,7 +38,8 @@ class ProjectsService {
         }
       ]
     );
-    return result;
+    const project = await databaseService.projects.findOne({ _id: new ObjectId(id) });
+    return project;
   }
   async deleteProjectById(id: string) {
     const result = await databaseService.projects.deleteOne({ _id: new ObjectId(id) });

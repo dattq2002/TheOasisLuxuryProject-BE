@@ -21,6 +21,7 @@ export default class VillaDetail {
   bed_room: number;
   description: string;
   constructor(villaDetail: VillaDetailType) {
+    this._id = villaDetail._id;
     this.insert_date = villaDetail.insert_date || new Date();
     this.update_date = villaDetail.update_date || new Date();
     this.room_quantity = villaDetail.room_quantity || 0;

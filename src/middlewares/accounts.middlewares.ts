@@ -1,27 +1,28 @@
-import { checkSchema } from 'express-validator';
+import { ParamSchema, checkSchema } from 'express-validator';
 import { USERS_MESSAGES } from '~/constants/message';
 import usersService from '~/services/users.services';
 import { validate } from '~/utils/validation';
 
+const userName: ParamSchema = {
+  notEmpty: {
+    errorMessage: 'User name is required'
+  },
+  isString: {
+    errorMessage: 'User name must be a string'
+  },
+  trim: true,
+  isLength: {
+    options: {
+      min: 1,
+      max: 10
+    },
+    errorMessage: 'User name length must be from 1 to 10'
+  }
+};
 export const accountValidator = validate(
   checkSchema(
     {
-      user_name: {
-        notEmpty: {
-          errorMessage: 'User name is required'
-        },
-        isString: {
-          errorMessage: 'User name must be a string'
-        },
-        trim: true,
-        isLength: {
-          options: {
-            min: 1,
-            max: 100
-          },
-          errorMessage: 'User name length must be from 1 to 100'
-        }
-      },
+      user_name: userName,
       role_name: {
         notEmpty: {
           errorMessage: 'Role name is required'
@@ -29,14 +30,7 @@ export const accountValidator = validate(
         isString: {
           errorMessage: 'Role name must be a string'
         },
-        trim: true,
-        isLength: {
-          options: {
-            min: 1,
-            max: 100
-          },
-          errorMessage: 'Role name length must be from 1 to 100'
-        }
+        trim: true
       },
       birthday: {
         notEmpty: {
@@ -79,6 +73,64 @@ export const accountValidator = validate(
             }
             return true;
           }
+        }
+      }
+    },
+    ['body']
+  )
+);
+
+export const updateAccountValidator = validate(
+  checkSchema(
+    {
+      user_name: {
+        notEmpty: {
+          errorMessage: 'User name is required'
+        },
+        isString: {
+          errorMessage: 'User name must be a string'
+        },
+        trim: true,
+        isLength: {
+          options: {
+            min: 1,
+            max: 100
+          },
+          errorMessage: 'User name length must be from 1 to 100'
+        }
+      },
+      role_name: {
+        notEmpty: {
+          errorMessage: 'Role name is required'
+        },
+        isString: {
+          errorMessage: 'Role name must be a string'
+        },
+        trim: true
+      },
+      birthday: {
+        notEmpty: {
+          errorMessage: 'Birthday is required'
+        },
+        isString: {
+          errorMessage: 'Birthday must be a string'
+        },
+        trim: true
+      },
+      phone_number: {
+        notEmpty: {
+          errorMessage: 'Phone number is required'
+        },
+        isString: {
+          errorMessage: 'Phone number must be a string'
+        },
+        trim: true,
+        isLength: {
+          options: {
+            min: 1,
+            max: 10
+          },
+          errorMessage: 'Phone number length must be from 1 to 10'
         }
       }
     },

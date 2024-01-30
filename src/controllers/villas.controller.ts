@@ -26,7 +26,17 @@ export const createVillaController = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { villa_name, status, address, area, url_image, fluctuates_price, stiff_price, villas_detail } = req.body;
+  const {
+    villa_name,
+    status,
+    address,
+    area,
+    url_image,
+    fluctuates_price,
+    stiff_price,
+    subdivision_id,
+    villa_detail_id
+  } = req.body;
   const result = await villasServices.createVilla({
     villa_name,
     status,
@@ -35,7 +45,8 @@ export const createVillaController = async (
     url_image,
     fluctuates_price,
     stiff_price,
-    villas_detail
+    subdivision_id,
+    villa_detail_id
   });
   res.json({
     message: VILLAS_MESSAGES.CREATE_VILLA_SUCCESS,
@@ -49,7 +60,7 @@ export const updateVillaController = async (
   next: NextFunction
 ) => {
   const { id } = req.params;
-  const { villa_name, status, address, area, url_image, fluctuates_price, stiff_price, villas_detail } = req.body;
+  const { villa_name, status, address, area, url_image, fluctuates_price, stiff_price } = req.body;
   const result = await villasServices.updateVilla(id, {
     villa_name,
     status,
@@ -57,8 +68,7 @@ export const updateVillaController = async (
     area,
     url_image,
     fluctuates_price,
-    stiff_price,
-    villas_detail
+    stiff_price
   });
   res.json({
     message: VILLAS_MESSAGES.UPDATE_VILLA_SUCCESS,

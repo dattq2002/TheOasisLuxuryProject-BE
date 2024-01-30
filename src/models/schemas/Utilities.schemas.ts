@@ -15,6 +15,7 @@ export default class Utilities {
   update_date: Date;
   deflag: boolean;
   constructor(utilities: UtilitiesType) {
+    this._id = utilities._id;
     this.utilities_name = utilities.utilities_name;
     this.insert_date = utilities.insert_date || new Date();
     this.update_date = utilities.update_date || new Date();

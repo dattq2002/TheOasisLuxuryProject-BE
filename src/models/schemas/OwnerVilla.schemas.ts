@@ -29,6 +29,7 @@ export default class OwnerVilla {
   deflag: boolean;
   order_detail_id?: ObjectId;
   constructor(ownerVilla: OwnerVillaType) {
+    this._id = ownerVilla._id;
     this.user_id = ownerVilla.user_id;
     this.villa_id = ownerVilla.villa_id;
     this.check_in_date = ownerVilla.check_in_date;

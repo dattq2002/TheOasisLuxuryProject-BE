@@ -7,7 +7,8 @@ import {
   LogoutReqBody,
   RegisterReqBody,
   TokenPayload,
-  UpdateUserReqBody
+  UpdateUserReqBody,
+  VerifyEmailReqBody
 } from '~/models/requests/register.request';
 import User from '~/models/schemas/User.schemas';
 import { ObjectId } from 'mongodb';
@@ -67,4 +68,22 @@ export const logoutController = async (req: Request<ParamsDictionary, any, Logou
   //và vào db xoá cái refresh token đó đi
   const result = await usersService.logout(refresh_token);
   res.json(result);
+};
+
+export const emailVerifyController = async (req: Request<ParamsDictionary, any, VerifyEmailReqBody>, res: Response) => {
+  //kiểm tra user này đã verify email chưa
+  const { user_id } = req.decoded_email_verify_token as TokenPayload;
+  const user = req.user as User;
+  if (user.verify === UserVerifyStatus.Verified && user.email_verify_token === '') {
+    return res.json({
+      message: USERS_MESSAGES.EMAIL_ALREADY_VERIFIED_BEFORE
+    });
+  }
+  //nếu mà xuống dc đây nghĩa là user này chưa verify email, chưa bị banned, và khớp mã
+  //mình tiến hành update lại trạng thái verify của user này
+  const result = await usersService.verifyEmail(user_id);
+  return res.json({
+    message: USERS_MESSAGES.EMAIL_VERIFY_SUCCESS,
+    result
+  });
 };

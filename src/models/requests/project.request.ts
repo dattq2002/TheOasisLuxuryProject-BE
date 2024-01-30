@@ -1,5 +1,6 @@
 import { ObjectId } from 'mongodb';
 import { ProjectStatus } from '~/constants/enum';
+import Subdivision from '../schemas/Subdivision.schemas';
 
 export interface createProjectReq {
   project_name: string;
@@ -7,7 +8,7 @@ export interface createProjectReq {
   end_date: Date;
   status: ProjectStatus;
   description: string;
-  subdivisions?: ObjectId[];
+  subdivisions?: Subdivision[];
 }
 
 export interface updateProjectReq {

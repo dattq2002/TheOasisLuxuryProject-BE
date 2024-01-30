@@ -104,6 +104,19 @@ class UsersServices {
   }
   async getUserById(id: string) {
     const user = await databaseService.users.findOne({ _id: new ObjectId(id) });
+    //tìm tất cả các blog post của user này
+    const blog_posts = await databaseService.blogPosts.find({ user_id: new ObjectId(id) }).toArray();
+    //tìm tất cả các contract của user này
+    const contracts = await databaseService.contracts.find({ user_id: new ObjectId(id) }).toArray();
+    const ownerVillas = await databaseService.ownerVillas.find({ user_id: new ObjectId(id) }).toArray();
+    const orders = await databaseService.orders.find({ user_id: new ObjectId(id) }).toArray();
+    //assign tất cả blogpost vào user
+    if (user) {
+      user.blog_posts = blog_posts;
+      user.contracts = contracts;
+      user.owner_villas = ownerVillas;
+      user.orders = orders;
+    }
     return user;
   }
   async login({ user_id, verify }: { user_id: string; verify: UserVerifyStatus }) {
@@ -199,6 +212,39 @@ class UsersServices {
     const user = await databaseService.users.findOne({ _id: new ObjectId(user_id) });
     if (!user) throw new Error(USERS_MESSAGES.USER_NOT_FOUND);
     return user?.role_name;
+  }
+  async verifyEmail(user_id: string) {
+    //cập nhật lại user'
+    await databaseService.users.updateOne(
+      {
+        _id: new ObjectId(user_id)
+      },
+      [
+        {
+          $set: {
+            verify: UserVerifyStatus.Verified, //1
+            email_verify_token: '',
+            updated_at: '$$NOW'
+          }
+        }
+      ]
+    );
+    //tạo access token và refresh token
+    const [access_token, refesh_token] = await this.signAccessTokenAndRefreshToken({
+      user_id,
+      verify: UserVerifyStatus.Verified
+    });
+    const { exp, iat } = await this.decodeRefreshToken(refesh_token);
+    //lưu refesh token vào db
+    await databaseService.refreshTokens.insertOne(
+      new RefreshToken({
+        token: refesh_token,
+        user_id: new ObjectId(user_id),
+        exp,
+        iat
+      })
+    );
+    return { access_token, refesh_token };
   }
 }
 const usersService = new UsersServices();

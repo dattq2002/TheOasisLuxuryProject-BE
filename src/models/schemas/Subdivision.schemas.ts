@@ -1,7 +1,8 @@
 import { ObjectId } from 'mongodb';
 import { SubdivisionStatus } from '~/constants/enum';
+import Villa from './Villa.schemas';
 
-interface SubdivisionType {
+export interface SubdivisionType {
   _id?: ObjectId;
   subdivision_name: string;
   location: string;
@@ -10,6 +11,7 @@ interface SubdivisionType {
   quantityVilla: number;
   status: SubdivisionStatus;
   project_id: ObjectId;
+  villas?: Villa[];
 }
 
 export default class Subdivision {
@@ -21,7 +23,9 @@ export default class Subdivision {
   quantityVilla: number;
   status: SubdivisionStatus;
   project_id: ObjectId;
+  villas: Villa[];
   constructor(subdivision: SubdivisionType) {
+    this._id = subdivision._id;
     this.subdivision_name = subdivision.subdivision_name;
     this.location = subdivision.location;
     this.insert_date = subdivision.insert_date || new Date();
@@ -29,5 +33,6 @@ export default class Subdivision {
     this.quantityVilla = subdivision.quantityVilla;
     this.status = subdivision.status;
     this.project_id = subdivision.project_id;
+    this.villas = subdivision.villas || [];
   }
 }

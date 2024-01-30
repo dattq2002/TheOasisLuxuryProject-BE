@@ -1,5 +1,6 @@
 import { ObjectId } from 'mongodb';
 import { VillaStatus } from '~/constants/enum';
+import VillaDetail from './VillaDetail.schemas';
 
 interface VillaType {
   _id?: ObjectId;
@@ -12,8 +13,9 @@ interface VillaType {
   url_image?: string[];
   fluctuates_price: number;
   stiff_price: number;
-  villa_detail_id: ObjectId;
+  villa_detail_id?: ObjectId;
   subdivision_id: ObjectId;
+  villa_details?: VillaDetail[];
 }
 
 export default class Villa {
@@ -27,8 +29,9 @@ export default class Villa {
   url_image: string[];
   fluctuates_price: number;
   stiff_price: number;
-  villa_detail_id: ObjectId;
+  villa_detail_id?: ObjectId;
   subdivision_id: ObjectId;
+  villa_details: VillaDetail[];
   constructor(data: VillaType) {
     this._id = data._id;
     this.villa_name = data.villa_name;
@@ -42,5 +45,6 @@ export default class Villa {
     this.stiff_price = data.stiff_price;
     this.villa_detail_id = data.villa_detail_id;
     this.subdivision_id = data.subdivision_id;
+    this.villa_details = data.villa_details || [];
   }
 }

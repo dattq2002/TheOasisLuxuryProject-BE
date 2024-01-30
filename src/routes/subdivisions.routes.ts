@@ -6,18 +6,19 @@ import {
   getSubdivisionController,
   updateSubdivisionController
 } from '~/controllers/subdivisions.controller';
+import { accessTokenValidator } from '~/middlewares/user.middlewares';
 import { wrapAsync } from '~/utils/handlers';
 
 const subdivisionRouter = Router();
 
-subdivisionRouter.get('/get-subdivision', getSubdivisionController);
+subdivisionRouter.get('/', accessTokenValidator, getSubdivisionController);
 
-subdivisionRouter.get('/get-subdivision/:id', getSubdivisionByIdController);
+subdivisionRouter.get('/:id', accessTokenValidator, getSubdivisionByIdController);
 
-subdivisionRouter.post('/create-subdivision', wrapAsync(createSubdivisionController));
+subdivisionRouter.post('/', accessTokenValidator, wrapAsync(createSubdivisionController));
 
-subdivisionRouter.patch('/update-subdivision/:id', wrapAsync(updateSubdivisionController));
+subdivisionRouter.patch('/:id', accessTokenValidator, wrapAsync(updateSubdivisionController));
 
-subdivisionRouter.delete('/delete-subdivision/:id', wrapAsync(deleteSubdivisionController));
+subdivisionRouter.delete('/:id', accessTokenValidator, wrapAsync(deleteSubdivisionController));
 
 export default subdivisionRouter;

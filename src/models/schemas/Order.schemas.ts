@@ -33,6 +33,7 @@ export default class Order {
   contract_id: ObjectId;
   payment_id: ObjectId;
   constructor(order: OrderType) {
+    this._id = order._id;
     this.order_name = order.order_name;
     this.insert_date = order.insert_date || new Date();
     this.update_date = order.update_date || new Date();

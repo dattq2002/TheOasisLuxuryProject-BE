@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb';
 import { VillaStatus } from '~/constants/enum';
 
 export interface createVillaReq {
@@ -8,7 +9,8 @@ export interface createVillaReq {
   url_image?: string[];
   fluctuates_price: number;
   stiff_price: number;
-  villas_detail?: string[];
+  villa_detail_id?: ObjectId;
+  subdivision_id: ObjectId;
 }
 
 export interface updateVillaReq {
@@ -19,5 +21,4 @@ export interface updateVillaReq {
   url_image?: string[];
   fluctuates_price: number;
   stiff_price: number;
-  villas_detail?: string[];
 }

@@ -25,13 +25,13 @@ export const createSubdivisionController = async (
   req: Request<ParamsDictionary, any, createSubdivisionReq>,
   res: Response
 ) => {
-  const { subdivision_name, location, quantityVilla, villas, status } = req.body;
+  const { subdivision_name, location, quantityVilla, status, project_id } = req.body;
   const result = await subdivisionServices.createSubdivision({
     subdivision_name,
     location,
     quantityVilla,
-    villas,
-    status
+    status,
+    project_id
   });
   res.json({
     message: SUBDIVISION_MESSAGES.CREATE_SUBDIVISION_SUCCESS,
@@ -44,12 +44,11 @@ export const updateSubdivisionController = async (
   res: Response
 ) => {
   const { id } = req.params;
-  const { subdivision_name, location, quantityVilla, villas, status } = req.body;
+  const { subdivision_name, location, quantityVilla, status } = req.body;
   const result = await subdivisionServices.updateSubdivision(id, {
     subdivision_name,
     location,
     quantityVilla,
-    villas,
     status
   });
   res.json({
