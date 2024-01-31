@@ -11,6 +11,7 @@ import accountRouter from './routes/accounts.routes';
 import projectRouter from './routes/projects.routes';
 import subdivisionRouter from './routes/subdivisions.routes';
 import villaRouter from './routes/villas.routes';
+import cors from 'cors';
 
 // const file = fs.readFileSync(path.resolve('the-oasis-luxury-api.yaml'), 'utf8');
 // const swaggerDocument = YAML.parse(file);
@@ -37,6 +38,7 @@ const options: swaggerJSDoc.Options = {
 const openapiSpecification = swaggerJSDoc(options);
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 const port = 5000;
 //kết nối database
