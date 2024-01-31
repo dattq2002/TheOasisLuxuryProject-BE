@@ -77,3 +77,14 @@ export const VILLAS_MESSAGES = {
   DELETE_VILLA_SUCCESS: 'Delete villa success',
   GET_VILLA_SUCCESS: 'Get villa success'
 } as const;
+
+export const UTILITIES_MESSAGES = {
+  GET_UTILITIES_SUCCESS: 'Get utilities success',
+  CREATE_UTILITIES_SUCCESS: 'Create utilities success',
+  UPDATE_UTILITIES_SUCCESS: 'Update utilities success',
+  DELETE_UTILITIES_SUCCESS: 'Delete utilities success',
+  CREATE_UTILITIES_FAIL: 'Create utilities fail',
+  GET_UTILITY_FAIL: 'Get utility fail',
+  GET_UTILITY_SUCCESS: 'Get utility success',
+  DELETE_UTILITIES_FAIL: 'Delete utilities fail'
+} as const;

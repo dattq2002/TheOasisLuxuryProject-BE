@@ -4,7 +4,7 @@ import { RoleName } from '~/constants/enum';
 import { USERS_MESSAGES } from '~/constants/message';
 import { createAccountReq, updateAccountReq } from '~/models/requests/account.request';
 import { TokenPayload } from '~/models/requests/user.request';
-import usersService from '~/services/users.services';
+import usersService from '~/services/users.service';
 export const createAccountController = async (req: Request<ParamsDictionary, any, createAccountReq>, res: Response) => {
   const { user_id } = req.decoded_authorization as TokenPayload;
   if ((await usersService.getRole(user_id)) !== RoleName.ADMIN) {

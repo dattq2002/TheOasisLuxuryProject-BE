@@ -5,7 +5,7 @@ export interface createVillaReq {
   villa_name: string;
   status: VillaStatus;
   address: string;
-  area: number;
+  area: string;
   url_image?: string[];
   fluctuates_price: number;
   stiff_price: number;
@@ -17,8 +17,16 @@ export interface updateVillaReq {
   villa_name: string;
   status: VillaStatus;
   address: string;
-  area: number;
+  area: string;
   url_image?: string[];
   fluctuates_price: number;
   stiff_price: number;
+}
+
+export interface createVillaDetailReq {
+  utilities_id: ObjectId;
+  room_quantity?: number;
+  bath_room?: number;
+  bed_room?: number;
+  description?: string;
 }

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { PROJECTS_MESSAGES } from '~/constants/message';
 import { ParamsDictionary } from 'express-serve-static-core';
-import projectsService from '~/services/projects.services';
+import projectsService from '~/services/projects.service';
 import { addSubdivisionToProjectReq, createProjectReq, updateProjectReq } from '~/models/requests/project.request';
 import HTTP_STATUS from '~/constants/httpStatus';
 

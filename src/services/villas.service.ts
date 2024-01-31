@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb';
-import databaseService from './database.services';
+import databaseService from './database.service';
 import { createVillaReq, updateVillaReq } from '~/models/requests/villa.request';
 import Villa from '~/models/schemas/Villa.schemas';
 

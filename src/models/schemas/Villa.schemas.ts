@@ -9,7 +9,7 @@ interface VillaType {
   insert_date?: Date;
   update_date?: Date;
   address: string;
-  area: number;
+  area: string;
   url_image?: string[];
   fluctuates_price: number;
   stiff_price: number;
@@ -25,7 +25,7 @@ export default class Villa {
   insert_date: Date;
   update_date: Date;
   address: string;
-  area: number;
+  area: string;
   url_image: string[];
   fluctuates_price: number;
   stiff_price: number;

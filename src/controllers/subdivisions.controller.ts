@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { SUBDIVISION_MESSAGES } from '~/constants/message';
-import subdivisionServices from '~/services/subdivisions.services';
+import subdivisionServices from '~/services/subdivisions.service';
 import { ParamsDictionary } from 'express-serve-static-core';
 import { createSubdivisionReq, updateSubdivisionReq } from '~/models/requests/subdivision.request';
 

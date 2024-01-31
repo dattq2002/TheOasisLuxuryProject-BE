@@ -1,6 +1,6 @@
 import { ParamSchema, checkSchema } from 'express-validator';
 import { USERS_MESSAGES } from '~/constants/message';
-import usersService from '~/services/users.services';
+import usersService from '~/services/users.service';
 import { validate } from '~/utils/validation';
 
 const userName: ParamSchema = {

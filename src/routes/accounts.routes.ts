@@ -5,9 +5,9 @@ import {
   getAccountController,
   updateAccountController
 } from '~/controllers/accounts.controller';
-import { getUserByIdController } from '~/controllers/users.controllers';
-import { accountValidator, updateAccountValidator } from '~/middlewares/accounts.middlewares';
-import { accessTokenValidator } from '~/middlewares/user.middlewares';
+import { getUserByIdController } from '~/controllers/users.controller';
+import { accountValidator, updateAccountValidator } from '~/middlewares/accounts.middleware';
+import { accessTokenValidator } from '~/middlewares/user.middleware';
 import { wrapAsync } from '~/utils/handlers';
 
 const accountRouter = Router();

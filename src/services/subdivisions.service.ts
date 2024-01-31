@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb';
-import databaseService from './database.services';
+import databaseService from './database.service';
 import { createSubdivisionReq, updateSubdivisionReq } from '~/models/requests/subdivision.request';
 import Subdivision from '~/models/schemas/Subdivision.schemas';
 

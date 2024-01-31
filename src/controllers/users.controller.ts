@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { USERS_MESSAGES } from '~/constants/message';
 import { ParamsDictionary } from 'express-serve-static-core';
-import usersService from '~/services/users.services';
+import usersService from '~/services/users.service';
 import {
   ForgotPasswordReqBody,
   LoginReqBody,
@@ -17,7 +17,7 @@ import {
 import User from '~/models/schemas/User.schemas';
 import { ObjectId } from 'mongodb';
 import { RoleName, UserVerifyStatus } from '~/constants/enum';
-import databaseService from '~/services/database.services';
+import databaseService from '~/services/database.service';
 import { hashPassword } from '~/utils/helpers';
 import { ErrorWithStatus } from '~/models/Error';
 import HTTP_STATUS from '~/constants/httpStatus';

@@ -1,5 +1,5 @@
 import { config } from 'dotenv';
-import databaseService from './database.services';
+import databaseService from './database.service';
 import { RegisterReqBody, UpdateUserReqBody } from '~/models/requests/user.request';
 import { ObjectId } from 'mongodb';
 import { AccountStatus, RoleName, TokenType, UserVerifyStatus } from '~/constants/enum';

@@ -6,7 +6,7 @@ import {
   getSubdivisionController,
   updateSubdivisionController
 } from '~/controllers/subdivisions.controller';
-import { accessTokenValidator } from '~/middlewares/user.middlewares';
+import { accessTokenValidator } from '~/middlewares/user.middleware';
 import { wrapAsync } from '~/utils/handlers';
 
 const subdivisionRouter = Router();

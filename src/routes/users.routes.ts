@@ -11,7 +11,7 @@ import {
   resetPasswordController,
   updateUserByIdController,
   verifyForgotPasswordTokenController
-} from '~/controllers/users.controllers';
+} from '~/controllers/users.controller';
 import {
   accessTokenValidator,
   emailVerifyTokenValidator,
@@ -21,7 +21,7 @@ import {
   registerValidator,
   resetPasswordValidator,
   verifyForgotPasswordTokenValidator
-} from '~/middlewares/user.middlewares';
+} from '~/middlewares/user.middleware';
 import { wrapAsync } from '~/utils/handlers';
 
 const usersRouter = Router();
@@ -44,7 +44,7 @@ usersRouter.post('/resend-verify-email', accessTokenValidator, wrapAsync(resendE
 usersRouter.post('/forgot-password', forgotPasswordValidator, wrapAsync(forgotPasswordController));
 
 usersRouter.post(
-  '/verify-forgot-password',
+  '/verify-forgot-password-token',
   verifyForgotPasswordTokenValidator,
   wrapAsync(verifyForgotPasswordTokenController)
 );
@@ -58,7 +58,7 @@ usersRouter.post(
 
 usersRouter.post('/refresh-token', refreshTokenValidator, wrapAsync(refreshController));
 
-usersRouter.post('/order');
+// usersRouter.post('/order', accessTokenValidator);
 
 //------------------------------------------------------------
 

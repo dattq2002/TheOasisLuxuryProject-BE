@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { VILLAS_MESSAGES } from '~/constants/message';
-import villasServices from '~/services/villas.services';
+import villasServices from '~/services/villas.service';
 import { ParamsDictionary } from 'express-serve-static-core';
 import { createVillaReq, updateVillaReq } from '~/models/requests/villa.request';
 

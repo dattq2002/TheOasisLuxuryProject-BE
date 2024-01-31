@@ -7,7 +7,7 @@ import {
   getProjectController,
   updateProjectController
 } from '~/controllers/projects.controller';
-import { accessTokenValidator } from '~/middlewares/user.middlewares';
+import { accessTokenValidator } from '~/middlewares/user.middleware';
 import { wrapAsync } from '~/utils/handlers';
 
 const projectRouter = Router();
@@ -22,5 +22,5 @@ projectRouter.patch('/:id', accessTokenValidator, wrapAsync(updateProjectControl
 
 projectRouter.delete('/:id', accessTokenValidator, wrapAsync(deleteProjectController));
 
-projectRouter.post('/:id/add-subdivision', accessTokenValidator, wrapAsync(addSubdivisionToProjectController));
+// projectRouter.post('/:id/add-subdivision', accessTokenValidator, wrapAsync(addSubdivisionToProjectController));
 export default projectRouter;

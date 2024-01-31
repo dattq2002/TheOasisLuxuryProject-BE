@@ -8,6 +8,7 @@ import Project from '~/models/schemas/Project.schemas';
 import RefreshToken from '~/models/schemas/RefreshToken.schema';
 import Subdivision from '~/models/schemas/Subdivision.schemas';
 import User from '~/models/schemas/User.schemas';
+import Utilities from '~/models/schemas/Utilities.schemas';
 import Villa from '~/models/schemas/Villa.schemas';
 config();
 const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@theoasisluxury.vuzyle1.mongodb.net/?retryWrites=true&w=majority`;
@@ -55,6 +56,9 @@ class DatabaseService {
   }
   get orders(): Collection<Order> {
     return this.db.collection(process.env.DB_COLLECTION_ORDER as string);
+  }
+  get utilities(): Collection<Utilities> {
+    return this.db.collection(process.env.DB_COLLECTION_UTILITIES as string);
   }
 }
 const databaseService = new DatabaseService();
