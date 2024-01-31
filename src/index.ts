@@ -38,7 +38,11 @@ const options: swaggerJSDoc.Options = {
 const openapiSpecification = swaggerJSDoc(options);
 
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: '*' //cho phép tất cả các đường dẫn gọi API
+  })
+);
 app.use(express.json());
 const port = 5000;
 //kết nối database

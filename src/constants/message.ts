@@ -43,7 +43,14 @@ export const USERS_MESSAGES = {
   USER_BANNED: 'User banned',
   EMAIL_VERIFY_TOKEN_IS_NOT_MATCH: 'Email verify token is not match',
   EMAIL_ALREADY_VERIFIED_BEFORE: 'Email already verified before',
-  EMAIL_VERIFY_SUCCESS: 'Email verify success'
+  EMAIL_VERIFY_SUCCESS: 'Email verify success',
+  RESEND_EMAIL_VERIFY_SUCCESS: 'Resend email verify success',
+  CHECK_EMAIL_TO_RESET_PASSWORD: 'Check email to reset password',
+  VERIFY_FORGOT_PASSWORD_TOKEN_SUCCESS: 'Verify forgot password token success',
+  FORGOT_PASSWORD_TOKEN_IS_REQUIRED: 'Forgot password token is required',
+  INVALID_FORGOT_PASSWORD_TOKEN: 'Invalid forgot password token',
+  RESET_PASSWORD_SUCCESS: 'Reset password success',
+  REFRESH_TOKEN_SUCCESS: 'Refresh token success'
 } as const;
 
 export const PROJECTS_MESSAGES = {

@@ -1,6 +1,6 @@
 import { config } from 'dotenv';
 import databaseService from './database.services';
-import { RegisterReqBody, UpdateUserReqBody } from '~/models/requests/register.request';
+import { RegisterReqBody, UpdateUserReqBody } from '~/models/requests/user.request';
 import { ObjectId } from 'mongodb';
 import { AccountStatus, RoleName, TokenType, UserVerifyStatus } from '~/constants/enum';
 import { hashPassword } from '~/utils/helpers';
@@ -245,6 +245,102 @@ class UsersServices {
       })
     );
     return { access_token, refesh_token };
+  }
+
+  async resendEmailVerify(user_id: string) {
+    //tạo email verify token
+    const email_verify_token = await this.signEmailVerifyToken({
+      user_id,
+      verify: UserVerifyStatus.Unverified
+    });
+    //cập nhật lại user
+    await databaseService.users.updateOne(
+      {
+        _id: new ObjectId(user_id)
+      },
+      [
+        {
+          $set: {
+            email_verify_token,
+            updated_at: '$$NOW'
+          }
+        }
+      ]
+    );
+    //giả lập gửi email verify token
+    console.log(email_verify_token);
+    return {
+      message: USERS_MESSAGES.RESEND_EMAIL_VERIFY_SUCCESS
+    };
+  }
+  async forgotPassword({ user_id, verify }: { user_id: string; verify: UserVerifyStatus }) {
+    //tạo ra forgot_password_token
+    const forgot_password_token = await this.signForgotPasswordToken({ user_id, verify });
+    //cập nhật vào forgot_password_token và user_id
+    await databaseService.users.updateOne({ _id: new ObjectId(user_id) }, [
+      {
+        $set: {
+          forgot_password_token: forgot_password_token,
+          updated_at: '$$NOW'
+        }
+      }
+    ]);
+    //gữi email cho người dùng đường link có cấu trúc như này
+    //http://appblabla/forgot-password?token=xxxx
+    //xxxx trong đó xxxx là forgot_password_token
+    //sau này ta sẽ dùng aws để làm chức năng gữi email, giờ ta k có
+    //ta log ra để test
+    console.log('forgot_password_token: ', forgot_password_token);
+    return {
+      message: USERS_MESSAGES.CHECK_EMAIL_TO_RESET_PASSWORD
+    };
+  }
+
+  async resetPassword({ user_id, password }: { user_id: string; password: string }) {
+    //dựa vào user_id để tìm user
+    await databaseService.users.updateOne(
+      {
+        _id: new ObjectId(user_id)
+      },
+      [
+        {
+          $set: {
+            password: hashPassword(password),
+            forgot_password_token: '',
+            updated_at: '$$NOW'
+          }
+        }
+      ]
+    );
+    return { message: USERS_MESSAGES.RESET_PASSWORD_SUCCESS };
+  }
+  async refreshToken({
+    user_id,
+    refresh_token,
+    verify,
+    exp
+  }: {
+    user_id: string;
+    refresh_token: string;
+    verify: UserVerifyStatus;
+    exp: number;
+  }) {
+    //tạo ra access token mới và refresh token mới
+    const [access_token, new_refesh_token] = await Promise.all([
+      this.signAccessToken({ user_id, verify }),
+      this.signRefreshToken({ user_id, verify, exp })
+    ]);
+    const { iat } = await this.decodeRefreshToken(refresh_token);
+    await databaseService.refreshTokens.deleteOne({ token: refresh_token });
+    await databaseService.refreshTokens.insertOne(
+      new RefreshToken({
+        token: new_refesh_token,
+        user_id: new ObjectId(user_id),
+        exp,
+        iat
+      })
+    );
+    return { access_token, refresh_token: new_refesh_token };
   }
 }
 const usersService = new UsersServices();

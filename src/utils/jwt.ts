@@ -1,6 +1,6 @@
 import { config } from 'dotenv';
 import jwt from 'jsonwebtoken';
-import { TokenPayload } from '~/models/requests/register.request';
+import { TokenPayload } from '~/models/requests/user.request';
 
 config();
 //hàm này dc viết cho server sử dụng
