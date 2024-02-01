@@ -152,7 +152,7 @@ class UsersServices {
         status: AccountStatus.ACTIVE,
         role_name: RoleName.STAFF,
         full_name: `staffuser${_id.toString()}`,
-        email_verify: true
+        // email_verify: true
       })
     );
     return newUser;
