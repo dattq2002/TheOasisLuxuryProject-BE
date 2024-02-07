@@ -7,7 +7,6 @@ interface ContractType {
   update_date?: Date;
   deflag?: boolean;
   user_id: ObjectId;
-  order_id: ObjectId;
 }
 
 export default class Contract {
@@ -17,7 +16,6 @@ export default class Contract {
   update_date: Date;
   deflag: boolean;
   user_id: ObjectId;
-  order_id: ObjectId;
   constructor(contract: ContractType) {
     this._id = contract._id;
     this.contract_name = contract.contract_name;
@@ -25,6 +23,5 @@ export default class Contract {
     this.update_date = contract.update_date || new Date();
     this.deflag = contract.deflag || false;
     this.user_id = contract.user_id;
-    this.order_id = contract.order_id;
   }
 }

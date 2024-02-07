@@ -50,7 +50,9 @@ export const USERS_MESSAGES = {
   FORGOT_PASSWORD_TOKEN_IS_REQUIRED: 'Forgot password token is required',
   INVALID_FORGOT_PASSWORD_TOKEN: 'Invalid forgot password token',
   RESET_PASSWORD_SUCCESS: 'Reset password success',
-  REFRESH_TOKEN_SUCCESS: 'Refresh token success'
+  REFRESH_TOKEN_SUCCESS: 'Refresh token success',
+  ORDER_SUCCESS: 'Order success',
+  CONFIRM_PAYMENT_SUCCESS: 'Confirm payment success'
 } as const;
 
 export const PROJECTS_MESSAGES = {

@@ -1,14 +1,16 @@
 import { config } from 'dotenv';
 import databaseService from './database.service';
-import { RegisterReqBody, UpdateUserReqBody } from '~/models/requests/user.request';
+import { OrderReqBody, PaymentReqBody, RegisterReqBody, UpdateUserReqBody } from '~/models/requests/user.request';
 import { ObjectId } from 'mongodb';
-import { AccountStatus, RoleName, TokenType, UserVerifyStatus } from '~/constants/enum';
+import { AccountStatus, OrderStatus, PaymentStatus, RoleName, TokenType, UserVerifyStatus } from '~/constants/enum';
 import { hashPassword } from '~/utils/helpers';
 import { signToken, verifyToken } from '~/utils/jwt';
 import User from '~/models/schemas/User.schemas';
 import RefreshToken from '~/models/schemas/RefreshToken.schema';
 import { USERS_MESSAGES } from '~/constants/message';
 import { createAccountReq, updateAccountReq } from '~/models/requests/account.request';
+import Order from '~/models/schemas/Order.schemas';
+import Payment from '~/models/schemas/Payment.schemas';
 
 config();
 
@@ -341,6 +343,81 @@ class UsersServices {
       })
     );
     return { access_token, refresh_token: new_refesh_token };
+  }
+
+  async order(req: OrderReqBody) {
+    const _id = new ObjectId();
+    //tìm tên villa
+    const villaTimeShare = await databaseService.villaTimeShares.findOne({
+      _id: new ObjectId(req.villa_time_share_id)
+    });
+    if (!villaTimeShare) throw new Error('Villa time share not found');
+    const villa = await databaseService.villas.findOne({ _id: villaTimeShare.villa_id });
+    if (!villa) throw new Error('Villa not found');
+    //create new order
+    const newOrder = await databaseService.orders.insertOne(
+      new Order({
+        _id,
+        ...req,
+        order_name: `Order Time Share ${villa.villa_name}`,
+        price: req.price,
+        status: OrderStatus.PENDING,
+        villa_time_share_id: new ObjectId(req.villa_time_share_id),
+        user_id: new ObjectId(req.user_id)
+      })
+    );
+    const order = await databaseService.orders.findOne({ _id: new ObjectId(newOrder.insertedId) });
+    return order;
+  }
+
+  async payment(req: PaymentReqBody) {
+    const _id = new ObjectId();
+    const order = await databaseService.orders.findOne({ _id: new ObjectId(req.order_id) });
+    if (!order) throw new Error('Order not found');
+    //tạo payment
+    const payment = await databaseService.payments.insertOne(
+      new Payment({
+        ...req,
+        _id,
+        order_id: new ObjectId(req.order_id),
+        status: PaymentStatus.PENDING
+      })
+    );
+    const newPayment = await databaseService.payments.findOne({ _id: new ObjectId(payment.insertedId) });
+    return newPayment;
+  }
+
+  async confirmPayment({ order_id, payment_id }: { order_id: string; payment_id: string }) {
+    const order = await databaseService.orders.findOne({ _id: new ObjectId(order_id) });
+    if (!order) throw new Error('Order not found');
+    await databaseService.orders.updateOne(
+      {
+        _id: new ObjectId(order_id)
+      },
+      [
+        {
+          $set: {
+            status: OrderStatus.CONFIRMED,
+            payment_id: new ObjectId(payment_id),
+            updated_at: '$$NOW'
+          }
+        }
+      ]
+    );
+    await databaseService.payments.updateOne(
+      {
+        _id: new ObjectId(payment_id)
+      },
+      [
+        {
+          $set: {
+            status: PaymentStatus.PAID,
+            updated_at: '$$NOW'
+          }
+        }
+      ]
+    );
+    return { message: USERS_MESSAGES.CONFIRM_PAYMENT_SUCCESS };
   }
 }
 const usersService = new UsersServices();

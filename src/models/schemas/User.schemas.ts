@@ -49,6 +49,7 @@ export default class User {
   contracts: Contract[];
   owner_villas: OwnerVilla[];
   orders: Order[];
+
   constructor(user: UserType) {
     this._id = user._id;
     this.full_name = user.full_name;

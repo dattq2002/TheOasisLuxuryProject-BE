@@ -56,3 +56,23 @@ export interface ResetPasswordReqBody {
 export interface RefreshTokenReqBody {
   refresh_token: string;
 }
+
+export interface OrderReqBody {
+  user_id: string;
+  villa_time_share_id: string;
+  price: number;
+  start_date: Date;
+  description: string;
+}
+
+export interface PaymentReqBody {
+  payment_type: string;
+  order_id: string;
+  currency: string;
+  amount: number;
+}
+
+export interface ConfirmPaymentReqBody {
+  payment_id: string;
+  order_id: string;
+}

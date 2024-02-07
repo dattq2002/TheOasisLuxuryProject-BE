@@ -3,9 +3,12 @@ import { USERS_MESSAGES } from '~/constants/message';
 import { ParamsDictionary } from 'express-serve-static-core';
 import usersService from '~/services/users.service';
 import {
+  ConfirmPaymentReqBody,
   ForgotPasswordReqBody,
   LoginReqBody,
   LogoutReqBody,
+  OrderReqBody,
+  PaymentReqBody,
   RefreshTokenReqBody,
   RegisterReqBody,
   ResetPasswordReqBody,
@@ -21,6 +24,7 @@ import databaseService from '~/services/database.service';
 import { hashPassword } from '~/utils/helpers';
 import { ErrorWithStatus } from '~/models/Error';
 import HTTP_STATUS from '~/constants/httpStatus';
+import { check } from 'express-validator';
 
 export const registerController = async (req: Request<ParamsDictionary, any, RegisterReqBody>, res: Response) => {
   const result = await usersService.register(req.body);
@@ -179,6 +183,53 @@ export const refreshController = async (req: Request<ParamsDictionary, any, Refr
   }); //chưa có method này
   return res.json({
     message: USERS_MESSAGES.REFRESH_TOKEN_SUCCESS,
+    result
+  });
+};
+
+export const orderController = async (req: Request<ParamsDictionary, any, OrderReqBody>, res: Response) => {
+  const { user_id } = req.decoded_authorization as TokenPayload;
+  if ((await usersService.getRole(user_id)) !== RoleName.USER) {
+    throw new ErrorWithStatus({
+      message: USERS_MESSAGES.USER_NOT_ACCESS,
+      status: HTTP_STATUS.UNAUTHORIZED
+    });
+  }
+  req.body.user_id = user_id;
+  const result = await usersService.order(req.body);
+  return res.json({
+    message: USERS_MESSAGES.ORDER_SUCCESS,
+    result
+  });
+};
+
+export const paymentController = async (req: Request<ParamsDictionary, any, PaymentReqBody>, res: Response) => {
+  const { user_id } = req.decoded_authorization as TokenPayload;
+  if ((await usersService.getRole(user_id)) !== RoleName.USER) {
+    throw new ErrorWithStatus({
+      message: USERS_MESSAGES.USER_NOT_ACCESS,
+      status: HTTP_STATUS.UNAUTHORIZED
+    });
+  }
+  const result = await usersService.payment(req.body);
+  return res.json(result);
+};
+
+export const confirmPaymentController = async (
+  req: Request<ParamsDictionary, any, ConfirmPaymentReqBody>,
+  res: Response
+) => {
+  const { user_id } = req.decoded_authorization as TokenPayload;
+  if ((await usersService.getRole(user_id)) !== RoleName.USER) {
+    throw new ErrorWithStatus({
+      message: USERS_MESSAGES.USER_NOT_ACCESS,
+      status: HTTP_STATUS.UNAUTHORIZED
+    });
+  }
+  const { payment_id, order_id } = req.body;
+  const result = await usersService.confirmPayment({ payment_id, order_id });
+  return res.json({
+    message: USERS_MESSAGES.CONFIRM_PAYMENT_SUCCESS,
     result
   });
 };

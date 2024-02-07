@@ -4,12 +4,15 @@ import BlogPost from '~/models/schemas/BlogPost.schemas';
 import Contract from '~/models/schemas/Contract.schemas';
 import Order from '~/models/schemas/Order.schemas';
 import OwnerVilla from '~/models/schemas/OwnerVilla.schemas';
+import Payment from '~/models/schemas/Payment.schemas';
 import Project from '~/models/schemas/Project.schemas';
 import RefreshToken from '~/models/schemas/RefreshToken.schema';
 import Subdivision from '~/models/schemas/Subdivision.schemas';
+import TimeShare from '~/models/schemas/TimeShare.schemas';
 import User from '~/models/schemas/User.schemas';
 import Utilities from '~/models/schemas/Utilities.schemas';
 import Villa from '~/models/schemas/Villa.schemas';
+import VillaTimeShare from '~/models/schemas/VillaTimeShare.schemas';
 config();
 const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@theoasisluxury.vuzyle1.mongodb.net/?retryWrites=true&w=majority`;
 // const uri = 'mongodb+srv://bichphuong13042002:bipu13042002@bipu1304.kbgoy1k.mongodb.net/?retryWrites=true&w=majority';
@@ -59,6 +62,15 @@ class DatabaseService {
   }
   get utilities(): Collection<Utilities> {
     return this.db.collection(process.env.DB_COLLECTION_UTILITIES as string);
+  }
+  get villaTimeShares(): Collection<VillaTimeShare> {
+    return this.db.collection(process.env.DB_COLLECTION_VILLATIMESHARE as string);
+  }
+  get payments(): Collection<Payment> {
+    return this.db.collection(process.env.DB_COLLECTION_PAYMENT as string);
+  }
+  get timeshares(): Collection<TimeShare> {
+    return this.db.collection(process.env.DB_COLLECTION_TIMESHARES as string);
   }
 }
 const databaseService = new DatabaseService();

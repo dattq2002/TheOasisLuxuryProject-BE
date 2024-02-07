@@ -1,10 +1,13 @@
 import { Router } from 'express';
 import {
+  confirmPaymentController,
   emailVerifyController,
   forgotPasswordController,
   getUserByIdController,
   loginController,
   logoutController,
+  orderController,
+  paymentController,
   refreshController,
   registerController,
   resendEmailVerifyController,
@@ -58,7 +61,11 @@ usersRouter.post(
 
 usersRouter.post('/refresh-token', refreshTokenValidator, wrapAsync(refreshController));
 
-// usersRouter.post('/order', accessTokenValidator);
+usersRouter.post('/order', accessTokenValidator, wrapAsync(orderController));
+
+usersRouter.post('/payment', accessTokenValidator, wrapAsync(paymentController));
+
+usersRouter.post('/confirm-payment', accessTokenValidator, wrapAsync(confirmPaymentController));
 
 //------------------------------------------------------------
 

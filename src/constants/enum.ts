@@ -25,6 +25,23 @@ export class RoleName {
   public static readonly USER = 'USER';
   public static readonly STAFF = 'STAFF';
 }
+
+export class OrderStatus {
+  public static readonly PENDING = 'PENDING';
+  public static readonly CONFIRMED = 'CONFIRMED';
+  public static readonly CANCELLED = 'CANCELLED';
+  public static readonly COMPLETED = 'COMPLETED';
+}
+export class PaymentStatus {
+  public static readonly PENDING = 'PENDING';
+  public static readonly PAID = 'PAID';
+  public static readonly CANCELLED = 'CANCELLED';
+}
+
+export enum PaymentType {
+  CASH,
+  CREDIT_CARD
+}
 export enum TokenType {
   AccessToken,
   RefeshToken,
