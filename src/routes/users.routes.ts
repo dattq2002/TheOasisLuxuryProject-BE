@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import {
   confirmPaymentController,
+  createBlogController,
+  createContractController,
   emailVerifyController,
   forgotPasswordController,
   getUserByIdController,
@@ -66,6 +68,10 @@ usersRouter.post('/order', accessTokenValidator, wrapAsync(orderController));
 usersRouter.post('/payment', accessTokenValidator, wrapAsync(paymentController));
 
 usersRouter.post('/confirm-payment', accessTokenValidator, wrapAsync(confirmPaymentController));
+
+usersRouter.post('/create-blog', accessTokenValidator, wrapAsync(createBlogController));
+
+usersRouter.post('/create-contract', accessTokenValidator, wrapAsync(createContractController));
 
 //------------------------------------------------------------
 

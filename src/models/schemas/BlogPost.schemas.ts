@@ -1,7 +1,7 @@
 import { ObjectId } from 'mongodb';
 
 interface BlogPostType {
-  _id?: string;
+  _id?: ObjectId;
   user_id: ObjectId;
   title: string;
   description_detail: string;
@@ -11,7 +11,7 @@ interface BlogPostType {
 }
 
 export default class BlogPost {
-  _id?: string;
+  _id?: ObjectId;
   user_id: ObjectId;
   title: string;
   description_detail: string;

@@ -52,7 +52,8 @@ export const USERS_MESSAGES = {
   RESET_PASSWORD_SUCCESS: 'Reset password success',
   REFRESH_TOKEN_SUCCESS: 'Refresh token success',
   ORDER_SUCCESS: 'Order success',
-  CONFIRM_PAYMENT_SUCCESS: 'Confirm payment success'
+  CONFIRM_PAYMENT_SUCCESS: 'Confirm payment success',
+  CREATE_BLOG_SUCCESS: 'Create blog success'
 } as const;
 
 export const PROJECTS_MESSAGES = {

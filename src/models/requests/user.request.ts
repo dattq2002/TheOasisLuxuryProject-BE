@@ -76,3 +76,15 @@ export interface ConfirmPaymentReqBody {
   payment_id: string;
   order_id: string;
 }
+
+export interface CreateBlogReqBody {
+  user_id: string;
+  title: string;
+  description_detail: string;
+}
+
+export interface CreateContractReqBody {
+  user_id: string;
+  contract_name: string;
+  url_image: string;
+}

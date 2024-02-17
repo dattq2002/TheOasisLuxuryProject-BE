@@ -4,6 +4,8 @@ import { ParamsDictionary } from 'express-serve-static-core';
 import usersService from '~/services/users.service';
 import {
   ConfirmPaymentReqBody,
+  CreateBlogReqBody,
+  CreateContractReqBody,
   ForgotPasswordReqBody,
   LoginReqBody,
   LogoutReqBody,
@@ -232,4 +234,34 @@ export const confirmPaymentController = async (
     message: USERS_MESSAGES.CONFIRM_PAYMENT_SUCCESS,
     result
   });
+};
+
+export const createBlogController = async (req: Request<ParamsDictionary, any, CreateBlogReqBody>, res: Response) => {
+  const { user_id } = req.decoded_authorization as TokenPayload;
+  if ((await usersService.getRole(user_id)) !== RoleName.USER) {
+    throw new ErrorWithStatus({
+      message: USERS_MESSAGES.USER_NOT_ACCESS,
+      status: HTTP_STATUS.UNAUTHORIZED
+    });
+  }
+  const result = await usersService.createBlog(req.body);
+  return res.json({
+    message: USERS_MESSAGES.CREATE_BLOG_SUCCESS,
+    result
+  });
+};
+
+export const createContractController = async (
+  req: Request<ParamsDictionary, any, CreateContractReqBody>,
+  res: Response
+) => {
+  const { user_id } = req.decoded_authorization as TokenPayload;
+  if ((await usersService.getRole(user_id)) !== RoleName.USER) {
+    throw new ErrorWithStatus({
+      message: USERS_MESSAGES.USER_NOT_ACCESS,
+      status: HTTP_STATUS.UNAUTHORIZED
+    });
+  }
+  const result = await usersService.createContract(req.body);
+  return res.json(result);
 };

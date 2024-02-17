@@ -1,6 +1,13 @@
 import { config } from 'dotenv';
 import databaseService from './database.service';
-import { OrderReqBody, PaymentReqBody, RegisterReqBody, UpdateUserReqBody } from '~/models/requests/user.request';
+import {
+  CreateBlogReqBody,
+  CreateContractReqBody,
+  OrderReqBody,
+  PaymentReqBody,
+  RegisterReqBody,
+  UpdateUserReqBody
+} from '~/models/requests/user.request';
 import { ObjectId } from 'mongodb';
 import { AccountStatus, OrderStatus, PaymentStatus, RoleName, TokenType, UserVerifyStatus } from '~/constants/enum';
 import { hashPassword } from '~/utils/helpers';
@@ -11,6 +18,8 @@ import { USERS_MESSAGES } from '~/constants/message';
 import { createAccountReq, updateAccountReq } from '~/models/requests/account.request';
 import Order from '~/models/schemas/Order.schemas';
 import Payment from '~/models/schemas/Payment.schemas';
+import BlogPost from '~/models/schemas/BlogPost.schemas';
+import Contract from '~/models/schemas/Contract.schemas';
 
 config();
 
@@ -418,6 +427,38 @@ class UsersServices {
       ]
     );
     return { message: USERS_MESSAGES.CONFIRM_PAYMENT_SUCCESS };
+  }
+
+  async createBlog(req: CreateBlogReqBody) {
+    const _id = new ObjectId();
+    //tạo mới 1 blog
+    const result = await databaseService.blogPosts.insertOne(
+      new BlogPost({
+        ...req,
+        _id,
+        insert_date: new Date(),
+        update_date: new Date(),
+        user_id: new ObjectId(req.user_id)
+      })
+    );
+    const blog = await databaseService.blogPosts.findOne({ _id: new ObjectId(result.insertedId) });
+    return blog;
+  }
+
+  async createContract(req: CreateContractReqBody) {
+    const _id = new ObjectId();
+    //tạo mới 1 contract
+    const result = await databaseService.contracts.insertOne(
+      new Contract({
+        ...req,
+        _id,
+        insert_date: new Date(),
+        update_date: new Date(),
+        user_id: new ObjectId(req.user_id)
+      })
+    );
+    const contract = await databaseService.contracts.findOne({ _id: new ObjectId(result.insertedId) });
+    return contract;
   }
 }
 const usersService = new UsersServices();
