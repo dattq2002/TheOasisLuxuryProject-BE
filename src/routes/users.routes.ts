@@ -42,14 +42,14 @@ usersRouter.patch('/:id', accessTokenValidator, wrapAsync(updateUserByIdControll
 
 usersRouter.post('/logout', accessTokenValidator, refreshTokenValidator, wrapAsync(logoutController));
 
-usersRouter.post('/verify-email', emailVerifyTokenValidator, wrapAsync(emailVerifyController));
+usersRouter.get('/verify-email/:token', emailVerifyTokenValidator, wrapAsync(emailVerifyController));
 
 usersRouter.post('/resend-verify-email', accessTokenValidator, wrapAsync(resendEmailVerifyController));
 
 usersRouter.post('/forgot-password', forgotPasswordValidator, wrapAsync(forgotPasswordController));
 
-usersRouter.post(
-  '/verify-forgot-password-token',
+usersRouter.get(
+  '/verify-forgot-password-token/:token',
   verifyForgotPasswordTokenValidator,
   wrapAsync(verifyForgotPasswordTokenController)
 );

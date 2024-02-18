@@ -255,7 +255,7 @@ export const emailVerifyTokenValidator = validate(
         custom: {
           options: async (value, { req }) => {
             // nếu ko truyền email_verify_token lên thì sẽ báo lỗi
-            if (!value) {
+            if (!req.params) {
               throw new ErrorWithStatus({
                 message: USERS_MESSAGES.EMAIL_VERIFY_TOKEN_IS_REQUIRED,
                 status: HTTP_STATUS.UNAUTHORIZED
@@ -264,7 +264,7 @@ export const emailVerifyTokenValidator = validate(
             try {
               //verify token này để lấy decoded_email_verify_token
               const decoded_email_verify_token = await verifyToken({
-                token: value,
+                token: req.params.token as string,
                 secretOrPublicKey: process.env.JWT_SECRET_EMAIL_VERIFY_TOKEN as string
               });
 
@@ -291,7 +291,7 @@ export const emailVerifyTokenValidator = validate(
                 });
               }
               //nếu truyền lên ko đúng với database thì báo lỗi
-              if (user.verify != UserVerifyStatus.Verified && value !== user.email_verify_token) {
+              if (user.verify != UserVerifyStatus.Verified && req.params.token !== user.email_verify_token) {
                 throw new ErrorWithStatus({
                   message: USERS_MESSAGES.EMAIL_VERIFY_TOKEN_IS_NOT_MATCH,
                   status: HTTP_STATUS.UNAUTHORIZED
@@ -311,7 +311,7 @@ export const emailVerifyTokenValidator = validate(
         }
       }
     },
-    ['body']
+    ['params']
   )
 );
 
@@ -356,7 +356,7 @@ export const verifyForgotPasswordTokenValidator = validate(
         custom: {
           options: async (value, { req }) => {
             //nếu k truyền lên forgot_password_token thì ta sẽ throw error
-            if (!value) {
+            if (!req.params) {
               throw new ErrorWithStatus({
                 message: USERS_MESSAGES.FORGOT_PASSWORD_TOKEN_IS_REQUIRED,
                 status: HTTP_STATUS.UNAUTHORIZED //401
@@ -366,7 +366,7 @@ export const verifyForgotPasswordTokenValidator = validate(
             //nếu có thì decode nó để lấy đc thông tin của người dùng
             try {
               const decoded_forgot_password_token = await verifyToken({
-                token: value,
+                token: req.params.token as string,
                 secretOrPublicKey: process.env.JWT_SECRET_FORGOT_PASSWORD_TOKEN as string
               });
               //lưu decoded_forgot_password_token vào req để khi nào muốn biết ai gữi req thì dùng
@@ -388,7 +388,7 @@ export const verifyForgotPasswordTokenValidator = validate(
               //nếu forgot_password_token đã được sử dụng rồi thì throw error
               //forgot_password_token truyền lên khác với forgot_password_token trong database
               //nghĩa là người dùng đã sử dụng forgot_password_token này rồi
-              if (user.forgot_password_token !== value) {
+              if (user.forgot_password_token !== req.params.token) {
                 throw new ErrorWithStatus({
                   message: USERS_MESSAGES.INVALID_FORGOT_PASSWORD_TOKEN,
                   status: HTTP_STATUS.UNAUTHORIZED //401
@@ -409,7 +409,7 @@ export const verifyForgotPasswordTokenValidator = validate(
         }
       }
     },
-    ['body']
+    ['params']
   )
 );
 

@@ -1,11 +1,12 @@
 import { ObjectId } from 'mongodb';
+import { PaymentStatus } from '~/constants/enum';
 
 interface PaymentType {
   _id?: ObjectId;
   payment_type: string;
   insert_date?: Date;
   update_date?: Date;
-  status: string;
+  status: PaymentStatus;
   currency: string;
   amount: number;
   order_id: ObjectId;
@@ -16,7 +17,7 @@ export default class Payment {
   payment_type: string;
   insert_date: Date;
   update_date: Date;
-  status: string;
+  status: PaymentStatus;
   currency: string;
   amount: number;
   order_id: ObjectId;

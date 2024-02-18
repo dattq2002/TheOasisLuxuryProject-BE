@@ -63,7 +63,8 @@ export const PROJECTS_MESSAGES = {
   DELETE_PROJECT_SUCCESS: 'Delete project success',
   ADD_SUBDIVISION_TO_PROJECT_SUCCESS: 'Add subdivision to project success',
   PROJECT_NOT_FOUND: 'Project not found',
-  UPDATE_PROJECT_FAIL: 'Update project fail'
+  UPDATE_PROJECT_FAIL: 'Update project fail',
+  INVALID_DATE_FORMAT: 'Invalid date format'
 } as const;
 
 export const SUBDIVISION_MESSAGES = {

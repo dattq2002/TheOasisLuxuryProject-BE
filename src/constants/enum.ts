@@ -38,6 +38,12 @@ export class PaymentStatus {
   public static readonly CANCELLED = 'CANCELLED';
 }
 
+export enum Time_ShareType {
+  DAY,
+  MONTH,
+  YEAR
+}
+
 export enum PaymentType {
   CASH,
   CREDIT_CARD

@@ -14,7 +14,9 @@ import villaRouter from './routes/villas.routes';
 import cors from 'cors';
 import utilitiesRouter from './routes/utilities.routes';
 import timeSharesRouter from './routes/time_shares.routes';
+import { config } from 'dotenv';
 
+config();
 // const file = fs.readFileSync(path.resolve('the-oasis-luxury-api.yaml'), 'utf8');
 // const swaggerDocument = YAML.parse(file);
 const options: swaggerJSDoc.Options = {
@@ -46,7 +48,7 @@ app.use(
   })
 );
 app.use(express.json());
-const port = 5000;
+const port = process.env.PORT;
 //kết nối database
 databaseService.connect();
 app.get('/', (req, res) => {

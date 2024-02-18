@@ -10,7 +10,7 @@ import {
 } from '~/models/requests/user.request';
 import { ObjectId } from 'mongodb';
 import { AccountStatus, OrderStatus, PaymentStatus, RoleName, TokenType, UserVerifyStatus } from '~/constants/enum';
-import { hashPassword } from '~/utils/helpers';
+import { hashPassword, sendMail } from '~/utils/helpers';
 import { signToken, verifyToken } from '~/utils/jwt';
 import User from '~/models/schemas/User.schemas';
 import RefreshToken from '~/models/schemas/RefreshToken.schema';
@@ -20,6 +20,8 @@ import Order from '~/models/schemas/Order.schemas';
 import Payment from '~/models/schemas/Payment.schemas';
 import BlogPost from '~/models/schemas/BlogPost.schemas';
 import Contract from '~/models/schemas/Contract.schemas';
+import { ErrorWithStatus } from '~/models/Error';
+import HTTP_STATUS from '~/constants/httpStatus';
 
 config();
 
@@ -108,8 +110,10 @@ class UsersServices {
         iat
       })
     );
-    // giả lập gửi email verify token
-    console.log(email_verify_token);
+
+    // // giả lập gửi email verify token
+    // console.log(email_verify_token);
+    sendMail({ toEmail: payload.email, token: email_verify_token, type: 'verify-email' });
 
     return { access_token, refesh_token };
   }
@@ -278,13 +282,20 @@ class UsersServices {
         }
       ]
     );
-    //giả lập gửi email verify token
-    console.log(email_verify_token);
+    const user = await databaseService.users.findOne({ _id: new ObjectId(user_id) });
+    if (!user) {
+      throw new ErrorWithStatus({
+        message: USERS_MESSAGES.USER_NOT_FOUND,
+        status: HTTP_STATUS.NOT_FOUND
+      });
+    }
+    //gửi email cho user
+    sendMail({ toEmail: user.email, token: email_verify_token, type: 'resend-verify-email' });
     return {
       message: USERS_MESSAGES.RESEND_EMAIL_VERIFY_SUCCESS
     };
   }
-  async forgotPassword({ user_id, verify }: { user_id: string; verify: UserVerifyStatus }) {
+  async forgotPassword({ user_id, verify, email }: { user_id: string; verify: UserVerifyStatus; email: string }) {
     //tạo ra forgot_password_token
     const forgot_password_token = await this.signForgotPasswordToken({ user_id, verify });
     //cập nhật vào forgot_password_token và user_id
@@ -301,7 +312,7 @@ class UsersServices {
     //xxxx trong đó xxxx là forgot_password_token
     //sau này ta sẽ dùng aws để làm chức năng gữi email, giờ ta k có
     //ta log ra để test
-    console.log('forgot_password_token: ', forgot_password_token);
+    sendMail({ toEmail: email, token: forgot_password_token, type: 'verify-forgot-password-token' });
     return {
       message: USERS_MESSAGES.CHECK_EMAIL_TO_RESET_PASSWORD
     };
@@ -421,6 +432,26 @@ class UsersServices {
         {
           $set: {
             status: PaymentStatus.PAID,
+            updated_at: '$$NOW'
+          }
+        }
+      ]
+    );
+    //cập nhật villa time share
+    const villaTimeShare = await databaseService.villaTimeShares.findOne({ _id: order.villa_time_share_id });
+    if (!villaTimeShare)
+      throw new ErrorWithStatus({
+        message: 'Villa time share not found',
+        status: HTTP_STATUS.NOT_FOUND
+      });
+    await databaseService.villaTimeShares.updateOne(
+      {
+        _id: new ObjectId(villaTimeShare._id)
+      },
+      [
+        {
+          $set: {
+            user_id: new ObjectId(order.user_id),
             updated_at: '$$NOW'
           }
         }

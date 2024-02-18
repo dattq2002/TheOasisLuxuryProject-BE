@@ -82,7 +82,7 @@ export const logoutController = async (req: Request<ParamsDictionary, any, Logou
   res.json(result);
 };
 
-export const emailVerifyController = async (req: Request<ParamsDictionary, any, VerifyEmailReqBody>, res: Response) => {
+export const emailVerifyController = async (req: Request, res: Response) => {
   //kiểm tra user này đã verify email chưa
   const { user_id } = req.decoded_email_verify_token as TokenPayload;
   const user = req.user as User;
@@ -136,20 +136,18 @@ export const forgotPasswordController = async (
   res: Response
 ) => {
   //middleware forgotPasswordValidator đã chạy rồi, nên ta có thể lấy _id từ user đã tìm đc bằng email
-  const { _id, verify } = req.user as User;
+  const { _id, verify, email } = req.user as User;
   //cái _id này là objectid, nên ta phải chuyển nó về string
   //chứ không truyền trực tiếp vào hàm forgotPassword
   const result = await usersService.forgotPassword({
     user_id: (_id as ObjectId).toString(),
-    verify
+    verify,
+    email
   });
   return res.json(result);
 };
 
-export const verifyForgotPasswordTokenController = async (
-  req: Request<ParamsDictionary, any, VerifyForgotPasswordReqBody>,
-  res: Response
-) => {
+export const verifyForgotPasswordTokenController = async (req: Request, res: Response) => {
   //nếu đã đến bước này nghĩa là ta đã tìm có forgot_password_token hợp lệ
   //và đã lưu vào req.decoded_forgot_password_token
   //thông tin của user

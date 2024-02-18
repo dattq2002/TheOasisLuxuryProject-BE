@@ -1,4 +1,5 @@
 import { ObjectId } from 'mongodb';
+import { Time_ShareType } from '~/constants/enum';
 
 interface TimeShareType {
   _id?: ObjectId;
@@ -6,7 +7,7 @@ interface TimeShareType {
   insert_date?: Date;
   update_date?: Date;
   deflag?: boolean;
-  time_share_type: string;
+  time_share_type: Time_ShareType;
 }
 
 export default class TimeShare {
@@ -15,7 +16,7 @@ export default class TimeShare {
   insert_date: Date;
   update_date: Date;
   deflag: boolean;
-  time_share_type: string;
+  time_share_type: Time_ShareType;
   constructor(timeShare: TimeShareType) {
     this._id = timeShare._id;
     this.time_share_name = timeShare.time_share_name;
