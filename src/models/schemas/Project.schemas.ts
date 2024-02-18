@@ -12,6 +12,7 @@ interface ProjectType {
   status: ProjectStatus;
   description?: string;
   deflag?: boolean;
+  url_image?: string;
   subdivisions?: Subdivision[];
 }
 
@@ -26,6 +27,7 @@ export default class Project {
   description: string;
   deflag: boolean;
   subdivisions: Subdivision[];
+  url_image: string;
   constructor(project: ProjectType) {
     this._id = project._id;
     this.project_name = project.project_name;
@@ -37,5 +39,6 @@ export default class Project {
     this.description = project.description || '';
     this.deflag = project.deflag || false;
     this.subdivisions = project.subdivisions || [];
+    this.url_image = project.url_image || '';
   }
 }

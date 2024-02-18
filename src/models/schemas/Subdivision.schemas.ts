@@ -11,6 +11,7 @@ export interface SubdivisionType {
   quantityVilla: number;
   status: SubdivisionStatus;
   project_id: ObjectId;
+  url_image?: string;
   villas?: Villa[];
 }
 
@@ -23,6 +24,7 @@ export default class Subdivision {
   quantityVilla: number;
   status: SubdivisionStatus;
   project_id: ObjectId;
+  url_image: string;
   villas: Villa[];
   constructor(subdivision: SubdivisionType) {
     this._id = subdivision._id;
@@ -34,5 +36,6 @@ export default class Subdivision {
     this.status = subdivision.status;
     this.project_id = subdivision.project_id;
     this.villas = subdivision.villas || [];
+    this.url_image = subdivision.url_image || '';
   }
 }
