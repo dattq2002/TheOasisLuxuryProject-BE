@@ -7,7 +7,7 @@ interface PaymentType {
   insert_date?: Date;
   update_date?: Date;
   status: PaymentStatus;
-  currency: string;
+  currency?: string;
   amount: number;
   order_id: ObjectId;
 }
@@ -27,7 +27,7 @@ export default class Payment {
     this.insert_date = payment.insert_date || new Date();
     this.update_date = payment.update_date || new Date();
     this.status = payment.status;
-    this.currency = payment.currency;
+    this.currency = payment.currency || 'VNĐ';
     this.amount = payment.amount;
     this.order_id = payment.order_id;
   }

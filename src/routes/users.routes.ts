@@ -19,9 +19,14 @@ import {
 } from '~/controllers/users.controller';
 import {
   accessTokenValidator,
+  confirmPaymentValidator,
+  createBlogValidator,
+  createContractValidator,
   emailVerifyTokenValidator,
   forgotPasswordValidator,
   loginValidator,
+  orderValidator,
+  paymentValidator,
   refreshTokenValidator,
   registerValidator,
   resetPasswordValidator,
@@ -63,15 +68,25 @@ usersRouter.post(
 
 usersRouter.post('/refresh-token', refreshTokenValidator, wrapAsync(refreshController));
 
-usersRouter.post('/order', accessTokenValidator, wrapAsync(orderController));
+usersRouter.post('/order', accessTokenValidator, orderValidator, wrapAsync(orderController));
 
-usersRouter.post('/payment', accessTokenValidator, wrapAsync(paymentController));
+usersRouter.post('/payment', accessTokenValidator, paymentValidator, wrapAsync(paymentController));
 
-usersRouter.post('/confirm-payment', accessTokenValidator, wrapAsync(confirmPaymentController));
+usersRouter.post(
+  '/confirm-payment',
+  accessTokenValidator,
+  confirmPaymentValidator,
+  wrapAsync(confirmPaymentController)
+);
 
-usersRouter.post('/create-blog', accessTokenValidator, wrapAsync(createBlogController));
+usersRouter.post('/create-blog', accessTokenValidator, createBlogValidator, wrapAsync(createBlogController));
 
-usersRouter.post('/create-contract', accessTokenValidator, wrapAsync(createContractController));
+usersRouter.post(
+  '/create-contract',
+  accessTokenValidator,
+  createContractValidator,
+  wrapAsync(createContractController)
+);
 
 //------------------------------------------------------------
 

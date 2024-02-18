@@ -3,7 +3,7 @@ import { ParamSchema, checkSchema } from 'express-validator';
 import { JsonWebTokenError } from 'jsonwebtoken';
 import { capitalize } from 'lodash';
 import { ObjectId } from 'mongodb';
-import { UserVerifyStatus } from '~/constants/enum';
+import { PaymentType, UserVerifyStatus } from '~/constants/enum';
 import HTTP_STATUS from '~/constants/httpStatus';
 import { USERS_MESSAGES } from '~/constants/message';
 import { ErrorWithStatus } from '~/models/Error';
@@ -418,6 +418,175 @@ export const resetPasswordValidator = validate(
     {
       password: passwordSchema,
       confirm_password: confirmPasswordSchema
+    },
+    ['body']
+  )
+);
+
+export const orderValidator = validate(
+  checkSchema(
+    {
+      user_id: {
+        isEmpty: {
+          errorMessage: USERS_MESSAGES.USER_ID_IS_REQUIRED
+        },
+        isString: {
+          errorMessage: USERS_MESSAGES.USER_ID_MUST_BE_A_STRING
+        },
+        trim: true
+      },
+      villa_time_share_id: {
+        isEmpty: {
+          errorMessage: USERS_MESSAGES.VILLA_TIME_SHARE_ID_IS_REQUIRED
+        },
+        isString: {
+          errorMessage: USERS_MESSAGES.VILLA_TIME_SHARE_ID_MUST_BE_A_STRING
+        },
+        trim: true
+      },
+      price: {
+        notEmpty: {
+          errorMessage: USERS_MESSAGES.PRICE_IS_REQUIRED
+        },
+        isNumeric: {
+          errorMessage: USERS_MESSAGES.PRICE_MUST_BE_A_NUMBER
+        }
+      },
+      start_date: dateOfBirthSchema
+    },
+    ['body']
+  )
+);
+
+export const paymentValidator = validate(
+  checkSchema(
+    {
+      payment_type: {
+        notEmpty: {
+          errorMessage: USERS_MESSAGES.PAYMENT_TYPE_IS_REQUIRED
+        },
+        isString: {
+          errorMessage: USERS_MESSAGES.PAYMENT_TYPE_MUST_BE_A_STRING
+        },
+        trim: true,
+        isIn: {
+          options: [PaymentType.CASH, PaymentType.CREDIT_CARD],
+          errorMessage: USERS_MESSAGES.PAYMENT_TYPE_IS_INVALID
+        }
+      },
+      order_id: {
+        notEmpty: {
+          errorMessage: USERS_MESSAGES.ORDER_ID_IS_REQUIRED
+        },
+        isString: {
+          errorMessage: USERS_MESSAGES.ORDER_ID_MUST_BE_A_STRING
+        },
+        trim: true
+      },
+      amount: {
+        notEmpty: {
+          errorMessage: USERS_MESSAGES.AMOUNT_IS_REQUIRED
+        },
+        isNumeric: {
+          errorMessage: USERS_MESSAGES.AMOUNT_MUST_BE_A_NUMBER
+        }
+      }
+    },
+    ['body']
+  )
+);
+
+export const confirmPaymentValidator = validate(
+  checkSchema(
+    {
+      payment_id: {
+        notEmpty: {
+          errorMessage: USERS_MESSAGES.PAYMENT_ID_IS_REQUIRED
+        },
+        isString: {
+          errorMessage: USERS_MESSAGES.PAYMENT_ID_MUST_BE_A_STRING
+        },
+        trim: true
+      },
+      order_id: {
+        notEmpty: {
+          errorMessage: USERS_MESSAGES.ORDER_ID_IS_REQUIRED
+        },
+        isString: {
+          errorMessage: USERS_MESSAGES.ORDER_ID_MUST_BE_A_STRING
+        },
+        trim: true
+      }
+    },
+    ['body']
+  )
+);
+
+export const createBlogValidator = validate(
+  checkSchema(
+    {
+      user_id: {
+        notEmpty: {
+          errorMessage: USERS_MESSAGES.USER_ID_IS_REQUIRED
+        },
+        isString: {
+          errorMessage: USERS_MESSAGES.USER_ID_MUST_BE_A_STRING
+        },
+        trim: true
+      },
+      title: {
+        notEmpty: {
+          errorMessage: USERS_MESSAGES.TITLE_IS_REQUIRED
+        },
+        isString: {
+          errorMessage: USERS_MESSAGES.TITLE_MUST_BE_A_STRING
+        },
+        trim: true
+      },
+      description_detail: {
+        notEmpty: {
+          errorMessage: USERS_MESSAGES.DESCRIPTION_DETAIL_IS_REQUIRED
+        },
+        isString: {
+          errorMessage: USERS_MESSAGES.DESCRIPTION_DETAIL_MUST_BE_A_STRING
+        },
+        trim: true
+      }
+    },
+    ['body']
+  )
+);
+
+export const createContractValidator = validate(
+  checkSchema(
+    {
+      user_id: {
+        notEmpty: {
+          errorMessage: USERS_MESSAGES.USER_ID_IS_REQUIRED
+        },
+        isString: {
+          errorMessage: USERS_MESSAGES.USER_ID_MUST_BE_A_STRING
+        },
+        trim: true
+      },
+      contract_name: {
+        notEmpty: {
+          errorMessage: USERS_MESSAGES.CONTRACT_NAME_IS_REQUIRED
+        },
+        isString: {
+          errorMessage: USERS_MESSAGES.CONTRACT_NAME_MUST_BE_A_STRING
+        },
+        trim: true
+      },
+      url_image: {
+        notEmpty: {
+          errorMessage: USERS_MESSAGES.URL_IMAGE_IS_REQUIRED
+        },
+        isString: {
+          errorMessage: USERS_MESSAGES.URL_IMAGE_MUST_BE_A_STRING
+        },
+        trim: true
+      }
     },
     ['body']
   )

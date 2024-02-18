@@ -62,13 +62,12 @@ export interface OrderReqBody {
   villa_time_share_id: string;
   price: number;
   start_date: Date;
-  description: string;
+  description?: string;
 }
 
 export interface PaymentReqBody {
   payment_type: string;
   order_id: string;
-  currency: string;
   amount: number;
 }
 

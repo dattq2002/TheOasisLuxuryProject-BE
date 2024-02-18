@@ -6,11 +6,12 @@ import {
   getUtilityByIdController
 } from '~/controllers/utilities.controller';
 import { accessTokenValidator } from '~/middlewares/user.middleware';
+import { createUtilitiesValidation } from '~/middlewares/utilities.middleware';
 import { wrapAsync } from '~/utils/handlers';
 
 const utilitiesRouter = Router();
 
-utilitiesRouter.post('/', accessTokenValidator, wrapAsync(createUtiliesController));
+utilitiesRouter.post('/', accessTokenValidator, createUtilitiesValidation, wrapAsync(createUtiliesController));
 
 utilitiesRouter.get('/', accessTokenValidator, wrapAsync(getUtiliesController));
 
