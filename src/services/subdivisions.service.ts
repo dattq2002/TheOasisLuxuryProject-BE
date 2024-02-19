@@ -44,7 +44,7 @@ class SubdivisionServices {
     return subdivision;
   }
   async updateSubdivision(id: string, payload: updateSubdivisionReq) {
-    const result = await databaseService.subdivisions.updateOne(
+    await databaseService.subdivisions.updateOne(
       {
         _id: new ObjectId(id)
       },
@@ -57,7 +57,8 @@ class SubdivisionServices {
         }
       ]
     );
-    return result;
+    const subdivision = await databaseService.subdivisions.findOne({ _id: new ObjectId(id) });
+    return subdivision;
   }
   async deleteSubdivisionById(id: string) {
     const result = await databaseService.subdivisions.deleteOne({ _id: new ObjectId(id) });

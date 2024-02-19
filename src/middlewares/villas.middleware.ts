@@ -19,7 +19,7 @@ export const createUtilitiesValidation = validate(
         },
         trim: true,
         isIn: {
-          options: [VillaStatus.ACTIVE, VillaStatus.INACTIVE, VillaStatus.SOLD],
+          options: [[VillaStatus.ACTIVE, VillaStatus.INACTIVE, VillaStatus.SOLD]],
           errorMessage: 'Invalid status'
         }
       },

@@ -10,8 +10,8 @@ export interface createSubdivisionReq {
 }
 
 export interface updateSubdivisionReq {
-  subdivision_name?: string;
-  location?: string;
+  subdivision_name: string;
+  location: string;
   quantityVilla?: number;
-  status?: SubdivisionStatus;
+  status: SubdivisionStatus;
 }

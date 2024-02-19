@@ -25,7 +25,7 @@ class ProjectsService {
     return project;
   }
   async updateProjectById(id: string, payload: updateProjectReq) {
-    const result = await databaseService.projects.updateOne(
+    await databaseService.projects.updateOne(
       {
         _id: new ObjectId(id)
       },

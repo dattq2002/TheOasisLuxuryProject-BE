@@ -26,17 +26,17 @@ export const subdivisionValidation = validate(
         notEmpty: {
           errorMessage: 'Location is required'
         }
+      },
+      status: {
+        isString: true,
+        notEmpty: {
+          errorMessage: 'Status is required'
+        },
+        trim: true,
+        isIn: {
+          options: [SubdivisionStatus.ACTIVE, SubdivisionStatus.INACTIVE]
+        }
       }
-      // status: {
-      //   isString: true,
-      //   notEmpty: {
-      //     errorMessage: 'Status is required'
-      //   },
-      //   trim: true,
-      //   isIn: {
-      //     options: [SubdivisionStatus.ACTIVE, SubdivisionStatus.INACTIVE]
-      //   }
-      // }
       // project_id: {
       //   isString: true,
       //   notEmpty: {
@@ -59,7 +59,7 @@ export const updateSubdivisionValidation = validate(
           errorMessage: 'Subdivision name should be at least 3 chars long',
           options: { min: 3, max: 50 }
         },
-        isEmpty: {
+        notEmpty: {
           errorMessage: 'Subdivision name is required'
         }
       },
@@ -70,7 +70,7 @@ export const updateSubdivisionValidation = validate(
           errorMessage: 'Location should be at least 3 chars long',
           options: { min: 3, max: 50 }
         },
-        isEmpty: {
+        notEmpty: {
           errorMessage: 'Location is required'
         }
       },
@@ -81,12 +81,13 @@ export const updateSubdivisionValidation = validate(
       },
       status: {
         isString: true,
-        isEmpty: {
+        notEmpty: {
           errorMessage: 'Status is required'
         },
         trim: true,
         isIn: {
-          options: [SubdivisionStatus.ACTIVE, SubdivisionStatus.INACTIVE]
+          options: [[SubdivisionStatus.ACTIVE, SubdivisionStatus.INACTIVE]],
+          errorMessage: 'Status should be either active or inactive'
         }
       }
     },

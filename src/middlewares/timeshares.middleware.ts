@@ -12,18 +12,19 @@ export const time_sharesValidation = validate(
           errorMessage: 'Time share name should be at least 3 chars long',
           options: { min: 3, max: 50 }
         },
-        isEmpty: {
+        notEmpty: {
           errorMessage: 'Time share name is required'
         }
       },
       time_share_type: {
         isString: true,
         trim: true,
-        isEmpty: {
+        notEmpty: {
           errorMessage: 'Time share type is required'
         },
         isIn: {
-          options: [Time_ShareType.MONTH, Time_ShareType.YEAR, Time_ShareType.DAY]
+          options: [[Time_ShareType.MONTH, Time_ShareType.YEAR, Time_ShareType.DAY]],
+          errorMessage: 'Invalid time share type'
         }
       }
     },
