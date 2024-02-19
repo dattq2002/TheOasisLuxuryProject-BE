@@ -12,7 +12,7 @@ export const subdivisionValidation = validate(
           errorMessage: 'Subdivision name should be at least 3 chars long',
           options: { min: 3, max: 50 }
         },
-        isEmpty: {
+        notEmpty: {
           errorMessage: 'Subdivision name is required'
         }
       },
@@ -23,32 +23,27 @@ export const subdivisionValidation = validate(
           errorMessage: 'Location should be at least 3 chars long',
           options: { min: 3, max: 50 }
         },
-        isEmpty: {
+        notEmpty: {
           errorMessage: 'Location is required'
-        }
-      },
-      quantityVilla: {
-        isNumeric: {
-          errorMessage: 'Quantity villa should be a number'
         }
       },
       status: {
         isString: true,
-        isEmpty: {
+        notEmpty: {
           errorMessage: 'Status is required'
         },
         trim: true,
         isIn: {
           options: [SubdivisionStatus.ACTIVE, SubdivisionStatus.INACTIVE]
         }
-      },
-      project_id: {
-        isString: true,
-        isEmpty: {
-          errorMessage: 'Project id is required'
-        },
-        trim: true
       }
+      // project_id: {
+      //   isString: true,
+      //   notEmpty: {
+      //     errorMessage: 'Project id is required'
+      //   },
+      //   trim: true
+      // }
     },
     ['body']
   )

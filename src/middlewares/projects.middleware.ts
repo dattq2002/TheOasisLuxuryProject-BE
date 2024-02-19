@@ -22,7 +22,7 @@ export const projectValidation = validate(
           errorMessage: 'Project name should be at least 3 chars long',
           options: { min: 3, max: 50 }
         },
-        isEmpty: {
+        notEmpty: {
           errorMessage: 'Project name is required'
         }
       },
@@ -34,7 +34,7 @@ export const projectValidation = validate(
           options: [ProjectStatus.ACTIVE, ProjectStatus.INACTIVE],
           errorMessage: 'Invalid status'
         },
-        isEmpty: {
+        notEmpty: {
           errorMessage: 'Status is required'
         },
         trim: true
@@ -46,7 +46,7 @@ export const projectValidation = validate(
           errorMessage: 'Description should be at least 3 chars long',
           options: { min: 3, max: 200 }
         },
-        isEmpty: {
+        notEmpty: {
           errorMessage: 'Description is required'
         }
       }
