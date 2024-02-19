@@ -28,17 +28,17 @@ export const projectValidation = validate(
       },
       start_date: dateSchema,
       end_date: dateSchema,
-      status: {
-        isString: true,
-        isIn: {
-          options: [ProjectStatus.ACTIVE, ProjectStatus.INACTIVE],
-          errorMessage: 'Invalid status'
-        },
-        notEmpty: {
-          errorMessage: 'Status is required'
-        },
-        trim: true
-      },
+      // status: {
+      //   isString: true,
+      //   isIn: {
+      //     options: [ProjectStatus.ACTIVE, ProjectStatus.INACTIVE],
+      //     errorMessage: 'Invalid status'
+      //   },
+      //   notEmpty: {
+      //     errorMessage: 'Status is required'
+      //   },
+      //   trim: true
+      // },
       description: {
         trim: true,
         isString: true,

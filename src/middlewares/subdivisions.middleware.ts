@@ -26,17 +26,17 @@ export const subdivisionValidation = validate(
         notEmpty: {
           errorMessage: 'Location is required'
         }
-      },
-      status: {
-        isString: true,
-        notEmpty: {
-          errorMessage: 'Status is required'
-        },
-        trim: true,
-        isIn: {
-          options: [SubdivisionStatus.ACTIVE, SubdivisionStatus.INACTIVE]
-        }
       }
+      // status: {
+      //   isString: true,
+      //   notEmpty: {
+      //     errorMessage: 'Status is required'
+      //   },
+      //   trim: true,
+      //   isIn: {
+      //     options: [SubdivisionStatus.ACTIVE, SubdivisionStatus.INACTIVE]
+      //   }
+      // }
       // project_id: {
       //   isString: true,
       //   notEmpty: {
