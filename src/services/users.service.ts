@@ -47,12 +47,12 @@ class UsersServices {
   private signRefreshToken({ user_id, verify, exp }: { user_id: string; verify: UserVerifyStatus; exp?: number }) {
     if (exp) {
       return signToken({
-        payload: { user_id, type: TokenType.RefeshToken, verify, exp },
+        payload: { user_id, type: TokenType.RefreshToken, verify, exp },
         privateKey: process.env.JWT_SECRET_REFRESH_TOKEN as string
       });
     } else {
       return signToken({
-        payload: { user_id, type: TokenType.RefeshToken, verify },
+        payload: { user_id, type: TokenType.RefreshToken, verify },
         options: { expiresIn: process.env.REFESH_TOKEN_EXPIRE_IN },
         privateKey: process.env.JWT_SECRET_REFRESH_TOKEN as string
       });
@@ -96,15 +96,15 @@ class UsersServices {
     );
 
     //lay user_id từ user vừa tạo
-    const [access_token, refesh_token] = await this.signAccessTokenAndRefreshToken({
+    const [access_token, refresh_token] = await this.signAccessTokenAndRefreshToken({
       user_id: _id.toString(),
       verify: UserVerifyStatus.Unverified
     });
-    const { exp, iat } = await this.decodeRefreshToken(refesh_token);
-    //lưu refesh token vào db
+    const { exp, iat } = await this.decodeRefreshToken(refresh_token);
+    //lưu Refresh token vào db
     await databaseService.refreshTokens.insertOne(
       new RefreshToken({
-        token: refesh_token,
+        token: refresh_token,
         user_id: _id,
         exp,
         iat
@@ -115,7 +115,7 @@ class UsersServices {
     // console.log(email_verify_token);
     sendMail({ toEmail: payload.email, token: email_verify_token, type: 'verify-email' });
 
-    return { access_token, refesh_token };
+    return { access_token, refresh_token };
   }
   async getUserById(id: string) {
     const user = await databaseService.users.findOne({ _id: new ObjectId(id) });
@@ -135,22 +135,22 @@ class UsersServices {
     return user;
   }
   async login({ user_id, verify }: { user_id: string; verify: UserVerifyStatus }) {
-    const [access_token, refesh_token] = await this.signAccessTokenAndRefreshToken({
+    const [access_token, refresh_token] = await this.signAccessTokenAndRefreshToken({
       user_id,
       verify
     });
-    const { exp, iat } = await this.decodeRefreshToken(refesh_token);
-    //lưu refesh token vào db
+    const { exp, iat } = await this.decodeRefreshToken(refresh_token);
+    //lưu Refresh token vào db
     await databaseService.refreshTokens.insertOne(
       new RefreshToken({
-        token: refesh_token,
+        token: refresh_token,
         user_id: new ObjectId(user_id),
         exp,
         iat
       })
     );
 
-    return { access_token, refesh_token };
+    return { access_token, refresh_token, user_id };
   }
   async updateUserProfileById(id: string, payload: UpdateUserReqBody) {
     const result = await databaseService.users.updateOne(
@@ -245,21 +245,21 @@ class UsersServices {
       ]
     );
     //tạo access token và refresh token
-    const [access_token, refesh_token] = await this.signAccessTokenAndRefreshToken({
+    const [access_token, refresh_token] = await this.signAccessTokenAndRefreshToken({
       user_id,
       verify: UserVerifyStatus.Verified
     });
-    const { exp, iat } = await this.decodeRefreshToken(refesh_token);
-    //lưu refesh token vào db
+    const { exp, iat } = await this.decodeRefreshToken(refresh_token);
+    //lưu Refresh token vào db
     await databaseService.refreshTokens.insertOne(
       new RefreshToken({
-        token: refesh_token,
+        token: refresh_token,
         user_id: new ObjectId(user_id),
         exp,
         iat
       })
     );
-    return { access_token, refesh_token };
+    return { access_token, refresh_token };
   }
 
   async resendEmailVerify(user_id: string) {
@@ -348,7 +348,7 @@ class UsersServices {
     exp: number;
   }) {
     //tạo ra access token mới và refresh token mới
-    const [access_token, new_refesh_token] = await Promise.all([
+    const [access_token, new_refresh_token] = await Promise.all([
       this.signAccessToken({ user_id, verify }),
       this.signRefreshToken({ user_id, verify, exp })
     ]);
@@ -356,13 +356,13 @@ class UsersServices {
     await databaseService.refreshTokens.deleteOne({ token: refresh_token });
     await databaseService.refreshTokens.insertOne(
       new RefreshToken({
-        token: new_refesh_token,
+        token: new_refresh_token,
         user_id: new ObjectId(user_id),
         exp,
         iat
       })
     );
-    return { access_token, refresh_token: new_refesh_token };
+    return { access_token, refresh_token: new_refresh_token };
   }
 
   async order(req: OrderReqBody) {

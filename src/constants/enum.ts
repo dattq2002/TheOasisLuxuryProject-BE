@@ -50,7 +50,7 @@ export enum PaymentType {
 }
 export enum TokenType {
   AccessToken,
-  RefeshToken,
+  RefreshToken,
   ForgotPasswordToken,
   EmailVerificationToken
 }
