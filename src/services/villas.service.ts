@@ -1,7 +1,8 @@
 import { ObjectId } from 'mongodb';
 import databaseService from './database.service';
-import { createVillaReq, updateVillaReq } from '~/models/requests/villa.request';
+import { createVillaReq, createVillaTimeShareReq, updateVillaReq } from '~/models/requests/villa.request';
 import Villa from '~/models/schemas/Villa.schemas';
+import VillaTimeShare from '~/models/schemas/VillaTimeShare.schemas';
 
 class VillaServices {
   async getVillas() {
@@ -90,6 +91,17 @@ class VillaServices {
           quantityVilla: countVilla - 1
         }
       }
+    );
+    return result;
+  }
+
+  async createVillaTimeShare(payload: createVillaTimeShareReq) {
+    const result = await databaseService.villaTimeShares.insertOne(
+      new VillaTimeShare({
+        ...payload,
+        villa_id: new ObjectId(payload.villa_id),
+        time_share_id: new ObjectId(payload.time_share_id)
+      })
     );
     return result;
   }

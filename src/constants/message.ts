@@ -79,7 +79,8 @@ export const USERS_MESSAGES = {
   CONTRACT_NAME_IS_REQUIRED: 'Contract name is required',
   CONTRACT_NAME_MUST_BE_A_STRING: 'Contract name must be a string',
   URL_IMAGE_IS_REQUIRED: 'Url image is required',
-  URL_IMAGE_MUST_BE_A_STRING: 'Url image must be a string'
+  URL_IMAGE_MUST_BE_A_STRING: 'Url image must be a string',
+  GET_ALL_ORDER_SUCCESS: 'Get all order success'
 } as const;
 
 export const PROJECTS_MESSAGES = {
@@ -105,7 +106,8 @@ export const VILLAS_MESSAGES = {
   CREATE_VILLA_SUCCESS: 'Create villa success',
   UPDATE_VILLA_SUCCESS: 'Update villa success',
   DELETE_VILLA_SUCCESS: 'Delete villa success',
-  GET_VILLA_SUCCESS: 'Get villa success'
+  GET_VILLA_SUCCESS: 'Get villa success',
+  CREATE_VILLA_TIME_SHARE_SUCCESS: 'Create villa time share success'
 } as const;
 
 export const UTILITIES_MESSAGES = {

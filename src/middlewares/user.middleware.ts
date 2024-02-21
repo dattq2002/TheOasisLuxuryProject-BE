@@ -427,7 +427,7 @@ export const orderValidator = validate(
   checkSchema(
     {
       user_id: {
-        isEmpty: {
+        notEmpty: {
           errorMessage: USERS_MESSAGES.USER_ID_IS_REQUIRED
         },
         isString: {
@@ -436,7 +436,7 @@ export const orderValidator = validate(
         trim: true
       },
       villa_time_share_id: {
-        isEmpty: {
+        notEmpty: {
           errorMessage: USERS_MESSAGES.VILLA_TIME_SHARE_ID_IS_REQUIRED
         },
         isString: {

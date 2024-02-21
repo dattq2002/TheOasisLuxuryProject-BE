@@ -3,7 +3,7 @@ import { ObjectId } from 'mongodb';
 interface VillaTimeShareType {
   _id?: ObjectId;
   villa_id: ObjectId;
-  insert_date: Date;
+  insert_date?: Date;
   update_at?: Date;
   time_share_id: ObjectId;
   user_id?: ObjectId;

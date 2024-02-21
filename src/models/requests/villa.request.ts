@@ -30,3 +30,9 @@ export interface createVillaDetailReq {
   bed_room?: number;
   description?: string;
 }
+
+export interface createVillaTimeShareReq {
+  villa_id: string;
+  period_time?: number;
+  time_share_id: string;
+}

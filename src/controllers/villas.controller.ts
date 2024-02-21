@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { VILLAS_MESSAGES } from '~/constants/message';
 import villasServices from '~/services/villas.service';
 import { ParamsDictionary } from 'express-serve-static-core';
-import { createVillaReq, updateVillaReq } from '~/models/requests/villa.request';
+import { createVillaReq, createVillaTimeShareReq, updateVillaReq } from '~/models/requests/villa.request';
 
 export const getVillasController = async (req: Request, res: Response, next: NextFunction) => {
   const result = await villasServices.getVillas();
@@ -81,6 +81,22 @@ export const deleteVillaController = async (req: Request, res: Response, next: N
   const result = await villasServices.deleteVillaById(id);
   res.json({
     message: VILLAS_MESSAGES.DELETE_VILLA_SUCCESS,
+    result
+  });
+};
+
+export const createVillaTimeShareController = async (
+  req: Request<ParamsDictionary, any, createVillaTimeShareReq>,
+  res: Response,
+  next: NextFunction
+) => {
+  const { villa_id, time_share_id } = req.body;
+  const result = await villasServices.createVillaTimeShare({
+    villa_id,
+    time_share_id
+  });
+  res.json({
+    message: VILLAS_MESSAGES.CREATE_VILLA_TIME_SHARE_SUCCESS,
     result
   });
 };

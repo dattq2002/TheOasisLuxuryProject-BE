@@ -263,3 +263,18 @@ export const createContractController = async (
   const result = await usersService.createContract(req.body);
   return res.json(result);
 };
+
+export const getAllOrderController = async (req: Request, res: Response) => {
+  // const { user_id } = req.decoded_authorization as TokenPayload;
+  // if ((await usersService.getRole(user_id)) !== RoleName.ADMIN) {
+  //   throw new ErrorWithStatus({
+  //     message: USERS_MESSAGES.USER_NOT_ACCESS,
+  //     status: HTTP_STATUS.UNAUTHORIZED
+  //   });
+  // }
+  const result = await usersService.getAllOrder();
+  return res.json({
+    message: USERS_MESSAGES.GET_ALL_ORDER_SUCCESS,
+    result
+  });
+};

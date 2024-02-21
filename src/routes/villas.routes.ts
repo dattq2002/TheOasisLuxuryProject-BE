@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import {
   createVillaController,
+  createVillaTimeShareController,
   deleteVillaController,
   getVillaByIdController,
   getVillasController,
@@ -21,5 +22,7 @@ villaRouter.post('/', accessTokenValidator, createUtilitiesValidation, wrapAsync
 villaRouter.patch('/:id', accessTokenValidator, createUtilitiesValidation, wrapAsync(updateVillaController));
 
 villaRouter.delete('/:id', accessTokenValidator, wrapAsync(deleteVillaController));
+
+villaRouter.post('/create-villa-time-share', accessTokenValidator, wrapAsync(createVillaTimeShareController));
 
 export default villaRouter;

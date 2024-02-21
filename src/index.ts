@@ -15,6 +15,7 @@ import cors from 'cors';
 import utilitiesRouter from './routes/utilities.routes';
 import timeSharesRouter from './routes/time_shares.routes';
 import { config } from 'dotenv';
+import ordersRouter from './routes/orders.routes';
 
 config();
 // const file = fs.readFileSync(path.resolve('the-oasis-luxury-api.yaml'), 'utf8');
@@ -61,6 +62,7 @@ app.use('/api/v1/subdivisions', subdivisionRouter);
 app.use('/api/v1/villas', villaRouter);
 app.use('/api/v1/timeshares', timeSharesRouter);
 app.use('/api/v1/utilities', utilitiesRouter);
+app.use('/api/v1/orders', ordersRouter);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification));
 app.use(defaultErrorHandler);

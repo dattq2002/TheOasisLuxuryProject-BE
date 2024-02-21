@@ -5,6 +5,7 @@ import {
   createContractController,
   emailVerifyController,
   forgotPasswordController,
+  getAllOrderController,
   getUserByIdController,
   loginController,
   logoutController,

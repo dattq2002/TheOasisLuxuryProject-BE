@@ -491,6 +491,10 @@ class UsersServices {
     const contract = await databaseService.contracts.findOne({ _id: new ObjectId(result.insertedId) });
     return contract;
   }
+  async getAllOrder() {
+    const result = await databaseService.orders.find({}).toArray();
+    return result;
+  }
 }
 const usersService = new UsersServices();
 export default usersService;
