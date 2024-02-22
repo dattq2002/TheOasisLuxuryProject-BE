@@ -80,7 +80,8 @@ export const USERS_MESSAGES = {
   CONTRACT_NAME_MUST_BE_A_STRING: 'Contract name must be a string',
   URL_IMAGE_IS_REQUIRED: 'Url image is required',
   URL_IMAGE_MUST_BE_A_STRING: 'Url image must be a string',
-  GET_ALL_ORDER_SUCCESS: 'Get all order success'
+  GET_ALL_ORDER_SUCCESS: 'Get all order success',
+  UPDATE_ORDER_SUCCESS: 'Update order success'
 } as const;
 
 export const PROJECTS_MESSAGES = {

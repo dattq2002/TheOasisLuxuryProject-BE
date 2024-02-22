@@ -87,3 +87,9 @@ export interface CreateContractReqBody {
   contract_name: string;
   url_image: string;
 }
+
+export interface updateOrderReqBody {
+  status: string;
+  price?: number;
+  order_name: string;
+}

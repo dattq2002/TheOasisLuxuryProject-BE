@@ -6,7 +6,8 @@ import {
   OrderReqBody,
   PaymentReqBody,
   RegisterReqBody,
-  UpdateUserReqBody
+  UpdateUserReqBody,
+  updateOrderReqBody
 } from '~/models/requests/user.request';
 import { ObjectId } from 'mongodb';
 import { AccountStatus, OrderStatus, PaymentStatus, RoleName, TokenType, UserVerifyStatus } from '~/constants/enum';
@@ -494,6 +495,24 @@ class UsersServices {
   async getAllOrder() {
     const result = await databaseService.orders.find({}).toArray();
     return result;
+  }
+
+  async updateOrder(id: string, req: updateOrderReqBody) {
+    const result = await databaseService.orders.updateOne(
+      {
+        _id: new ObjectId(id)
+      },
+      [
+        {
+          $set: {
+            ...req,
+            updated_at: '$$NOW'
+          }
+        }
+      ]
+    );
+    const order = await databaseService.orders.findOne({ _id: new ObjectId(id) });
+    return order;
   }
 }
 const usersService = new UsersServices();
