@@ -3,7 +3,7 @@ import { ParamSchema, checkSchema } from 'express-validator';
 import { JsonWebTokenError } from 'jsonwebtoken';
 import { capitalize } from 'lodash';
 import { ObjectId } from 'mongodb';
-import { PaymentType, UserVerifyStatus } from '~/constants/enum';
+import { OrderStatus, PaymentType, UserVerifyStatus } from '~/constants/enum';
 import HTTP_STATUS from '~/constants/httpStatus';
 import { USERS_MESSAGES } from '~/constants/message';
 import { ErrorWithStatus } from '~/models/Error';
@@ -470,7 +470,7 @@ export const paymentValidator = validate(
         },
         trim: true,
         isIn: {
-          options: [PaymentType.CASH, PaymentType.CREDIT_CARD],
+          options: [[PaymentType.CASH, PaymentType.CREDIT_CARD]],
           errorMessage: USERS_MESSAGES.PAYMENT_TYPE_IS_INVALID
         }
       },
@@ -586,6 +586,35 @@ export const createContractValidator = validate(
           errorMessage: USERS_MESSAGES.URL_IMAGE_MUST_BE_A_STRING
         },
         trim: true
+      }
+    },
+    ['body']
+  )
+);
+
+export const updateOrderVidator = validate(
+  checkSchema(
+    {
+      status: {
+        notEmpty: {
+          errorMessage: 'Status is required !!'
+        },
+        trim: true,
+        isIn: {
+          options: [[OrderStatus.CANCELLED, OrderStatus.COMPLETED, OrderStatus.CONFIRMED, OrderStatus.PENDING]],
+          errorMessage: 'Status is wrong type'
+        },
+        isString: true
+      },
+      price: {
+        isNumeric: true
+      },
+      order_name: {
+        notEmpty: {
+          errorMessage: 'Order name is required !!'
+        },
+        trim: true,
+        isString: true
       }
     },
     ['body']
