@@ -3,6 +3,7 @@ import { VILLAS_MESSAGES } from '~/constants/message';
 import villasServices from '~/services/villas.service';
 import { ParamsDictionary } from 'express-serve-static-core';
 import {
+  UploadImageQueryReq,
   createVillaDetailReq,
   createVillaReq,
   createVillaTimeShareReq,

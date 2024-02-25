@@ -30,13 +30,19 @@ class MediaService {
         };
       })
     );
-    //cập nhật ảnh vào trong database villa
+    //sau khi có ảnh thì cập nhật ảnh vào trong db collection villa
+    const villaId = req.query.villa_id;
+    const villa = await databaseService.villas.findOne({ _id: new ObjectId(villaId as string) });
+    if (!villa) throw new Error('Villa not found');
+    const newUrlImage = [...villa.url_image, ...result.map((item) => item.url)];
     await databaseService.villas.updateOne(
-      { _id: new ObjectId(req.params.villaId) },
-      { $push: { url_image: result[0].url as any } }
+      { _id: new ObjectId(villaId as string) },
+      {
+        $set: {
+          url_image: newUrlImage
+        }
+      }
     );
-    const villa = await databaseService.villas.findOne({ _id: new ObjectId(req.params.villaId) });
-    return { result, villa };
 
     return result;
   }

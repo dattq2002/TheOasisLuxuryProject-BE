@@ -290,7 +290,7 @@ export const updateOrderController = async (req: Request<ParamsDictionary, any, 
     });
   }
   const { status, price, order_name } = req.body;
-  const result = await usersService.updateOrder(id, { status, order_name });
+  const result = await usersService.updateOrder(id, { status, order_name, price });
   return res.json({
     message: USERS_MESSAGES.UPDATE_ORDER_SUCCESS,
     result

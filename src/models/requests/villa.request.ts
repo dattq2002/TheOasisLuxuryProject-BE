@@ -36,3 +36,7 @@ export interface createVillaTimeShareReq {
   period_time?: number;
   time_share_id: string;
 }
+
+export interface UploadImageQueryReq {
+  villa_id: string;
+}
