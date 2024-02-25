@@ -24,7 +24,6 @@ export interface updateVillaReq {
 }
 
 export interface createVillaDetailReq {
-  utilities_id: string;
   room_quantity: number;
   bath_room: number;
   bed_room: number;

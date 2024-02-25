@@ -13,7 +13,6 @@ interface OrderType {
   description?: string;
   start_date: Date;
   end_date?: Date;
-  payment_id?: ObjectId;
 }
 
 export default class Order {
@@ -28,7 +27,6 @@ export default class Order {
   start_date: Date;
   end_date?: Date;
   status: string;
-  payment_id?: ObjectId;
   villa_time_share_id: ObjectId;
   constructor(order: OrderType) {
     this._id = order._id;
@@ -42,7 +40,6 @@ export default class Order {
     this.start_date = order.start_date;
     this.end_date = order.end_date;
     this.status = order.status;
-    this.payment_id = order.payment_id;
     this.villa_time_share_id = order.villa_time_share_id;
   }
 }

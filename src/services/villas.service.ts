@@ -124,8 +124,7 @@ class VillaServices {
   async createVillaDetail(req: createVillaDetailReq) {
     const result = await databaseService.villaDetails.insertOne(
       new VillaDetail({
-        ...req,
-        utilities_id: new ObjectId(req.utilities_id)
+        ...req
       })
     );
     const newVillaDetail = await databaseService.villaDetails.findOne({ _id: result.insertedId });

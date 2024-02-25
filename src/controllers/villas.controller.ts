@@ -130,9 +130,8 @@ export const createVillaDetailController = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { utilities_id, room_quantity, bath_room, bed_room, description } = req.body;
+  const { room_quantity, bath_room, bed_room, description } = req.body;
   const result = await villasServices.createVillaDetail({
-    utilities_id,
     room_quantity,
     bath_room,
     bed_room,

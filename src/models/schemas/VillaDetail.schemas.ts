@@ -2,24 +2,25 @@ import { ObjectId } from 'mongodb';
 
 interface VillaDetailType {
   _id?: ObjectId;
-  utilities_id: ObjectId;
   insert_date?: Date;
   update_date?: Date;
-  room_quantity?: number;
-  bath_room?: number;
-  bed_room?: number;
+  room_quantity: number;
+  bath_room: number;
+  bed_room: number;
   description?: string;
+  utilities_id?: ObjectId[];
 }
 
 export default class VillaDetail {
   _id?: ObjectId;
-  utilities_id: ObjectId;
+  utilities_id?: ObjectId[];
   insert_date: Date;
   update_date: Date;
   room_quantity: number;
   bath_room: number;
   bed_room: number;
   description: string;
+
   constructor(villaDetail: VillaDetailType) {
     this._id = villaDetail._id;
     this.insert_date = villaDetail.insert_date || new Date();

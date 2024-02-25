@@ -15,6 +15,7 @@ interface UserType {
   verify?: UserVerifyStatus;
   insert_date?: Date;
   update_date?: Date;
+  CCCD?: string;
   user_name: string;
   email: string;
   password: string;
@@ -24,6 +25,9 @@ interface UserType {
   blog_posts?: BlogPost[];
   contracts?: Contract[];
   orders?: Order[];
+  tax_code?: string;
+  date_provide_CCCD?: Date;
+  place_provide_CCCD?: string;
 }
 
 export default class User {
@@ -46,6 +50,10 @@ export default class User {
   blog_posts: BlogPost[];
   contracts: Contract[];
   orders: Order[];
+  CCCD: string;
+  tax_code: string;
+  date_provide_CCCD: Date;
+  place_provide_CCCD: string;
 
   constructor(user: UserType) {
     this._id = user._id;
@@ -67,5 +75,9 @@ export default class User {
     this.blog_posts = user.blog_posts || [];
     this.contracts = user.contracts || [];
     this.orders = user.orders || [];
+    this.CCCD = user.CCCD || '';
+    this.tax_code = user.tax_code || '';
+    this.date_provide_CCCD = user.date_provide_CCCD || new Date();
+    this.place_provide_CCCD = user.place_provide_CCCD || '';
   }
 }
