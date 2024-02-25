@@ -16,6 +16,8 @@ import utilitiesRouter from './routes/utilities.routes';
 import timeSharesRouter from './routes/time_shares.routes';
 import { config } from 'dotenv';
 import ordersRouter from './routes/orders.routes';
+import { initFolder } from './utils/files';
+import staticRouter from './routes/static.routes';
 
 config();
 // const file = fs.readFileSync(path.resolve('the-oasis-luxury-api.yaml'), 'utf8');
@@ -41,7 +43,7 @@ const options: swaggerJSDoc.Options = {
   apis: ['./openapi/*.yaml']
 };
 const openapiSpecification = swaggerJSDoc(options);
-
+initFolder();
 const app = express();
 app.use(
   cors({
@@ -63,6 +65,7 @@ app.use('/api/v1/villas', villaRouter);
 app.use('/api/v1/timeshares', timeSharesRouter);
 app.use('/api/v1/utilities', utilitiesRouter);
 app.use('/api/v1/orders', ordersRouter);
+app.use('/api/v1/static', staticRouter);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification));
 app.use(defaultErrorHandler);

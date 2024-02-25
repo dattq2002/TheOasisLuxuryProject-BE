@@ -36,14 +36,19 @@ export const subdivisionValidation = validate(
         isIn: {
           options: [SubdivisionStatus.ACTIVE, SubdivisionStatus.INACTIVE]
         }
+      },
+      project_id: {
+        isString: true,
+        notEmpty: {
+          errorMessage: 'Project id is required'
+        },
+        trim: true
+      },
+      quantityVilla: {
+        isNumeric: {
+          errorMessage: 'Quantity villa should be a number'
+        }
       }
-      // project_id: {
-      //   isString: true,
-      //   notEmpty: {
-      //     errorMessage: 'Project id is required'
-      //   },
-      //   trim: true
-      // }
     },
     ['body']
   )

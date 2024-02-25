@@ -2,7 +2,6 @@ import { ObjectId } from 'mongodb';
 import { AccountStatus, GenderType, RoleName, UserVerifyStatus } from '~/constants/enum';
 import BlogPost from './BlogPost.schemas';
 import Contract from './Contract.schemas';
-import OwnerVilla from './OwnerVilla.schemas';
 import Order from './Order.schemas';
 
 interface UserType {
@@ -24,7 +23,6 @@ interface UserType {
   role_name?: string;
   blog_posts?: BlogPost[];
   contracts?: Contract[];
-  owner_villas?: OwnerVilla[];
   orders?: Order[];
 }
 
@@ -47,7 +45,6 @@ export default class User {
   role_name: string;
   blog_posts: BlogPost[];
   contracts: Contract[];
-  owner_villas: OwnerVilla[];
   orders: Order[];
 
   constructor(user: UserType) {
@@ -69,7 +66,6 @@ export default class User {
     this.role_name = user.role_name || RoleName.USER;
     this.blog_posts = user.blog_posts || [];
     this.contracts = user.contracts || [];
-    this.owner_villas = user.owner_villas || [];
     this.orders = user.orders || [];
   }
 }

@@ -1,8 +1,15 @@
 import { ObjectId } from 'mongodb';
 import databaseService from './database.service';
-import { createVillaReq, createVillaTimeShareReq, updateVillaReq } from '~/models/requests/villa.request';
+import {
+  createVillaDetailReq,
+  createVillaReq,
+  createVillaTimeShareReq,
+  updateVillaReq
+} from '~/models/requests/villa.request';
 import Villa from '~/models/schemas/Villa.schemas';
 import VillaTimeShare from '~/models/schemas/VillaTimeShare.schemas';
+import { Request } from 'express';
+import VillaDetail from '~/models/schemas/VillaDetail.schemas';
 
 class VillaServices {
   async getVillas() {
@@ -104,6 +111,25 @@ class VillaServices {
       })
     );
     return result;
+  }
+
+  async getVillaBySubdivisionId(subdivisionId: string) {
+    const result = await databaseService.villas
+      .find({
+        subdivision_id: subdivisionId as any
+      })
+      .toArray();
+    return result;
+  }
+  async createVillaDetail(req: createVillaDetailReq) {
+    const result = await databaseService.villaDetails.insertOne(
+      new VillaDetail({
+        ...req,
+        utilities_id: new ObjectId(req.utilities_id)
+      })
+    );
+    const newVillaDetail = await databaseService.villaDetails.findOne({ _id: result.insertedId });
+    return newVillaDetail;
   }
 }
 

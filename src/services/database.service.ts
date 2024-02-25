@@ -3,7 +3,6 @@ import { MongoClient, Db, Collection } from 'mongodb';
 import BlogPost from '~/models/schemas/BlogPost.schemas';
 import Contract from '~/models/schemas/Contract.schemas';
 import Order from '~/models/schemas/Order.schemas';
-import OwnerVilla from '~/models/schemas/OwnerVilla.schemas';
 import Payment from '~/models/schemas/Payment.schemas';
 import Project from '~/models/schemas/Project.schemas';
 import RefreshToken from '~/models/schemas/RefreshToken.schema';
@@ -12,6 +11,7 @@ import TimeShare from '~/models/schemas/TimeShare.schemas';
 import User from '~/models/schemas/User.schemas';
 import Utilities from '~/models/schemas/Utilities.schemas';
 import Villa from '~/models/schemas/Villa.schemas';
+import VillaDetail from '~/models/schemas/VillaDetail.schemas';
 import VillaTimeShare from '~/models/schemas/VillaTimeShare.schemas';
 config();
 const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@theoasisluxury.vuzyle1.mongodb.net/?retryWrites=true&w=majority`;
@@ -54,9 +54,6 @@ class DatabaseService {
   get contracts(): Collection<Contract> {
     return this.db.collection(process.env.DB_COLLECTION_CONTRACT as string);
   }
-  get ownerVillas(): Collection<OwnerVilla> {
-    return this.db.collection(process.env.DB_COLLECTION_OWNERVILLA as string);
-  }
   get orders(): Collection<Order> {
     return this.db.collection(process.env.DB_COLLECTION_ORDER as string);
   }
@@ -71,6 +68,9 @@ class DatabaseService {
   }
   get timeshares(): Collection<TimeShare> {
     return this.db.collection(process.env.DB_COLLECTION_TIMESHARES as string);
+  }
+  get villaDetails(): Collection<VillaDetail> {
+    return this.db.collection(process.env.DB_COLLECTION_VILLA_DETAIL as string);
   }
 }
 const databaseService = new DatabaseService();

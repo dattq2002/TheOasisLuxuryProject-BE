@@ -237,7 +237,7 @@ export const confirmPaymentController = async (
 
 export const createBlogController = async (req: Request<ParamsDictionary, any, CreateBlogReqBody>, res: Response) => {
   const { user_id } = req.decoded_authorization as TokenPayload;
-  if ((await usersService.getRole(user_id)) !== RoleName.USER) {
+  if (![RoleName.ADMIN, RoleName.STAFF].includes(await usersService.getRole(user_id))) {
     throw new ErrorWithStatus({
       message: USERS_MESSAGES.USER_NOT_ACCESS,
       status: HTTP_STATUS.UNAUTHORIZED

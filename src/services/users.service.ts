@@ -124,13 +124,11 @@ class UsersServices {
     const blog_posts = await databaseService.blogPosts.find({ user_id: new ObjectId(id) }).toArray();
     //tìm tất cả các contract của user này
     const contracts = await databaseService.contracts.find({ user_id: new ObjectId(id) }).toArray();
-    const ownerVillas = await databaseService.ownerVillas.find({ user_id: new ObjectId(id) }).toArray();
     const orders = await databaseService.orders.find({ user_id: new ObjectId(id) }).toArray();
     //assign tất cả blogpost vào user
     if (user) {
       user.blog_posts = blog_posts;
       user.contracts = contracts;
-      user.owner_villas = ownerVillas;
       user.orders = orders;
     }
     return user;

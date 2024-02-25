@@ -24,10 +24,10 @@ export interface updateVillaReq {
 }
 
 export interface createVillaDetailReq {
-  utilities_id: ObjectId;
-  room_quantity?: number;
-  bath_room?: number;
-  bed_room?: number;
+  utilities_id: string;
+  room_quantity: number;
+  bath_room: number;
+  bed_room: number;
   description?: string;
 }
 

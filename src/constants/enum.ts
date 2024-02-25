@@ -59,3 +59,8 @@ export enum UserVerifyStatus {
   Verified, // đã xác thực email
   Banned // bị banned
 }
+
+export enum MediaType {
+  Image, //0
+  Video //1
+}
