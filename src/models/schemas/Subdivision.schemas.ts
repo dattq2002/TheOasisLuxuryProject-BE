@@ -32,7 +32,7 @@ export default class Subdivision {
     this.location = subdivision.location;
     this.insert_date = subdivision.insert_date || new Date();
     this.update_date = subdivision.update_date || new Date();
-    this.quantityVilla = subdivision.quantityVilla;
+    this.quantityVilla = subdivision.quantityVilla || 0;
     this.status = subdivision.status;
     this.project_id = subdivision.project_id;
     this.villas = subdivision.villas || [];

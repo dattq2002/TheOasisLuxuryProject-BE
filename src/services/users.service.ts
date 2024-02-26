@@ -378,7 +378,7 @@ class UsersServices {
       new Order({
         _id,
         ...req,
-        order_name: `Order Time Share ${villa.villa_name}`,
+        order_name: `${villa.villa_name}`,
         price: req.price,
         status: OrderStatus.PENDING,
         villa_time_share_id: new ObjectId(req.villa_time_share_id),
