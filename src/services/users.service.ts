@@ -214,6 +214,10 @@ class UsersServices {
     return result;
   }
   async deleteAccountById(id: string) {
+    const userAccount = await this.getRole(id);
+    if (userAccount === RoleName.ADMIN) {
+      throw new ErrorWithStatus({ message: USERS_MESSAGES.CANNOT_DELETE_ADMIN_ACCOUNT, status: HTTP_STATUS.FORBIDDEN });
+    }
     const result = await databaseService.users.deleteOne({ _id: new ObjectId(id) });
     if (!result.acknowledged)
       throw {

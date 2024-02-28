@@ -82,7 +82,8 @@ export const USERS_MESSAGES = {
   URL_IMAGE_MUST_BE_A_STRING: 'Url image must be a string',
   GET_ALL_ORDER_SUCCESS: 'Get all order success',
   UPDATE_ORDER_SUCCESS: 'Update order success',
-  UPLOAD_SUCCESS: 'Upload success'
+  UPLOAD_SUCCESS: 'Upload success',
+  CANNOT_DELETE_ADMIN_ACCOUNT: 'Cannot delete admin account'
 } as const;
 
 export const PROJECTS_MESSAGES = {
