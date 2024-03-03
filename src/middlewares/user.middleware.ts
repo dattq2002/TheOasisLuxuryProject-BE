@@ -668,7 +668,23 @@ export const changePasswordValidator = validate(
     {
       old_password: passwordSchema,
       new_password: passwordSchema,
-      confirm_password: confirmPasswordSchema
+      confirm_password: {
+        trim: true,
+        notEmpty: {
+          errorMessage: USERS_MESSAGES.CONFIRM_PASSWORD_IS_REQUIRED
+        },
+        isString: {
+          errorMessage: USERS_MESSAGES.CONFIRM_PASSWORD_MUST_BE_A_STRING
+        },
+        custom: {
+          options: async (value, { req }) => {
+            if (value !== req.body.new_password) {
+              throw new Error(USERS_MESSAGES.CONFIRM_PASSWORD_MUST_BE_THE_SAME_AS_PASSWORD);
+            }
+            return true;
+          }
+        }
+      }
     },
     ['body']
   )
