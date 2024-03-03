@@ -7,6 +7,7 @@ import {
   PaymentReqBody,
   RegisterReqBody,
   UpdateUserReqBody,
+  updateContractReqBody,
   updateOrderReqBody
 } from '~/models/requests/user.request';
 import { ObjectId } from 'mongodb';
@@ -561,6 +562,46 @@ class UsersServices {
       ]
     );
     return { message: 'Change password success' };
+  }
+
+  async getContractById(id: string) {
+    const contract = await databaseService.contracts.findOne({ _id: new ObjectId(id) });
+    return contract;
+  }
+
+  async updateContract(id: string, req: updateContractReqBody) {
+    const result = await databaseService.contracts.updateOne(
+      {
+        _id: new ObjectId(id)
+      },
+      [
+        {
+          $set: {
+            ...req,
+            updated_at: '$$NOW'
+          }
+        }
+      ]
+    );
+    const contract = await databaseService.contracts.findOne({ _id: new ObjectId(id) });
+    return contract;
+  }
+
+  async deleteContract(id: string) {
+    const result = await databaseService.contracts.updateOne(
+      {
+        _id: new ObjectId(id)
+      },
+      [
+        {
+          $set: {
+            deflag: true,
+            update_date: '$$NOW'
+          }
+        }
+      ]
+    );
+    return result.upsertedId ?? id;
   }
 }
 const usersService = new UsersServices();

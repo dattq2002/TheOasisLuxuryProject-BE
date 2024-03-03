@@ -88,6 +88,10 @@ export interface CreateContractReqBody {
   url_image: string;
 }
 
+export interface updateContractReqBody {
+  sign_contract: boolean;
+}
+
 export interface updateOrderReqBody {
   status: string;
   price?: number;

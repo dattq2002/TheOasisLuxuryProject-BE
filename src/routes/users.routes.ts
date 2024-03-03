@@ -4,10 +4,12 @@ import {
   confirmPaymentController,
   createBlogController,
   createContractController,
+  deleteContractController,
   emailVerifyController,
   forgotPasswordController,
   getAllContractController,
   getAllOrderController,
+  getContractByIdController,
   getUserByIdController,
   loginController,
   logoutController,
@@ -17,6 +19,7 @@ import {
   registerController,
   resendEmailVerifyController,
   resetPasswordController,
+  updateContractController,
   updateUserByIdController,
   verifyForgotPasswordTokenController
 } from '~/controllers/users.controller';
@@ -99,6 +102,13 @@ usersRouter.post(
   wrapAsync(createContractController)
 );
 
+usersRouter.get('/new/getContracts', accessTokenValidator, wrapAsync(getAllContractController));
+
+usersRouter.get('/contracts/:id', accessTokenValidator, wrapAsync(getContractByIdController));
+
+usersRouter.patch('/contracts/:id', accessTokenValidator, wrapAsync(updateContractController));
+
+usersRouter.delete('/contracts/:id', accessTokenValidator, wrapAsync(deleteContractController));
 //------------------------------------------------------------
 
 export default usersRouter;

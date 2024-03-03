@@ -19,6 +19,7 @@ import {
   VerifyEmailReqBody,
   VerifyForgotPasswordReqBody,
   changePasswordReqBody,
+  updateContractReqBody,
   updateOrderReqBody
 } from '~/models/requests/user.request';
 import User from '~/models/schemas/User.schemas';
@@ -299,13 +300,13 @@ export const updateOrderController = async (req: Request<ParamsDictionary, any, 
 };
 
 export const getAllContractController = async (req: Request, res: Response) => {
-  // const { user_id } = req.decoded_authorization as TokenPayload;
-  // if (![RoleName.ADMIN, RoleName.STAFF].includes(await usersService.getRole(user_id))) {
-  //   throw new ErrorWithStatus({
-  //     message: USERS_MESSAGES.USER_NOT_ACCESS,
-  //     status: HTTP_STATUS.UNAUTHORIZED
-  //   });
-  // }
+  const { user_id } = req.decoded_authorization as TokenPayload;
+  if (![RoleName.ADMIN, RoleName.STAFF].includes(await usersService.getRole(user_id))) {
+    throw new ErrorWithStatus({
+      message: USERS_MESSAGES.USER_NOT_ACCESS,
+      status: HTTP_STATUS.UNAUTHORIZED
+    });
+  }
   const result = await usersService.getAllContract();
   return res.json({
     message: USERS_MESSAGES.GET_ALL_CONTRACT_SUCCESS,
@@ -320,5 +321,41 @@ export const changePasswordController = async (
   const { user_id } = req.decoded_authorization as TokenPayload;
   const { old_password, new_password, confirm_password } = req.body as changePasswordReqBody;
   const result = await usersService.changePassword(user_id, { old_password, new_password, confirm_password });
+  return res.json(result);
+};
+
+export const getContractByIdController = async (req: Request, res: Response) => {
+  const { user_id } = req.decoded_authorization as TokenPayload;
+  const { id } = req.params;
+  if (![RoleName.ADMIN, RoleName.STAFF].includes(await usersService.getRole(user_id))) {
+    throw new ErrorWithStatus({
+      message: USERS_MESSAGES.USER_NOT_ACCESS,
+      status: HTTP_STATUS.UNAUTHORIZED
+    });
+  }
+  const result = await usersService.getContractById(id);
+  return res.json(result);
+};
+
+export const updateContractController = async (
+  req: Request<ParamsDictionary, any, updateContractReqBody>,
+  res: Response
+) => {
+  const { user_id } = req.decoded_authorization as TokenPayload;
+  const { id } = req.params;
+  const result = await usersService.updateContract(id, req.body);
+  return res.json(result);
+};
+
+export const deleteContractController = async (req: Request, res: Response) => {
+  const { user_id } = req.decoded_authorization as TokenPayload;
+  const { id } = req.params;
+  if (![RoleName.ADMIN, RoleName.STAFF].includes(await usersService.getRole(user_id))) {
+    throw new ErrorWithStatus({
+      message: USERS_MESSAGES.USER_NOT_ACCESS,
+      status: HTTP_STATUS.UNAUTHORIZED
+    });
+  }
+  const result = await usersService.deleteContract(id);
   return res.json(result);
 };
