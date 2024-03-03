@@ -376,6 +376,7 @@ class UsersServices {
       _id: new ObjectId(req.villa_time_share_id)
     });
     if (!villaTimeShare) throw new Error('Villa time share not found');
+    if (villaTimeShare.user_id) throw new Error('Villa time share is paid by another user');
     const villa = await databaseService.villas.findOne({ _id: villaTimeShare.villa_id });
     if (!villa) throw new Error('Villa not found');
     //create new order
