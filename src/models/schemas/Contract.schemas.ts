@@ -6,9 +6,9 @@ interface ContractType {
   insert_date?: Date;
   update_date?: Date;
   deflag?: boolean;
-  user_id: ObjectId;
   url_image?: string;
   sign_contract?: boolean;
+  order_id: ObjectId;
 }
 
 export default class Contract {
@@ -17,7 +17,7 @@ export default class Contract {
   insert_date: Date;
   update_date: Date;
   deflag: boolean;
-  user_id: ObjectId;
+  order_id: ObjectId;
   url_image: string;
   sign_contract: boolean;
   constructor(contract: ContractType) {
@@ -26,7 +26,7 @@ export default class Contract {
     this.insert_date = contract.insert_date || new Date();
     this.update_date = contract.update_date || new Date();
     this.deflag = contract.deflag || false;
-    this.user_id = contract.user_id;
+    this.order_id = contract.order_id;
     this.url_image = contract.url_image || '';
     this.sign_contract = contract.sign_contract || false;
   }

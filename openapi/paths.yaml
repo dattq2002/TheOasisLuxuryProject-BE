@@ -30,15 +30,375 @@ paths:
     responses:
       200:
         description: Register success
+      400:
+        description: Register failed
+  /api/v1/users/login:
+    post:
+      description: Login user
+      tags:
+        - Users
+      requestBody:
+        description: Login user
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                message:
-                  type: string
-                  example: Register success
-                result:
-                  $ref: '#/components/schemas/User'
-      400:
-        description: Register failed
+              $ref: '#/components/schemas/LoginReqBody'
+        required: true
+      responses:
+        200:
+          description: Login success
+        400:
+          description: Login failed
+  /api/v1/users/{id}:
+    get:
+      description: Get User by Id
+      tags:
+        - Users
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: User Id
+          schema:
+            type: string
+            format: MongoId
+      responses:
+        200:
+          description: Get user success
+        400:
+          description: Get user failed
+    patch:
+      description: Update User by Id
+      tags:
+        - Users
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: User Id
+          schema:
+            type: string
+            format: MongoId
+      requestBody:
+        description: Update User by Id
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserReqBody'
+        required: true
+      responses:
+        200:
+          description: Update user success
+        400:
+          description: Update user failed
+  /api/v1/users/logout:
+    post:
+      description: Logout user
+      tags:
+        - Users
+      requestBody:
+        description: Logout user
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LogoutReqBody'
+        required: true
+      responses:
+        200:
+          description: Logout success
+        400:
+          description: Logout failed
+  /api/v1/users/verify-email/{token}:
+    get:
+      description: Verify email
+      tags:
+        - Users
+      parameters:
+        - name: token
+          in: path
+          required: true
+          description: Token
+          schema:
+            type: string
+      responses:
+        200:
+          description: Verify email success
+        400:
+          description: Verify email failed
+  /api/v1/users/resend-verify-email:
+    post:
+      description: Resend verify email
+      tags:
+        - Users
+      requestBody:
+        description: Resend verify email
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResendVerifyEmailReqBody'
+        required: true
+      responses:
+        200:
+          description: Resend verify email success
+        400:
+          description: Resend verify email failed
+
+  /api/v1/users/forgot-password:
+    post:
+      description: Forgot password
+      tags:
+        - Users
+      requestBody:
+        description: Forgot password
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ForgotPasswordReqBody'
+        required: true
+      responses:
+        200:
+          description: Forgot password success
+        400:
+          description: Forgot password failed
+  /api/v1/users/verify-forgot-password-token/{token}:
+    get:
+      description: Verify forgot password token
+      tags:
+        - Users
+      parameters:
+        - name: token
+          in: path
+          required: true
+          description: Token
+          schema:
+            type: string
+      responses:
+        200:
+          description: Verify forgot password token success
+        400:
+          description: Verify forgot password token failed
+  /api/v1/users/reset-password:
+    post:
+      description: Reset password
+      tags:
+        - Users
+      requestBody:
+        description: Reset password
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetPasswordReqBody'
+        required: true
+      responses:
+        200:
+          description: Reset password success
+        400:
+          description: Reset password failed
+  /api/v1/users/refresh-token:
+    post:
+      description: Refresh token
+      tags:
+        - Users
+      requestBody:
+        description: Refresh token
+        content:
+          application/json:
+            schema:
+                $ref: '#/components/schemas/RefreshTokenReqBody'
+        required: true
+      responses:
+        200:
+          description: Refresh token success
+        400:
+          description: Refresh token failed
+
+  /api/v1/users/order:
+    post:
+      description: Order
+      tags:
+        - Users
+      requestBody:
+        description: Order
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderReqBody'
+        required: true
+      responses:
+        200:
+          description: Order success
+        400:
+          description: Order failed
+  /api/v1/users/confirm-payment:
+    post:
+      description: Confirm payment
+      tags:
+        - Users
+      requestBody:
+        description: Confirm payment
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfirmPaymentReqBody'
+        required: true
+      responses:
+        200:
+          description: Confirm payment success
+        400:
+          description: Confirm payment failed
+
+  /api/v1/users/create-blog:
+    post:
+      description: Create blog
+      tags:
+        - Users
+      requestBody:
+        description: Create blog
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateBlogReqBody'
+        required: true
+      responses:
+        200:
+          description: Create blog success
+        400:
+          description: Create blog failed
+  /api/v1/users/create-contract:
+    post:
+      description: Create contract
+      tags:
+        - Users
+      requestBody:
+        description: Create contract
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateContractReqBody'
+        required: true
+      responses:
+        200:
+          description: Create contract success
+        400:
+          description: Create contract failed
+  /api/v1/orders:
+    get:
+      description: Get all orders
+      tags:
+        - Orders
+      responses:
+        200:
+          description: Get all orders success
+        400:
+          description: Get all orders failed
+  /api/v1/orders/{id}:
+    patch:
+      description: Update order by Id
+      tags:
+        - Orders
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Order Id
+          schema:
+            type: string
+            format: MongoId
+      requestBody:
+        description: Update order by Id
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateOrderReqBody'
+        required: true
+      responses:
+        200:
+          description: Update order success
+        400:
+          description: Update order failed
+  
+  /api/v1/projects:
+    get:
+      description: Get all projects
+      tags:
+        - Projects
+      responses:
+        200:
+          description: Get all projects success
+        400:
+          description: Get all projects failed
+    post:
+      description: Create project
+      tags:
+        - Projects
+      requestBody:
+        description: Create project
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProjectReqBody'
+        required: true
+      responses:
+        200:
+          description: Create project success
+        400:
+          description: Create project failed
+  /api/v1/projects/{id}:
+    get:
+      description: Get project by Id
+      tags:
+        - Projects
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Project Id
+          schema:
+            type: string
+            format: MongoId
+      responses:
+        200:
+          description: Get project success
+        400:
+          description: Get project failed
+    patch:
+      description: Update project by Id
+      tags:
+        - Projects
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Project Id
+          schema:
+            type: string
+            format: MongoId
+      requestBody:
+        description: Update project by Id
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProjectReqBody'
+        required: true
+      responses:
+        200:
+          description: Update project success
+        400:
+          description: Update project failed
+    delete:
+      description: Delete project by Id
+      tags:
+        - Projects
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Project Id
+          schema:
+            type: string
+            format: MongoId
+      responses:
+        200:
+          description: Delete project success
+        400:
+          description: Delete project failed

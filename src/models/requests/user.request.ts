@@ -83,7 +83,7 @@ export interface CreateBlogReqBody {
 }
 
 export interface CreateContractReqBody {
-  user_id: string;
+  order_id: string;
   contract_name: string;
   url_image: string;
 }
@@ -92,4 +92,10 @@ export interface updateOrderReqBody {
   status: string;
   price?: number;
   order_name: string;
+}
+
+export interface changePasswordReqBody {
+  old_password: string;
+  new_password: string;
+  confirm_password: string;
 }

@@ -488,7 +488,7 @@ class UsersServices {
         _id,
         insert_date: new Date(),
         update_date: new Date(),
-        user_id: new ObjectId(req.user_id)
+        order_id: new ObjectId(req.order_id)
       })
     );
     const contract = await databaseService.contracts.findOne({ _id: new ObjectId(result.insertedId) });
@@ -515,6 +515,52 @@ class UsersServices {
     );
     const order = await databaseService.orders.findOne({ _id: new ObjectId(id) });
     return order;
+  }
+
+  async getAllContract() {
+    const result = await databaseService.contracts.find({}).toArray();
+    return result;
+  }
+
+  async changePassword(
+    user_id: string,
+    {
+      old_password,
+      new_password,
+      confirm_password
+    }: {
+      old_password: string;
+      new_password: string;
+      confirm_password: string;
+    }
+  ) {
+    const user = await databaseService.users.findOne({ _id: new ObjectId(user_id) });
+    if (!user) throw new Error('User not found');
+    if (user.password !== hashPassword(old_password)) {
+      throw new ErrorWithStatus({
+        message: 'Old password is incorrect',
+        status: HTTP_STATUS.BAD_REQUEST
+      });
+    }
+    if (new_password !== confirm_password)
+      throw new ErrorWithStatus({
+        message: 'New password and confirm password not match',
+        status: HTTP_STATUS.BAD_REQUEST
+      });
+    await databaseService.users.updateOne(
+      {
+        _id: new ObjectId(user_id)
+      },
+      [
+        {
+          $set: {
+            password: hashPassword(new_password),
+            updated_at: '$$NOW'
+          }
+        }
+      ]
+    );
+    return { message: 'Change password success' };
   }
 }
 const usersService = new UsersServices();

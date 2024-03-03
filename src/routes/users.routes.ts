@@ -1,10 +1,12 @@
 import { Router } from 'express';
 import {
+  changePasswordController,
   confirmPaymentController,
   createBlogController,
   createContractController,
   emailVerifyController,
   forgotPasswordController,
+  getAllContractController,
   getAllOrderController,
   getUserByIdController,
   loginController,
@@ -20,6 +22,7 @@ import {
 } from '~/controllers/users.controller';
 import {
   accessTokenValidator,
+  changePasswordValidator,
   confirmPaymentValidator,
   createBlogValidator,
   createContractValidator,
@@ -67,6 +70,13 @@ usersRouter.post(
   wrapAsync(resetPasswordController)
 );
 
+usersRouter.post(
+  '/change-password',
+  accessTokenValidator,
+  changePasswordValidator,
+  wrapAsync(changePasswordController)
+);
+
 usersRouter.post('/refresh-token', refreshTokenValidator, wrapAsync(refreshController));
 
 usersRouter.post('/order', accessTokenValidator, orderValidator, wrapAsync(orderController));
@@ -85,7 +95,7 @@ usersRouter.post('/create-blog', accessTokenValidator, createBlogValidator, wrap
 usersRouter.post(
   '/create-contract',
   accessTokenValidator,
-  createContractValidator,
+
   wrapAsync(createContractController)
 );
 

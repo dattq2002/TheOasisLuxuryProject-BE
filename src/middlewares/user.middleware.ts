@@ -1,12 +1,13 @@
-import { Request } from 'express';
+import { NextFunction, Request } from 'express';
 import { ParamSchema, checkSchema } from 'express-validator';
 import { JsonWebTokenError } from 'jsonwebtoken';
 import { capitalize } from 'lodash';
 import { ObjectId } from 'mongodb';
-import { OrderStatus, PaymentType, UserVerifyStatus } from '~/constants/enum';
+import { OrderStatus, PaymentType, RoleName, UserVerifyStatus } from '~/constants/enum';
 import HTTP_STATUS from '~/constants/httpStatus';
 import { USERS_MESSAGES } from '~/constants/message';
 import { ErrorWithStatus } from '~/models/Error';
+import { TokenPayload } from '~/models/requests/user.request';
 import databaseService from '~/services/database.service';
 import usersService from '~/services/users.service';
 import { hashPassword } from '~/utils/helpers';
@@ -616,6 +617,58 @@ export const updateOrderVidator = validate(
         trim: true,
         isString: true
       }
+    },
+    ['body']
+  )
+);
+
+export const checkRoleAdminAccess = async (req: Request, res: Response, next: NextFunction) => {
+  const { user_id } = req.decoded_authorization as TokenPayload;
+  if ((await usersService.getRole(user_id)) !== RoleName.ADMIN) {
+    throw new ErrorWithStatus({
+      message: USERS_MESSAGES.USER_NOT_ACCESS,
+      status: HTTP_STATUS.UNAUTHORIZED
+    });
+  }
+  next();
+};
+export const checkRoleUserAccess = async (req: Request, res: Response, next: NextFunction) => {
+  const { user_id } = req.decoded_authorization as TokenPayload;
+  if ((await usersService.getRole(user_id)) !== RoleName.USER) {
+    throw new ErrorWithStatus({
+      message: USERS_MESSAGES.USER_NOT_ACCESS,
+      status: HTTP_STATUS.UNAUTHORIZED
+    });
+  }
+  next();
+};
+export const checkRoleStaffAccess = async (req: Request, res: Response, next: NextFunction) => {
+  const { user_id } = req.decoded_authorization as TokenPayload;
+  if ((await usersService.getRole(user_id)) !== RoleName.STAFF) {
+    throw new ErrorWithStatus({
+      message: USERS_MESSAGES.USER_NOT_ACCESS,
+      status: HTTP_STATUS.UNAUTHORIZED
+    });
+  }
+  next();
+};
+export const checkRoleAdminOrStaffAccess = async (req: Request, res: Response, next: NextFunction) => {
+  const { user_id } = req.decoded_authorization as TokenPayload;
+  if (![RoleName.ADMIN, RoleName.STAFF].includes(await usersService.getRole(user_id))) {
+    throw new ErrorWithStatus({
+      message: USERS_MESSAGES.USER_NOT_ACCESS,
+      status: HTTP_STATUS.UNAUTHORIZED
+    });
+  }
+  next();
+};
+
+export const changePasswordValidator = validate(
+  checkSchema(
+    {
+      old_password: passwordSchema,
+      new_password: passwordSchema,
+      confirm_password: confirmPasswordSchema
     },
     ['body']
   )

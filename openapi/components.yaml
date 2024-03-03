@@ -38,3 +38,149 @@ components:
            format: ISO8601
          phone_number:
            type: string
+
+     LoginReqBody:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+
+     UpdateUserReqBody:
+        type: object
+        properties:
+          full_name:
+            type: string
+          phone_number:
+            type: string
+          birthday:
+            type: string
+            format: ISO8601
+          gender:
+            type: string
+          url_image:
+            type: string
+     LogoutReqBody:
+       type: object
+       properties:
+         refresh_token:
+           type: string
+     ResendVerifyEmailReqBody:
+       type: object
+       properties:
+         user_id:
+           type: string
+           format: MongoId
+     ForgotPasswordReqBody:
+       type: object
+       properties:
+         email:
+           type: string
+     ResetPasswordReqBody:
+      type: object
+      properties:
+        forgot_password_token:
+          type: string
+        password:
+          type: string
+        confirm_password:
+          type: string
+     RefreshTokenReqBody:
+       type: object
+       properties:
+         refresh_token:
+           type: string
+     OrderReqBody:
+        type: object
+        properties:
+          user_id:
+            type: string
+            format: MongoId
+          villa_time_share_id:
+            type: string
+            format: MongoId
+          price:
+            type: number
+          address:
+            type: string
+          start_date:
+            type: string
+            format: ISO8601
+          description:
+            type: string
+
+     ConfirmPaymentReqBody:
+        type: object
+        properties:
+          payment_id:
+            type: string
+            format: MongoId
+          order_id:
+            type: string
+            format: MongoId
+      
+     CreateBlogReqBody:
+        type: object
+        properties:
+          user_id:
+            type: string
+            format: MongoId
+          title:
+            type: string
+          description_detail:
+            type: string
+
+     CreateContractReqBody:
+        type: object
+        properties:
+          user_id:
+            type: string
+            format: MongoId
+          contract_name:
+            type: string
+          url_image:
+            type: string
+
+     UpdateOrderReqBody:
+        type: object
+        properties:
+          status:
+            type: string
+          order_name:
+            type: string
+          price:
+            type: number
+
+     CreateProjectReqBody:
+        type: object
+        properties:
+          project_name:
+            type: string
+          description:
+            type: string
+          start_date:
+            type: string
+            format: ISO8601
+          end_date:
+            type: string
+            format: ISO8601
+          status:
+            type: string
+
+     UpdateProjectReqBody:
+        type: object
+        properties:
+          project_name:
+            type: string
+          description:
+            type: string
+          start_date:
+            type: string
+            format: ISO8601
+          end_date:
+            type: string
+            format: ISO8601
+          status:
+            type: string
+          

@@ -47,7 +47,7 @@ initFolder();
 const app = express();
 app.use(
   cors({
-    origin: '*' //cho phép tất cả các đường dẫn gọi API
+    origin: '*' // chỉ cho phép các domain khác nhau truy cập
   })
 );
 app.use(express.json());
@@ -67,8 +67,8 @@ app.use('/api/v1/utilities', utilitiesRouter);
 app.use('/api/v1/orders', ordersRouter);
 app.use('/api/v1/static', staticRouter);
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification));
+app.use('/api-documents', swaggerUi.serve, swaggerUi.setup(openapiSpecification));
 app.use(defaultErrorHandler);
 app.listen(port, () => {
-  console.log(`The OaSis Luxury này đang chạy swagger trên http://localhost:${port}/api-docs`);
+  console.log(`The OaSis Luxury này đang chạy swagger trên http://localhost:${port}/api-documents`);
 });

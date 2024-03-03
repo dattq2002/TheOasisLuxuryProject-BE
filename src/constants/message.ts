@@ -83,7 +83,8 @@ export const USERS_MESSAGES = {
   GET_ALL_ORDER_SUCCESS: 'Get all order success',
   UPDATE_ORDER_SUCCESS: 'Update order success',
   UPLOAD_SUCCESS: 'Upload success',
-  CANNOT_DELETE_ADMIN_ACCOUNT: 'Cannot delete admin account'
+  CANNOT_DELETE_ADMIN_ACCOUNT: 'Cannot delete admin account',
+  GET_ALL_CONTRACT_SUCCESS: 'Get all contract success'
 } as const;
 
 export const PROJECTS_MESSAGES = {
