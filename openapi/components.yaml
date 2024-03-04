@@ -183,4 +183,18 @@ components:
             format: ISO8601
           status:
             type: string
+     ChangePasswordReqBody:
+        type: object
+        properties:
+          old_password:
+            type: string
+          new_password:
+            type: string
+          confirm_password:
+            type: string
+     UpdateContractReqBody:
+        type: object
+        properties:
+          sign_contract:
+            type: boolean
           

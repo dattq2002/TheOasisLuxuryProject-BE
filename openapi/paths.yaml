@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: Swagger Petstore - OpenAPI 3.0
+  title: Swagger The Oasis Luxury API server - OpenAPI 3.0
   description: |-
     This is a The Oasis Luxury API server.
   termsOfService: http://swagger.io/terms/
@@ -281,6 +281,93 @@ paths:
           description: Create contract success
         400:
           description: Create contract failed
+  /api/v1/users/change-password:
+    post:
+      description: Change password
+      tags:
+        - Users
+      requestBody:
+        description: Change password
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordReqBody'
+        required: true
+      responses:
+        200:
+          description: Change password success
+        400:
+          description: Change password failed   
+  /api/v1/users/new/getContracts:
+    get:
+      description: Get contracts
+      tags:
+        - Users
+      responses:
+        200:
+          description: Get contracts success
+        400:
+          description: Get contracts failed
+  /api/v1/users/contracts/{id}:
+    get:
+      description: Get contract by Id
+      tags:
+        - Users
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Contract Id
+          schema:
+            type: string
+            format: MongoId
+      responses:
+        200:
+          description: Get contract success
+        400:
+          description: Get contract failed
+    patch:
+      description: Update contract by Id
+      tags:
+        - Users
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Contract Id
+          schema:
+            type: string
+            format: MongoId
+      requestBody:
+        description: Update contract by Id
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateContractReqBody'
+        required: true
+      responses:
+        200:
+          description: Update contract success
+        400:
+          description: Update contract failed
+    delete:
+      description: Delete contract by Id
+      tags:
+        - Users
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Contract Id
+          schema:
+            type: string
+            format: MongoId
+      responses:
+        200:
+          description: Delete contract success
+        400:
+          description: Delete contract failed
+
   /api/v1/orders:
     get:
       description: Get all orders
@@ -316,6 +403,23 @@ paths:
           description: Update order success
         400:
           description: Update order failed
+    get:
+      description: Get order by Id
+      tags:
+        - Orders
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Order Id
+          schema:
+            type: string
+            format: MongoId
+      responses:
+        200:
+          description: Get order success
+        400:
+          description: Get order failed        
   
   /api/v1/projects:
     get:
@@ -402,3 +506,16 @@ paths:
           description: Delete project success
         400:
           description: Delete project failed
+
+  /api/v1/subdivisions:
+    get:
+      security:
+        - bearerAuth: []
+      description: Get All Subdivisions
+      tags:
+        - Subdivisions
+      responses:
+        200:
+          description: Get all subdivisions success
+        400:
+          description: Get all subdivisions failed        

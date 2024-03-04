@@ -607,13 +607,11 @@ export const updateOrderVidator = validate(
         },
         isString: true
       },
-      price: {
-        isNumeric: true
-      },
+      // },
+      // price: {
+      //   isNumeric: true
+      // },
       order_name: {
-        notEmpty: {
-          errorMessage: 'Order name is required !!'
-        },
         trim: true,
         isString: true
       }

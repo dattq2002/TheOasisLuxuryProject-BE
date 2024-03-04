@@ -502,6 +502,10 @@ class UsersServices {
   }
 
   async updateOrder(id: string, req: updateOrderReqBody) {
+    //cập nhật order
+    const order = await databaseService.orders.findOne({ _id: new ObjectId(id) });
+    if (!order) throw new ErrorWithStatus({ message: 'Order not found', status: HTTP_STATUS.NOT_FOUND });
+    if (!req.order_name) req.order_name = order.order_name;
     const result = await databaseService.orders.updateOne(
       {
         _id: new ObjectId(id)
@@ -515,7 +519,7 @@ class UsersServices {
         }
       ]
     );
-    const order = await databaseService.orders.findOne({ _id: new ObjectId(id) });
+
     return order;
   }
 

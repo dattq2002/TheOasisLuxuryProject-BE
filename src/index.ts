@@ -37,7 +37,12 @@ const options: swaggerJSDoc.Options = {
           scheme: 'bearer',
           bearerFormat: 'JWT'
         }
-      }
+      },
+      security: [
+        {
+          BearerAuth: []
+        }
+      ]
     }
   },
   apis: ['./openapi/*.yaml']
