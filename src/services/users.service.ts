@@ -604,6 +604,11 @@ class UsersServices {
     );
     return result.upsertedId ?? id;
   }
+
+  async getOrderById(id: string) {
+    const order = await databaseService.orders.findOne({ _id: new ObjectId(id) });
+    return order;
+  }
 }
 const usersService = new UsersServices();
 export default usersService;

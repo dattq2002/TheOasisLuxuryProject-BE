@@ -142,3 +142,12 @@ export const createVillaDetailController = async (
     result
   });
 };
+
+export const getVillaTimeShareByVillaIdController = async (req: Request, res: Response, next: NextFunction) => {
+  const { villaId } = req.params;
+  const result = await villasServices.getVillaTimeShareByVillaId(villaId);
+  res.json({
+    message: VILLAS_MESSAGES.GET_VILLA_TIME_SHARE_BY_VILLA_ID_SUCCESS,
+    result
+  });
+};

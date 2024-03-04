@@ -130,6 +130,15 @@ class VillaServices {
     const newVillaDetail = await databaseService.villaDetails.findOne({ _id: result.insertedId });
     return newVillaDetail;
   }
+
+  async getVillaTimeShareByVillaId(villaId: string) {
+    const result = await databaseService.villaTimeShares
+      .find({
+        villa_id: new ObjectId(villaId)
+      })
+      .toArray();
+    return result;
+  }
 }
 
 const villasServices = new VillaServices();

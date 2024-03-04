@@ -6,6 +6,7 @@ import {
   deleteVillaController,
   getVillaByIdController,
   getVillaBySubdivisionIdController,
+  getVillaTimeShareByVillaIdController,
   getVillasController,
   updateVillaController,
   uploadImageVillaController
@@ -32,5 +33,7 @@ villaRouter.get('/subdivision/:id', accessTokenValidator, wrapAsync(getVillaBySu
 villaRouter.post('/upload-image', accessTokenValidator, wrapAsync(uploadImageVillaController));
 
 villaRouter.post('/create-villa-detail', accessTokenValidator, wrapAsync(createVillaDetailController));
+
+villaRouter.get('/villa-time-share/:villaId', accessTokenValidator, wrapAsync(getVillaTimeShareByVillaIdController));
 
 export default villaRouter;
