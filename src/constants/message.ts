@@ -115,7 +115,8 @@ export const VILLAS_MESSAGES = {
   GET_VILLA_BY_SUBDIVISION_ID_SUCCESS: 'Get villa by subdivision id success',
   UPLOAD_IMAGE_VILLA_SUCCESS: 'Upload image villa success',
   CREATE_VILLA_DETAIL_SUCCESS: 'Create villa detail success',
-  GET_VILLA_TIME_SHARE_BY_VILLA_ID_SUCCESS: 'Get villa time share by villa id success'
+  GET_VILLA_TIME_SHARE_BY_VILLA_ID_SUCCESS: 'Get villa time share by villa id success',
+  VILLA_NOT_FOUND: 'Villa not found'
 } as const;
 
 export const UTILITIES_MESSAGES = {

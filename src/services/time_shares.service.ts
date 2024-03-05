@@ -38,14 +38,13 @@ class TimeShareService {
         status: HTTP_STATUS.INTERNAL_SERVER_ERROR
       });
     }
-    const newTimeShare = await databaseService.timeshares.findOne({
-      _id: result.insertedId
-    });
+    const newTimeShare = await this.getTimeShareById(result.insertedId.toString());
     return newTimeShare;
   }
 
   async updateTimeShare(id: string, timeShare: UpdateTimeShareReqBody) {
-    const result = await databaseService.timeshares.updateOne({ _id: new ObjectId(id) }, [
+    const time_share = await this.getTimeShareById(id);
+    const result = await databaseService.timeshares.updateOne({ _id: time_share?._id }, [
       {
         $set: timeShare
       }
@@ -56,10 +55,7 @@ class TimeShareService {
         status: HTTP_STATUS.NOT_FOUND
       });
     }
-    const updatedTimeShare = await databaseService.timeshares.findOne({
-      _id: new ObjectId(id)
-    });
-    return updatedTimeShare;
+    return time_share;
   }
 
   async deleteTimeShare(id: string) {

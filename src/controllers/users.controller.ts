@@ -285,7 +285,7 @@ export const getAllOrderController = async (req: Request, res: Response) => {
 export const updateOrderController = async (req: Request<ParamsDictionary, any, updateOrderReqBody>, res: Response) => {
   const { user_id } = req.decoded_authorization as TokenPayload;
   const { id } = req.params;
-  if ((await usersService.getRole(user_id)) !== RoleName.ADMIN) {
+  if (![RoleName.ADMIN, RoleName.USER].includes(await usersService.getRole(user_id))) {
     throw new ErrorWithStatus({
       message: USERS_MESSAGES.USER_NOT_ACCESS,
       status: HTTP_STATUS.UNAUTHORIZED

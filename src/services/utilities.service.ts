@@ -1,6 +1,8 @@
 import { ObjectId } from 'mongodb';
 import databaseService from './database.service';
 import Utilities from '~/models/schemas/Utilities.schemas';
+import { ErrorWithStatus } from '~/models/Error';
+import HTTP_STATUS from '~/constants/httpStatus';
 
 class UtilitiesService {
   async createUtilities(utilities_name: string) {
@@ -20,10 +22,14 @@ class UtilitiesService {
   }
   async getUtilityById(id: string) {
     const result = await databaseService.utilities.findOne({ _id: new ObjectId(id) });
+    if (!result) {
+      throw new ErrorWithStatus({ message: 'Utilities not found', status: HTTP_STATUS.NOT_FOUND });
+    }
     return result;
   }
   async deleteUtility(id: string) {
-    const result = await databaseService.utilities.deleteOne({ _id: new ObjectId(id) });
+    const utilities = await this.getUtilityById(id);
+    const result = await databaseService.utilities.deleteOne({ _id: utilities._id });
     return result;
   }
 }

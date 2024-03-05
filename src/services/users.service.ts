@@ -121,6 +121,12 @@ class UsersServices {
   }
   async getUserById(id: string) {
     const user = await databaseService.users.findOne({ _id: new ObjectId(id) });
+    if (!user) {
+      throw new ErrorWithStatus({
+        message: USERS_MESSAGES.USER_NOT_FOUND,
+        status: HTTP_STATUS.NOT_FOUND
+      });
+    }
     //tìm tất cả các blog post của user này
     const blog_posts = await databaseService.blogPosts.find({ user_id: new ObjectId(id) }).toArray();
     //tìm tất cả các contract của user này
@@ -153,15 +159,16 @@ class UsersServices {
     return { access_token, refresh_token, user_id };
   }
   async updateUserProfileById(id: string, payload: UpdateUserReqBody) {
+    const user = await this.getUserById(id);
     const result = await databaseService.users.updateOne(
       {
-        _id: new ObjectId(id)
+        _id: user._id
       },
       [
         {
           $set: {
             ...payload,
-            updated_at: '$$NOW'
+            update_date: '$$NOW'
           }
         }
       ]
@@ -187,27 +194,25 @@ class UsersServices {
         birthday: new Date(payload.birthday)
       })
     );
-    //trả ra thông tin user vừa tạo
-    const user = await databaseService.users.findOne({ _id: new ObjectId(result.insertedId) });
+    const user = await this.getUserById(result.insertedId.toString());
     return user;
   }
   //update account dành cho admin
   async updateAccountById(id: string, payload: updateAccountReq) {
-    const result = await databaseService.users.updateOne(
+    const user = await this.getUserById(id);
+    await databaseService.users.updateOne(
       {
-        _id: new ObjectId(id)
+        _id: user._id
       },
       [
         {
           $set: {
             ...payload,
-            updated_at: '$$NOW'
+            update_date: '$$NOW'
           }
         }
       ]
     );
-    //trả ra thông tin user vừa update
-    const user = await databaseService.users.findOne({ _id: new ObjectId(id) });
     return user;
   }
   async getAccount() {
@@ -228,9 +233,8 @@ class UsersServices {
   }
   //hàm lấy ra role của user
   async getRole(user_id: string) {
-    const user = await databaseService.users.findOne({ _id: new ObjectId(user_id) });
-    if (!user) throw new Error(USERS_MESSAGES.USER_NOT_FOUND);
-    return user?.role_name;
+    const user = await this.getUserById(user_id);
+    return user.role_name;
   }
   async verifyEmail(user_id: string) {
     //cập nhật lại user'
@@ -286,13 +290,7 @@ class UsersServices {
         }
       ]
     );
-    const user = await databaseService.users.findOne({ _id: new ObjectId(user_id) });
-    if (!user) {
-      throw new ErrorWithStatus({
-        message: USERS_MESSAGES.USER_NOT_FOUND,
-        status: HTTP_STATUS.NOT_FOUND
-      });
-    }
+    const user = await this.getUserById(user_id);
     //gửi email cho user
     sendMail({ toEmail: user.email, token: email_verify_token, type: 'resend-verify-email' });
     return {
@@ -311,11 +309,6 @@ class UsersServices {
         }
       }
     ]);
-    //gữi email cho người dùng đường link có cấu trúc như này
-    //http://appblabla/forgot-password?token=xxxx
-    //xxxx trong đó xxxx là forgot_password_token
-    //sau này ta sẽ dùng aws để làm chức năng gữi email, giờ ta k có
-    //ta log ra để test
     sendMail({ toEmail: email, token: forgot_password_token, type: 'verify-forgot-password-token' });
     return {
       message: USERS_MESSAGES.CHECK_EMAIL_TO_RESET_PASSWORD
@@ -323,17 +316,17 @@ class UsersServices {
   }
 
   async resetPassword({ user_id, password }: { user_id: string; password: string }) {
-    //dựa vào user_id để tìm user
+    const user = await this.getUserById(user_id);
     await databaseService.users.updateOne(
       {
-        _id: new ObjectId(user_id)
+        _id: user._id
       },
       [
         {
           $set: {
             password: hashPassword(password),
             forgot_password_token: '',
-            updated_at: '$$NOW'
+            update_date: '$$NOW'
           }
         }
       ]
@@ -375,10 +368,15 @@ class UsersServices {
     const villaTimeShare = await databaseService.villaTimeShares.findOne({
       _id: new ObjectId(req.villa_time_share_id)
     });
-    if (!villaTimeShare) throw new Error('Villa time share not found');
-    if (villaTimeShare.user_id) throw new Error('Villa time share is paid by another user');
+    if (!villaTimeShare)
+      throw new ErrorWithStatus({ message: 'Villa time share not found', status: HTTP_STATUS.NOT_FOUND });
+    if (villaTimeShare.user_id)
+      throw new ErrorWithStatus({
+        message: 'Villa time share is paid by another user',
+        status: HTTP_STATUS.BAD_REQUEST
+      });
     const villa = await databaseService.villas.findOne({ _id: villaTimeShare.villa_id });
-    if (!villa) throw new Error('Villa not found');
+    if (!villa) throw new ErrorWithStatus({ message: 'Villa not found', status: HTTP_STATUS.NOT_FOUND });
     //create new order
     const newOrder = await databaseService.orders.insertOne(
       new Order({
@@ -397,14 +395,13 @@ class UsersServices {
 
   async payment(req: PaymentReqBody) {
     const _id = new ObjectId();
-    const order = await databaseService.orders.findOne({ _id: new ObjectId(req.order_id) });
-    if (!order) throw new Error('Order not found');
+    const order = await this.getOrderById(req.order_id);
     //tạo payment
     const payment = await databaseService.payments.insertOne(
       new Payment({
         ...req,
         _id,
-        order_id: new ObjectId(req.order_id),
+        order_id: order._id,
         status: PaymentStatus.PENDING
       })
     );
@@ -413,18 +410,17 @@ class UsersServices {
   }
 
   async confirmPayment({ order_id, payment_id }: { order_id: string; payment_id: string }) {
-    const order = await databaseService.orders.findOne({ _id: new ObjectId(order_id) });
-    if (!order) throw new Error('Order not found');
+    const order = await this.getOrderById(order_id);
     await databaseService.orders.updateOne(
       {
-        _id: new ObjectId(order_id)
+        _id: order._id
       },
       [
         {
           $set: {
             status: OrderStatus.CONFIRMED,
             payment_id: new ObjectId(payment_id),
-            updated_at: '$$NOW'
+            update_date: '$$NOW'
           }
         }
       ]
@@ -437,7 +433,7 @@ class UsersServices {
         {
           $set: {
             status: PaymentStatus.PAID,
-            updated_at: '$$NOW'
+            update_date: '$$NOW'
           }
         }
       ]
@@ -457,7 +453,7 @@ class UsersServices {
         {
           $set: {
             user_id: new ObjectId(order.user_id),
-            updated_at: '$$NOW'
+            update_date: '$$NOW'
           }
         }
       ]
@@ -466,15 +462,14 @@ class UsersServices {
   }
 
   async createBlog(req: CreateBlogReqBody) {
+    const user = await this.getUserById(req.user_id);
     const _id = new ObjectId();
     //tạo mới 1 blog
     const result = await databaseService.blogPosts.insertOne(
       new BlogPost({
         ...req,
         _id,
-        insert_date: new Date(),
-        update_date: new Date(),
-        user_id: new ObjectId(req.user_id)
+        user_id: user._id
       })
     );
     const blog = await databaseService.blogPosts.findOne({ _id: new ObjectId(result.insertedId) });
@@ -503,9 +498,10 @@ class UsersServices {
 
   async updateOrder(id: string, req: updateOrderReqBody) {
     //cập nhật order
-    const order = await databaseService.orders.findOne({ _id: new ObjectId(id) });
-    if (!order) throw new ErrorWithStatus({ message: 'Order not found', status: HTTP_STATUS.NOT_FOUND });
+    const order = await this.getOrderById(id);
     if (!req.order_name) req.order_name = order.order_name;
+    if (!req.price) req.price = order.price;
+    if (!req.status) req.status = order.status;
     const result = await databaseService.orders.updateOne(
       {
         _id: new ObjectId(id)
@@ -514,7 +510,7 @@ class UsersServices {
         {
           $set: {
             ...req,
-            updated_at: '$$NOW'
+            update_date: '$$NOW'
           }
         }
       ]
@@ -540,8 +536,7 @@ class UsersServices {
       confirm_password: string;
     }
   ) {
-    const user = await databaseService.users.findOne({ _id: new ObjectId(user_id) });
-    if (!user) throw new Error('User not found');
+    const user = await this.getUserById(user_id);
     if (user.password !== hashPassword(old_password)) {
       throw new ErrorWithStatus({
         message: 'Old password is incorrect',
@@ -561,7 +556,7 @@ class UsersServices {
         {
           $set: {
             password: hashPassword(new_password),
-            updated_at: '$$NOW'
+            update_date: '$$NOW'
           }
         }
       ]
@@ -571,10 +566,14 @@ class UsersServices {
 
   async getContractById(id: string) {
     const contract = await databaseService.contracts.findOne({ _id: new ObjectId(id) });
+    if (!contract) throw new ErrorWithStatus({ message: 'Contract not found', status: HTTP_STATUS.NOT_FOUND });
     return contract;
   }
 
   async updateContract(id: string, req: updateContractReqBody) {
+    const contract = await this.getContractById(id);
+    //nếu sign_contract không có thì gán giá trị thì giữ nguyên
+    if (!req.sign_contract) req.sign_contract = contract.sign_contract;
     const result = await databaseService.contracts.updateOne(
       {
         _id: new ObjectId(id)
@@ -583,16 +582,16 @@ class UsersServices {
         {
           $set: {
             ...req,
-            updated_at: '$$NOW'
+            update_date: '$$NOW'
           }
         }
       ]
     );
-    const contract = await databaseService.contracts.findOne({ _id: new ObjectId(id) });
     return contract;
   }
 
   async deleteContract(id: string) {
+    const constract = await this.getContractById(id);
     const result = await databaseService.contracts.updateOne(
       {
         _id: new ObjectId(id)
@@ -606,11 +605,12 @@ class UsersServices {
         }
       ]
     );
-    return result.upsertedId ?? id;
+    return constract ? result.upsertedId : null;
   }
 
   async getOrderById(id: string) {
     const order = await databaseService.orders.findOne({ _id: new ObjectId(id) });
+    if (!order) throw new ErrorWithStatus({ message: 'Order not found', status: HTTP_STATUS.NOT_FOUND });
     return order;
   }
 }
