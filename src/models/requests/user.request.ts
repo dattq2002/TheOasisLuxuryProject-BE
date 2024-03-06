@@ -86,6 +86,7 @@ export interface CreateContractReqBody {
   order_id: string;
   contract_name: string;
   url_image: string;
+  status: string;
 }
 
 export interface updateContractReqBody {

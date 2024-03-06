@@ -26,6 +26,18 @@ export const time_sharesValidation = validate(
           options: [[Time_ShareType.MONTH, Time_ShareType.YEAR, Time_ShareType.DAY]],
           errorMessage: 'Invalid time share type'
         }
+      },
+      start_date: {
+        isISO8601: true,
+        notEmpty: {
+          errorMessage: 'Start date is required'
+        }
+      },
+      end_date: {
+        isISO8601: true,
+        notEmpty: {
+          errorMessage: 'End date is required'
+        }
       }
     },
     ['body']

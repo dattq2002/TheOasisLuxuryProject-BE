@@ -38,6 +38,12 @@ export class PaymentStatus {
   public static readonly CANCELLED = 'CANCELLED';
 }
 
+export class ContractStatus {
+  public static readonly PENDING = 'PENDING';
+  public static readonly CONFIRMED = 'CONFIRMED';
+  public static readonly CANCELLED = 'CANCELLED';
+}
+
 export enum Time_ShareType {
   DAY,
   MONTH,
