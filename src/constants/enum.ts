@@ -45,7 +45,7 @@ export class ContractStatus {
 }
 
 export enum Time_ShareType {
-  DAY,
+  WEEK,
   MONTH,
   YEAR
 }
@@ -54,12 +54,14 @@ export enum PaymentType {
   CASH,
   CREDIT_CARD
 }
+
 export enum TokenType {
   AccessToken,
   RefreshToken,
   ForgotPasswordToken,
   EmailVerificationToken
 }
+
 export enum UserVerifyStatus {
   Unverified, // chưa xác thực email, mặc định = 0
   Verified, // đã xác thực email

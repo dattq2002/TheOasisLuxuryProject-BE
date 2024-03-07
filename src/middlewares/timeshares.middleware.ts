@@ -23,7 +23,7 @@ export const time_sharesValidation = validate(
           errorMessage: 'Time share type is required'
         },
         isIn: {
-          options: [[Time_ShareType.MONTH, Time_ShareType.YEAR, Time_ShareType.DAY]],
+          options: [[Time_ShareType.MONTH, Time_ShareType.YEAR, Time_ShareType.WEEK]],
           errorMessage: 'Invalid time share type'
         }
       },

@@ -12,14 +12,14 @@ import { wrapAsync } from '~/utils/handlers';
 
 const projectRouter = Router();
 
-projectRouter.get('/', accessTokenValidator, getProjectController);
+projectRouter.get('/', getProjectController);
 
-projectRouter.get('/:id', accessTokenValidator, getProjectByIdController);
+projectRouter.get('/:id', getProjectByIdController);
 
-projectRouter.post('/', accessTokenValidator, projectValidation, wrapAsync(createProjectController));
+projectRouter.post('/', projectValidation, wrapAsync(createProjectController));
 
-projectRouter.patch('/:id', accessTokenValidator, projectValidation, wrapAsync(updateProjectController));
+projectRouter.patch('/:id', projectValidation, wrapAsync(updateProjectController));
 
-projectRouter.delete('/:id', accessTokenValidator, wrapAsync(deleteProjectController));
+projectRouter.delete('/:id', wrapAsync(deleteProjectController));
 
 export default projectRouter;

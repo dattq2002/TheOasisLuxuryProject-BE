@@ -7,6 +7,7 @@ import { ErrorWithStatus } from '~/models/Error';
 import { createAccountReq, updateAccountReq } from '~/models/requests/account.request';
 import { TokenPayload } from '~/models/requests/user.request';
 import usersService from '~/services/users.service';
+
 export const createAccountController = async (req: Request<ParamsDictionary, any, createAccountReq>, res: Response) => {
   const { user_id } = req.decoded_authorization as TokenPayload;
   if ((await usersService.getRole(user_id)) !== RoleName.ADMIN) {
@@ -21,6 +22,7 @@ export const createAccountController = async (req: Request<ParamsDictionary, any
     result
   });
 };
+
 //update account dành cho admin by id
 export const updateAccountController = async (req: Request<ParamsDictionary, any, updateAccountReq>, res: Response) => {
   const { id } = req.params;
@@ -37,6 +39,7 @@ export const updateAccountController = async (req: Request<ParamsDictionary, any
     result
   });
 };
+
 //get account dành cho admin by id
 export const getAccountController = async (req: Request, res: Response) => {
   const { user_id } = req.decoded_authorization as TokenPayload;

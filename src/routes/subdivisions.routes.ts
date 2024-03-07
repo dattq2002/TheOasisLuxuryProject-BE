@@ -12,19 +12,14 @@ import { wrapAsync } from '~/utils/handlers';
 
 const subdivisionRouter = Router();
 
-subdivisionRouter.get('/', accessTokenValidator, getSubdivisionController);
+subdivisionRouter.get('/', getSubdivisionController);
 
-subdivisionRouter.get('/:id', accessTokenValidator, getSubdivisionByIdController);
+subdivisionRouter.get('/:id', getSubdivisionByIdController);
 
-subdivisionRouter.post('/', accessTokenValidator, subdivisionValidation, wrapAsync(createSubdivisionController));
+subdivisionRouter.post('/', subdivisionValidation, wrapAsync(createSubdivisionController));
 
-subdivisionRouter.patch(
-  '/:id',
-  accessTokenValidator,
-  updateSubdivisionValidation,
-  wrapAsync(updateSubdivisionController)
-);
+subdivisionRouter.patch('/:id', updateSubdivisionValidation, wrapAsync(updateSubdivisionController));
 
-subdivisionRouter.delete('/:id', accessTokenValidator, wrapAsync(deleteSubdivisionController));
+subdivisionRouter.delete('/:id', wrapAsync(deleteSubdivisionController));
 
 export default subdivisionRouter;
