@@ -12,14 +12,14 @@ import { wrapAsync } from '~/utils/handlers';
 
 const timeSharesRouter = Router();
 
-timeSharesRouter.get('/', accessTokenValidator, getTimeShareController);
+timeSharesRouter.get('/', getTimeShareController);
 
-timeSharesRouter.get('/:id', accessTokenValidator, getTimeShareByIdController);
+timeSharesRouter.get('/:id', getTimeShareByIdController);
 
-timeSharesRouter.post('/', accessTokenValidator, time_sharesValidation, wrapAsync(createTimeShareController));
+timeSharesRouter.post('/', time_sharesValidation, wrapAsync(createTimeShareController));
 
-timeSharesRouter.patch('/:id', accessTokenValidator, time_sharesValidation, wrapAsync(updateTimeShareController));
+timeSharesRouter.patch('/:id', time_sharesValidation, wrapAsync(updateTimeShareController));
 
-timeSharesRouter.delete('/:id', accessTokenValidator, deleteTimeShareController);
+timeSharesRouter.delete('/:id', deleteTimeShareController);
 
 export default timeSharesRouter;

@@ -16,24 +16,24 @@ import { wrapAsync } from '~/utils/handlers';
 
 const villaRouter = Router();
 
-villaRouter.get('/', accessTokenValidator, getVillasController);
+villaRouter.get('/', getVillasController);
 
-villaRouter.get('/:id', accessTokenValidator, getVillaByIdController);
+villaRouter.get('/:id', getVillaByIdController);
 
-villaRouter.post('/', accessTokenValidator, wrapAsync(createVillaController));
+villaRouter.post('/', wrapAsync(createVillaController));
 
-villaRouter.patch('/:id', accessTokenValidator, wrapAsync(updateVillaController));
+villaRouter.patch('/:id', wrapAsync(updateVillaController));
 
-villaRouter.delete('/:id', accessTokenValidator, wrapAsync(deleteVillaController));
+villaRouter.delete('/:id', wrapAsync(deleteVillaController));
 
-villaRouter.post('/create-villa-time-share', accessTokenValidator, wrapAsync(createVillaTimeShareController));
+villaRouter.post('/create-villa-time-share', wrapAsync(createVillaTimeShareController));
 
-villaRouter.get('/subdivision/:id', accessTokenValidator, wrapAsync(getVillaBySubdivisionIdController));
+villaRouter.get('/subdivision/:id', wrapAsync(getVillaBySubdivisionIdController));
 
-villaRouter.post('/upload-image', accessTokenValidator, wrapAsync(uploadImageVillaController));
+villaRouter.post('/upload-image', wrapAsync(uploadImageVillaController));
 
-villaRouter.post('/create-villa-detail', accessTokenValidator, wrapAsync(createVillaDetailController));
+villaRouter.post('/create-villa-detail', wrapAsync(createVillaDetailController));
 
-villaRouter.get('/villa-time-share/:villaId', accessTokenValidator, wrapAsync(getVillaTimeShareByVillaIdController));
+villaRouter.get('/villa-time-share/:villaId', wrapAsync(getVillaTimeShareByVillaIdController));
 
 export default villaRouter;

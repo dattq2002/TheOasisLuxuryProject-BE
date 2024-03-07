@@ -4,9 +4,11 @@ import {
   confirmPaymentController,
   createBlogController,
   createContractController,
+  deleteBlogPostController,
   deleteContractController,
   emailVerifyController,
   forgotPasswordController,
+  getAllBlogPostsController,
   getAllContractController,
   getAllOrderController,
   getContractByIdController,
@@ -94,6 +96,10 @@ usersRouter.post(
 );
 
 usersRouter.post('/create-blog', accessTokenValidator, createBlogValidator, wrapAsync(createBlogController));
+
+usersRouter.get('/get/blogPosts', accessTokenValidator, wrapAsync(getAllBlogPostsController));
+
+usersRouter.delete('/blogPosts/:id', accessTokenValidator, wrapAsync(deleteBlogPostController));
 
 usersRouter.post(
   '/create-contract',

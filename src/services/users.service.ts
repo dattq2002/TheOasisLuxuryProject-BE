@@ -614,6 +614,32 @@ class UsersServices {
     if (!order) throw new ErrorWithStatus({ message: 'Order not found', status: HTTP_STATUS.NOT_FOUND });
     return order;
   }
+  async getAllBlogPosts() {
+    const result = await databaseService.blogPosts
+      .find({
+        deflag: false
+      })
+      .toArray();
+    return result;
+  }
+
+  async deleteBlogPost(id: string) {
+    const blogPost = await databaseService.blogPosts.findOne({ _id: new ObjectId(id) });
+    const result = await databaseService.blogPosts.updateOne(
+      {
+        _id: new ObjectId(id)
+      },
+      [
+        {
+          $set: {
+            deflag: true,
+            update_date: '$$NOW'
+          }
+        }
+      ]
+    );
+    return blogPost ? result.upsertedId : null;
+  }
 }
 const usersService = new UsersServices();
 export default usersService;
