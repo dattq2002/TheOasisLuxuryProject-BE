@@ -1,4 +1,5 @@
 import { ParamSchema, checkSchema } from 'express-validator';
+import { AccountStatus, GenderType } from '~/constants/enum';
 import { USERS_MESSAGES } from '~/constants/message';
 import usersService from '~/services/users.service';
 import { validate } from '~/utils/validation';
@@ -84,9 +85,6 @@ export const updateAccountValidator = validate(
   checkSchema(
     {
       user_name: {
-        notEmpty: {
-          errorMessage: 'User name is required'
-        },
         isString: {
           errorMessage: 'User name must be a string'
         },
@@ -94,33 +92,24 @@ export const updateAccountValidator = validate(
         isLength: {
           options: {
             min: 1,
-            max: 100
+            max: 10
           },
-          errorMessage: 'User name length must be from 1 to 100'
+          errorMessage: 'User name length must be from 1 to 10'
         }
       },
       role_name: {
-        notEmpty: {
-          errorMessage: 'Role name is required'
-        },
         isString: {
           errorMessage: 'Role name must be a string'
         },
         trim: true
       },
       birthday: {
-        notEmpty: {
-          errorMessage: 'Birthday is required'
-        },
         isString: {
           errorMessage: 'Birthday must be a string'
         },
         trim: true
       },
       phone_number: {
-        notEmpty: {
-          errorMessage: 'Phone number is required'
-        },
         isString: {
           errorMessage: 'Phone number must be a string'
         },
@@ -132,6 +121,65 @@ export const updateAccountValidator = validate(
           },
           errorMessage: 'Phone number length must be from 1 to 10'
         }
+      },
+      email: {
+        trim: true,
+        isEmail: {
+          errorMessage: USERS_MESSAGES.EMAIL_IS_INVALID
+        },
+        custom: {
+          options: async (value, { req }) => {
+            const isExsit = await usersService.checkEmailExists(value);
+            if (isExsit) {
+              throw new Error(USERS_MESSAGES.EMAIL_ALREADY_EXISTS);
+            }
+            return true;
+          }
+        }
+      },
+      gender: {
+        isString: {
+          errorMessage: 'Gender must be a string'
+        },
+        trim: true,
+        isIn: {
+          options: [[GenderType.FEMALE, GenderType.MALE, GenderType.OTHER]],
+          errorMessage: 'Gender must be in type FEMALE, MALE, OTHER'
+        }
+      },
+      url_image: {
+        isString: {
+          errorMessage: 'Url image must be a string'
+        },
+        trim: true
+      },
+      status: {
+        isString: {
+          errorMessage: 'Status must be a string'
+        },
+        trim: true,
+        isIn: {
+          options: [[AccountStatus.ACTIVE, AccountStatus.BAN, AccountStatus.INACTIVE]],
+          errorMessage: 'Status must be in type active, inactive'
+        }
+      },
+      tax_code: {
+        isString: {
+          errorMessage: 'Tax code must be a string'
+        },
+        trim: true
+      },
+      date_provide_CCCD: {
+        isString: {
+          errorMessage: 'Date provide CCCD must be a string'
+        },
+        trim: true
+      },
+      place_provide_CCCD: {
+        isString: {
+          errorMessage: 'Place provide CCCD must be a string'
+        },
+        trim: true
       }
     },
     ['body']

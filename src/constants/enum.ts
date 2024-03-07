@@ -1,6 +1,7 @@
 export class AccountStatus {
   public static readonly ACTIVE = 'ACTIVE';
   public static readonly BAN = 'BANNED';
+  public static readonly INACTIVE = 'INACTIVE';
 }
 export class ProjectStatus {
   public static readonly ACTIVE = 'ACTIVE';

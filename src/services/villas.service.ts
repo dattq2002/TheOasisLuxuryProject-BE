@@ -47,7 +47,6 @@ class VillaServices {
       {
         _id: new ObjectId(payload.subdivision_id)
       },
-
       {
         $push: {
           villas: new Villa({
@@ -129,9 +128,16 @@ class VillaServices {
   }
 
   async getVillaBySubdivisionId(subdivisionId: string) {
+    const subdivision = await databaseService.subdivisions.findOne({ _id: new ObjectId(subdivisionId) });
+    if (!subdivision) {
+      throw new ErrorWithStatus({
+        message: VILLAS_MESSAGES.SUBDIVISION_NOT_FOUND,
+        status: HTTP_STATUS.NOT_FOUND
+      });
+    }
     const result = await databaseService.villas
       .find({
-        subdivision_id: subdivisionId as any
+        subdivision_id: new ObjectId(subdivisionId)
       })
       .toArray();
     return result;

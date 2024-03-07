@@ -11,7 +11,15 @@ import {
   updateOrderReqBody
 } from '~/models/requests/user.request';
 import { ObjectId } from 'mongodb';
-import { AccountStatus, OrderStatus, PaymentStatus, RoleName, TokenType, UserVerifyStatus } from '~/constants/enum';
+import {
+  AccountStatus,
+  GenderType,
+  OrderStatus,
+  PaymentStatus,
+  RoleName,
+  TokenType,
+  UserVerifyStatus
+} from '~/constants/enum';
 import { hashPassword, sendMail } from '~/utils/helpers';
 import { signToken, verifyToken } from '~/utils/jwt';
 import User from '~/models/schemas/User.schemas';
@@ -191,7 +199,8 @@ class UsersServices {
         role_name: RoleName.STAFF,
         full_name: `staffuser${_id.toString()}`,
         verify: UserVerifyStatus.Verified,
-        birthday: new Date(payload.birthday)
+        birthday: new Date(payload.birthday),
+        gender: GenderType.OTHER
       })
     );
     const user = await this.getUserById(result.insertedId.toString());
