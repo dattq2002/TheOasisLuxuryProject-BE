@@ -10,7 +10,7 @@ export interface createVillaReq {
   fluctuates_price: number;
   stiff_price: number;
   villa_detail_id?: ObjectId;
-  subdivision_id: ObjectId;
+  subdivision_id: string;
 }
 
 export interface updateVillaReq {
