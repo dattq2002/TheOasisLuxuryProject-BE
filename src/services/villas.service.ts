@@ -37,7 +37,7 @@ class VillaServices {
         ...payload,
         url_image: payload.url_image || [],
         subdivision_id: new ObjectId(payload.subdivision_id),
-        villa_detail_id: new ObjectId(payload.villa_detail_id)
+        villa_detail_id: payload.villa_detail_id ? new ObjectId(payload.villa_detail_id) : undefined
       })
     );
     const countVilla = await databaseService.villas.countDocuments({
@@ -55,7 +55,7 @@ class VillaServices {
             ...payload,
             url_image: payload.url_image || [],
             subdivision_id: new ObjectId(payload.subdivision_id),
-            villa_detail_id: new ObjectId(payload.villa_detail_id)
+            villa_detail_id: payload.villa_detail_id ? new ObjectId(payload.villa_detail_id) : undefined
           })
         },
         $inc: {
