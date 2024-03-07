@@ -118,7 +118,7 @@ usersRouter.patch('/contracts/:id', accessTokenValidator, wrapAsync(updateContra
 
 usersRouter.delete('/contracts/:id', accessTokenValidator, wrapAsync(deleteContractController));
 
-usersRouter.get('/villas/:user_id', accessTokenValidator, wrapAsync(getUserOwnVillaController));
+
 //------------------------------------------------------------
 
 export default usersRouter;

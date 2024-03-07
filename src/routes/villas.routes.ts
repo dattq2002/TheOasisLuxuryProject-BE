@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { getUserOwnVillaController } from '~/controllers/users.controller';
 import {
   createVillaController,
   createVillaDetailController,
@@ -35,5 +36,7 @@ villaRouter.post('/upload-image', wrapAsync(uploadImageVillaController));
 villaRouter.post('/create-villa-detail', wrapAsync(createVillaDetailController));
 
 villaRouter.get('/villa-time-share/:villaId', wrapAsync(getVillaTimeShareByVillaIdController));
+
+villaRouter.get('/user/:userID', accessTokenValidator, wrapAsync(getUserOwnVillaController));
 
 export default villaRouter;
