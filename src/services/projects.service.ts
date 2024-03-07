@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb';
-import databaseService from './database.service';
+import databaseService from '../databases/database.service';
 import { createProjectReq, updateProjectReq } from '~/models/requests/project.request';
 import Project from '~/models/schemas/Project.schemas';
 

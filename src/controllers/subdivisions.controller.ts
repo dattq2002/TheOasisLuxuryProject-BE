@@ -65,3 +65,12 @@ export const deleteSubdivisionController = async (req: Request, res: Response) =
     result
   });
 };
+
+export const getSubdivisionByProjectIdController = async (req: Request, res: Response) => {
+  const { projectId } = req.params;
+  const result = await subdivisionServices.getSubdivisionByProjectId(projectId);
+  res.json({
+    message: SUBDIVISION_MESSAGES.GET_SUBDIVISION_SUCCESS,
+    result
+  });
+};

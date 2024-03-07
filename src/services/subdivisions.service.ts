@@ -1,7 +1,9 @@
 import { ObjectId } from 'mongodb';
-import databaseService from './database.service';
+import databaseService from '../databases/database.service';
 import { createSubdivisionReq, updateSubdivisionReq } from '~/models/requests/subdivision.request';
 import Subdivision from '~/models/schemas/Subdivision.schemas';
+import { ErrorWithStatus } from '~/models/Error';
+import HTTP_STATUS from '~/constants/httpStatus';
 
 class SubdivisionServices {
   async getSubdivisions() {
@@ -21,7 +23,8 @@ class SubdivisionServices {
       new Subdivision({
         _id,
         ...payload,
-        quantityVilla: payload.quantityVilla || 0
+        quantityVilla: payload.quantityVilla || 0,
+        project_id: new ObjectId(payload.project_id)
       })
     );
     const subdivision = await databaseService.subdivisions.findOne({ _id: newSubdivision.insertedId });
@@ -36,7 +39,8 @@ class SubdivisionServices {
           subdivisions: new Subdivision({
             _id: new ObjectId(subdivision?._id),
             ...payload,
-            quantityVilla: payload.quantityVilla || 0
+            quantityVilla: payload.quantityVilla || 0,
+            project_id: new ObjectId(payload.project_id)
           })
         }
       }
@@ -83,6 +87,18 @@ class SubdivisionServices {
         }
       }
     );
+    return result;
+  }
+
+  async getSubdivisionByProjectId(projectId: string) {
+    const project = await databaseService.projects.findOne({ _id: new ObjectId(projectId) });
+    if (!project) {
+      throw new ErrorWithStatus({
+        message: 'Project not found',
+        status: HTTP_STATUS.NOT_FOUND
+      });
+    }
+    const result = await databaseService.subdivisions.find({ project_id: new ObjectId(projectId) }).toArray();
     return result;
   }
 }

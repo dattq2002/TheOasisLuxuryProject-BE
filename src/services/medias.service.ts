@@ -6,7 +6,7 @@ import fs from 'fs';
 import { isProduction } from '~/constants/config';
 import { Media } from '~/models/Other';
 import { MediaType } from '~/constants/enum';
-import databaseService from './database.service';
+import databaseService from '../databases/database.service';
 import { ObjectId } from 'mongodb';
 
 class MediaService {

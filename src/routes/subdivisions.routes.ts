@@ -3,6 +3,7 @@ import {
   createSubdivisionController,
   deleteSubdivisionController,
   getSubdivisionByIdController,
+  getSubdivisionByProjectIdController,
   getSubdivisionController,
   updateSubdivisionController
 } from '~/controllers/subdivisions.controller';
@@ -21,5 +22,7 @@ subdivisionRouter.post('/', subdivisionValidation, wrapAsync(createSubdivisionCo
 subdivisionRouter.patch('/:id', updateSubdivisionValidation, wrapAsync(updateSubdivisionController));
 
 subdivisionRouter.delete('/:id', wrapAsync(deleteSubdivisionController));
+
+subdivisionRouter.get('/projects/:projectId', getSubdivisionByProjectIdController);
 
 export default subdivisionRouter;

@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb';
-import databaseService from './database.service';
+import databaseService from '../databases/database.service';
 import Utilities from '~/models/schemas/Utilities.schemas';
 import { ErrorWithStatus } from '~/models/Error';
 import HTTP_STATUS from '~/constants/httpStatus';

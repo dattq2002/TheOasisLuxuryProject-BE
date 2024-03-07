@@ -1,5 +1,5 @@
 import { config } from 'dotenv';
-import databaseService from './database.service';
+import databaseService from '../databases/database.service';
 import {
   CreateBlogReqBody,
   CreateContractReqBody,

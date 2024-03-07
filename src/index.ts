@@ -5,7 +5,7 @@ import usersRouter from './routes/users.routes';
 // import path from 'path';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
-import databaseService from './services/database.service';
+import databaseService from './databases/database.service';
 import { defaultErrorHandler } from './middlewares/error.middleware';
 import accountRouter from './routes/accounts.routes';
 import projectRouter from './routes/projects.routes';

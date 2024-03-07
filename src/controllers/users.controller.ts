@@ -25,7 +25,7 @@ import {
 import User from '~/models/schemas/User.schemas';
 import { ObjectId } from 'mongodb';
 import { RoleName, UserVerifyStatus } from '~/constants/enum';
-import databaseService from '~/services/database.service';
+import databaseService from '~/databases/database.service';
 import { hashPassword } from '~/utils/helpers';
 import { ErrorWithStatus } from '~/models/Error';
 import HTTP_STATUS from '~/constants/httpStatus';

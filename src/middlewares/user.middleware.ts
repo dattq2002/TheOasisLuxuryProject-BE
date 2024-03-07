@@ -8,7 +8,7 @@ import HTTP_STATUS from '~/constants/httpStatus';
 import { USERS_MESSAGES } from '~/constants/message';
 import { ErrorWithStatus } from '~/models/Error';
 import { TokenPayload } from '~/models/requests/user.request';
-import databaseService from '~/services/database.service';
+import databaseService from '~/databases/database.service';
 import usersService from '~/services/users.service';
 import { hashPassword } from '~/utils/helpers';
 import { verifyToken } from '~/utils/jwt';
