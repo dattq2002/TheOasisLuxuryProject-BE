@@ -649,6 +649,17 @@ class UsersServices {
     );
     return blogPost ? result.upsertedId : null;
   }
+  async getUserOwnVilla(user_id: string) {
+    const user = this.getUserById(user_id);
+    const villaTimeShares = await databaseService.villaTimeShares.find({ user_id: new ObjectId(user_id) }).toArray();
+    //tìm villa của user
+    const villas = await Promise.all(
+      villaTimeShares.map(async (villaTimeShare) => {
+        return await databaseService.villas.findOne({ _id: villaTimeShare.villa_id });
+      })
+    );
+    return villas ? villas : null;
+  }
 }
 const usersService = new UsersServices();
 export default usersService;

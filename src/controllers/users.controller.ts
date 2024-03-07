@@ -387,3 +387,12 @@ export const deleteBlogPostController = async (req: Request, res: Response) => {
   const result = await usersService.deleteBlogPost(id);
   return res.json(result);
 };
+
+export const getUserOwnVillaController = async (req: Request, res: Response) => {
+  const { user_id } = req.decoded_authorization as TokenPayload;
+  const result = await usersService.getUserOwnVilla(user_id);
+  return res.json({
+    message: USERS_MESSAGES.GET_USER_OWN_VILLA_SUCCESS,
+    result
+  });
+};

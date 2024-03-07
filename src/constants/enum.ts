@@ -41,8 +41,8 @@ export class PaymentStatus {
 
 export class ContractStatus {
   public static readonly PENDING = 'PENDING';
-  public static readonly CONFIRMED = 'CONFIRMED';
-  public static readonly CANCELLED = 'CANCELLED';
+  public static readonly APPROVED = 'APPROVED';
+  public static readonly REJECTED = 'REJECTED';
 }
 
 export enum Time_ShareType {

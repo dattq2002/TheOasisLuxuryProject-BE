@@ -3,7 +3,7 @@ import { ParamSchema, checkSchema } from 'express-validator';
 import { JsonWebTokenError } from 'jsonwebtoken';
 import { capitalize } from 'lodash';
 import { ObjectId } from 'mongodb';
-import { OrderStatus, PaymentType, RoleName, UserVerifyStatus } from '~/constants/enum';
+import { ContractStatus, OrderStatus, PaymentType, RoleName, UserVerifyStatus } from '~/constants/enum';
 import HTTP_STATUS from '~/constants/httpStatus';
 import { USERS_MESSAGES } from '~/constants/message';
 import { ErrorWithStatus } from '~/models/Error';
@@ -561,15 +561,6 @@ export const createBlogValidator = validate(
 export const createContractValidator = validate(
   checkSchema(
     {
-      user_id: {
-        notEmpty: {
-          errorMessage: USERS_MESSAGES.USER_ID_IS_REQUIRED
-        },
-        isString: {
-          errorMessage: USERS_MESSAGES.USER_ID_MUST_BE_A_STRING
-        },
-        trim: true
-      },
       contract_name: {
         notEmpty: {
           errorMessage: USERS_MESSAGES.CONTRACT_NAME_IS_REQUIRED
@@ -580,13 +571,23 @@ export const createContractValidator = validate(
         trim: true
       },
       url_image: {
-        notEmpty: {
-          errorMessage: USERS_MESSAGES.URL_IMAGE_IS_REQUIRED
-        },
         isString: {
           errorMessage: USERS_MESSAGES.URL_IMAGE_MUST_BE_A_STRING
         },
         trim: true
+      },
+      status: {
+        notEmpty: {
+          errorMessage: USERS_MESSAGES.STATUS_IS_REQUIRED
+        },
+        trim: true,
+        isIn: {
+          options: [[ContractStatus.PENDING, ContractStatus.APPROVED, ContractStatus.REJECTED]],
+          errorMessage: USERS_MESSAGES.STATUS_IS_WRONG_TYPE
+        },
+        isString: {
+          errorMessage: USERS_MESSAGES.STATUS_MUST_BE_A_STRING
+        }
       }
     },
     ['body']

@@ -13,6 +13,7 @@ import {
   getAllOrderController,
   getContractByIdController,
   getUserByIdController,
+  getUserOwnVillaController,
   loginController,
   logoutController,
   orderController,
@@ -104,6 +105,7 @@ usersRouter.delete('/blogPosts/:id', accessTokenValidator, wrapAsync(deleteBlogP
 usersRouter.post(
   '/create-contract',
   accessTokenValidator,
+  createContractValidator,
 
   wrapAsync(createContractController)
 );
@@ -115,6 +117,8 @@ usersRouter.get('/contracts/:id', accessTokenValidator, wrapAsync(getContractByI
 usersRouter.patch('/contracts/:id', accessTokenValidator, wrapAsync(updateContractController));
 
 usersRouter.delete('/contracts/:id', accessTokenValidator, wrapAsync(deleteContractController));
+
+usersRouter.get('/villas/:user_id', accessTokenValidator, wrapAsync(getUserOwnVillaController));
 //------------------------------------------------------------
 
 export default usersRouter;

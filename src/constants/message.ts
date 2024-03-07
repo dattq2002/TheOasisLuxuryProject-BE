@@ -85,7 +85,11 @@ export const USERS_MESSAGES = {
   UPLOAD_SUCCESS: 'Upload success',
   CANNOT_DELETE_ADMIN_ACCOUNT: 'Cannot delete admin account',
   GET_ALL_CONTRACT_SUCCESS: 'Get all contract success',
-  GET_ALL_BLOG_POST_SUCCESS: 'Get all blog post success'
+  GET_ALL_BLOG_POST_SUCCESS: 'Get all blog post success',
+  STATUS_IS_REQUIRED: 'Status is required',
+  STATUS_IS_WRONG_TYPE: 'Status is wrong type and must be in [PENDING, APPROVED, REJECTED]',
+  STATUS_MUST_BE_A_STRING: 'Status must be a string',
+  GET_USER_OWN_VILLA_SUCCESS: 'Get user own villa success'
 } as const;
 
 export const PROJECTS_MESSAGES = {
