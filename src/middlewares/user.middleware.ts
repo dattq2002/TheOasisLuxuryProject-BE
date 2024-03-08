@@ -357,7 +357,7 @@ export const verifyForgotPasswordTokenValidator = validate(
         custom: {
           options: async (value, { req }) => {
             //nếu k truyền lên forgot_password_token thì ta sẽ throw error
-            if (!req.params) {
+            if (!value) {
               throw new ErrorWithStatus({
                 message: USERS_MESSAGES.FORGOT_PASSWORD_TOKEN_IS_REQUIRED,
                 status: HTTP_STATUS.UNAUTHORIZED //401
@@ -367,7 +367,7 @@ export const verifyForgotPasswordTokenValidator = validate(
             //nếu có thì decode nó để lấy đc thông tin của người dùng
             try {
               const decoded_forgot_password_token = await verifyToken({
-                token: req.params.token as string,
+                token: value.token as string,
                 secretOrPublicKey: process.env.JWT_SECRET_FORGOT_PASSWORD_TOKEN as string
               });
               //lưu decoded_forgot_password_token vào req để khi nào muốn biết ai gữi req thì dùng
@@ -389,7 +389,7 @@ export const verifyForgotPasswordTokenValidator = validate(
               //nếu forgot_password_token đã được sử dụng rồi thì throw error
               //forgot_password_token truyền lên khác với forgot_password_token trong database
               //nghĩa là người dùng đã sử dụng forgot_password_token này rồi
-              if (user.forgot_password_token !== req.params.token) {
+              if (user.forgot_password_token !== value.token) {
                 throw new ErrorWithStatus({
                   message: USERS_MESSAGES.INVALID_FORGOT_PASSWORD_TOKEN,
                   status: HTTP_STATUS.UNAUTHORIZED //401

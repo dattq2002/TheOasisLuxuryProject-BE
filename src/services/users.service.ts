@@ -21,7 +21,7 @@ import {
   TokenType,
   UserVerifyStatus
 } from '~/constants/enum';
-import { hashPassword, sendMail } from '~/utils/helpers';
+import { hashPassword, sendMail, sendMailMobile } from '~/utils/helpers';
 import { signToken, verifyToken } from '~/utils/jwt';
 import User from '~/models/schemas/User.schemas';
 import RefreshToken from '~/models/schemas/RefreshToken.schema';
@@ -702,6 +702,84 @@ class UsersServices {
     );
 
     return { message: USERS_MESSAGES.CONFIRM_CONTRACT_SUCCESS };
+  }
+  async forgotPasswordMobile(email: string) {
+    const user = await databaseService.users.findOne({ email });
+    if (!user) throw new ErrorWithStatus({ message: 'User not found', status: HTTP_STATUS.NOT_FOUND });
+    //tạo random 6 số
+    const forgot_password_token = Math.floor(100000 + Math.random() * 900000).toString();
+    await databaseService.users.updateOne(
+      {
+        _id: user._id
+      },
+      [
+        {
+          $set: {
+            forgot_password_token,
+            update_date: '$$NOW'
+          }
+        }
+      ]
+    );
+    sendMailMobile({ toEmail: email, token: forgot_password_token, type: 'forgot-password OTP' });
+    return { message: USERS_MESSAGES.CHECK_EMAIL_TO_RESET_PASSWORD };
+  }
+
+  async verifyOTP(email: string, otp: number) {
+    const user = await databaseService.users.findOne({
+      email
+    });
+    if (!user) throw new ErrorWithStatus({ message: 'User not found', status: HTTP_STATUS.NOT_FOUND });
+    if (otp !== parseInt(user.forgot_password_token))
+      throw new ErrorWithStatus({ message: 'Invalid OTP', status: HTTP_STATUS.BAD_REQUEST });
+    const removeToken = await databaseService.users.updateOne(
+      {
+        _id: user._id
+      },
+      [
+        {
+          $set: {
+            forgot_password_token: '',
+            update_date: '$$NOW'
+          }
+        }
+      ]
+    );
+    return { message: USERS_MESSAGES.VERIFY_FORGOT_PASSWORD_TOKEN_SUCCESS };
+  }
+
+  async resetPasswordMobile({
+    email,
+    password,
+    confirm_password
+  }: {
+    email: string;
+    password: string;
+    confirm_password: string;
+  }) {
+    if (password !== confirm_password)
+      throw new ErrorWithStatus({
+        message: 'New password and confirm password not match',
+        status: HTTP_STATUS.BAD_REQUEST
+      });
+    const user = await databaseService.users.findOne({
+      email
+    });
+    if (!user) throw new ErrorWithStatus({ message: 'User not found', status: HTTP_STATUS.NOT_FOUND });
+    await databaseService.users.updateOne(
+      {
+        _id: user._id
+      },
+      [
+        {
+          $set: {
+            password: hashPassword(password),
+            update_date: '$$NOW'
+          }
+        }
+      ]
+    );
+    return { message: USERS_MESSAGES.RESET_PASSWORD_SUCCESS };
   }
 }
 const usersService = new UsersServices();

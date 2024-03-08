@@ -14,10 +14,12 @@ import {
   RefreshTokenReqBody,
   RegisterReqBody,
   ResetPasswordReqBody,
+  ResetPasswordReqBodyMobile,
   TokenPayload,
   UpdateUserReqBody,
   VerifyEmailReqBody,
   VerifyForgotPasswordReqBody,
+  VerifyOTPReqBody,
   changePasswordReqBody,
   confirmContractReqBody,
   updateContractReqBody,
@@ -408,4 +410,28 @@ export const confirmContractController = async (
     message: USERS_MESSAGES.CONFIRM_CONTRACT_SUCCESS,
     result
   });
+};
+
+export const forgotPasswordMobileController = async (
+  req: Request<ParamsDictionary, any, ForgotPasswordReqBody>,
+  res: Response
+) => {
+  const { email } = req.body;
+  const result = await usersService.forgotPasswordMobile(email);
+  return res.json(result);
+};
+
+export const verifyOTPController = async (req: Request<ParamsDictionary, any, VerifyOTPReqBody>, res: Response) => {
+  const { otp, email } = req.body;
+  const result = await usersService.verifyOTP(email, otp);
+  return res.json(result);
+};
+
+export const resetPasswordMobileController = async (
+  req: Request<ParamsDictionary, any, ResetPasswordReqBodyMobile>,
+  res: Response
+) => {
+  const { email, password, confirm_password } = req.body;
+  const result = await usersService.resetPasswordMobile({ email, password, confirm_password });
+  return res.json(result);
 };

@@ -9,6 +9,7 @@ import {
   deleteContractController,
   emailVerifyController,
   forgotPasswordController,
+  forgotPasswordMobileController,
   getAllBlogPostsController,
   getAllContractController,
   getAllOrderController,
@@ -23,9 +24,11 @@ import {
   registerController,
   resendEmailVerifyController,
   resetPasswordController,
+  resetPasswordMobileController,
   updateContractController,
   updateUserByIdController,
-  verifyForgotPasswordTokenController
+  verifyForgotPasswordTokenController,
+  verifyOTPController
 } from '~/controllers/users.controller';
 import {
   accessTokenValidator,
@@ -64,11 +67,19 @@ usersRouter.post('/resend-verify-email', accessTokenValidator, wrapAsync(resendE
 
 usersRouter.post('/forgot-password', forgotPasswordValidator, wrapAsync(forgotPasswordController));
 
+usersRouter.post('/forgot-password/mobile', forgotPasswordValidator, wrapAsync(forgotPasswordMobileController));
+
 usersRouter.get(
   '/verify-forgot-password-token/:token',
   verifyForgotPasswordTokenValidator,
   wrapAsync(verifyForgotPasswordTokenController)
 );
+
+usersRouter.post('/forgot-password/OTP', wrapAsync(verifyOTPController));
+
+usersRouter.post('/forgot-password/resend-OTP', wrapAsync(forgotPasswordMobileController));
+
+usersRouter.post('/reset-password/mobile', wrapAsync(resetPasswordMobileController));
 
 usersRouter.post(
   '/reset-password',

@@ -53,6 +53,17 @@ export interface ResetPasswordReqBody {
   confirm_password: string;
 }
 
+export interface ResetPasswordReqBodyMobile {
+  password: string;
+  confirm_password: string;
+  email: string;
+}
+
+export interface VerifyOTPReqBody {
+  email: string;
+  otp: number;
+}
+
 export interface RefreshTokenReqBody {
   refresh_token: string;
 }
