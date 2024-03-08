@@ -33,28 +33,7 @@ export const createVillaController = async (
   res: Response,
   next: NextFunction
 ) => {
-  const {
-    villa_name,
-    status,
-    address,
-    area,
-    url_image,
-    fluctuates_price,
-    stiff_price,
-    subdivision_id,
-    villa_detail_id
-  } = req.body;
-  const result = await villasServices.createVilla({
-    villa_name,
-    status,
-    address,
-    area,
-    url_image,
-    fluctuates_price,
-    stiff_price,
-    subdivision_id,
-    villa_detail_id
-  });
+  const result = await villasServices.createVilla(req.body);
   res.json({
     message: VILLAS_MESSAGES.CREATE_VILLA_SUCCESS,
     result
@@ -97,11 +76,7 @@ export const createVillaTimeShareController = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { villa_id, time_share_id } = req.body;
-  const result = await villasServices.createVillaTimeShare({
-    villa_id,
-    time_share_id
-  });
+  const result = await villasServices.createVillaTimeShare(req.body);
   res.json({
     message: VILLAS_MESSAGES.CREATE_VILLA_TIME_SHARE_SUCCESS,
     result

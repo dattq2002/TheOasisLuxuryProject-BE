@@ -13,6 +13,7 @@ import {
 import { ObjectId } from 'mongodb';
 import {
   AccountStatus,
+  ContractStatus,
   GenderType,
   OrderStatus,
   PaymentStatus,
@@ -32,6 +33,7 @@ import BlogPost from '~/models/schemas/BlogPost.schemas';
 import Contract from '~/models/schemas/Contract.schemas';
 import { ErrorWithStatus } from '~/models/Error';
 import HTTP_STATUS from '~/constants/httpStatus';
+import VillaTimeShare from '~/models/schemas/VillaTimeShare.schemas';
 
 config();
 
@@ -373,33 +375,41 @@ class UsersServices {
 
   async order(req: OrderReqBody) {
     const _id = new ObjectId();
-    //tìm tên villa
-    const villaTimeShare = await databaseService.villaTimeShares.findOne({
-      _id: new ObjectId(req.villa_time_share_id)
-    });
-    if (!villaTimeShare)
-      throw new ErrorWithStatus({ message: 'Villa time share not found', status: HTTP_STATUS.NOT_FOUND });
-    if (villaTimeShare.user_id)
-      throw new ErrorWithStatus({
-        message: 'Villa time share is paid by another user',
-        status: HTTP_STATUS.BAD_REQUEST
-      });
-    const villa = await databaseService.villas.findOne({ _id: villaTimeShare.villa_id });
+    const villa = await databaseService.villas.findOne({ _id: new ObjectId(req.villa_id) });
     if (!villa) throw new ErrorWithStatus({ message: 'Villa not found', status: HTTP_STATUS.NOT_FOUND });
-    //create new order
-    const newOrder = await databaseService.orders.insertOne(
-      new Order({
+    const user = await this.getUserById(req.user_id);
+    const villa_time_share = await databaseService.villaTimeShares.insertOne(
+      new VillaTimeShare({
         _id,
-        ...req,
-        order_name: `${villa.villa_name}`,
-        price: req.price,
-        status: OrderStatus.PENDING,
-        villa_time_share_id: new ObjectId(req.villa_time_share_id),
-        user_id: new ObjectId(req.user_id)
+        villa_id: new ObjectId(req.villa_id),
+        user_id: new ObjectId(req.user_id),
+        start_date: new Date(req.start_date),
+        end_date: new Date(req.end_date)
       })
     );
-    const order = await databaseService.orders.findOne({ _id: new ObjectId(newOrder.insertedId) });
-    return order;
+    //tạo order
+    const order = await databaseService.orders.insertOne(
+      new Order({
+        ...req,
+        _id,
+        order_name: `Đơn hàng của ${user.full_name} tại ${villa.villa_name} từ ${req.start_date} đến ${req.end_date}`,
+        user_id: new ObjectId(req.user_id),
+        villa_time_share_id: new ObjectId(villa_time_share.insertedId),
+        status: OrderStatus.PENDING,
+        start_date: new Date(req.start_date),
+        end_date: new Date(req.end_date)
+      })
+    );
+    //tạo contract
+    const contract = await databaseService.contracts.insertOne(
+      new Contract({
+        _id,
+        contract_name: `Hợp đồng của ${user.full_name} tại ${villa.villa_name}`,
+        order_id: new ObjectId(order.insertedId),
+        status: ContractStatus.PENDING
+      })
+    );
+    return { villa_time_share: villa_time_share.insertedId, order: order.insertedId, contract: contract.insertedId };
   }
 
   async payment(req: PaymentReqBody) {

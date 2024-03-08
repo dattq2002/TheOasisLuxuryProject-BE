@@ -436,15 +436,6 @@ export const orderValidator = validate(
         },
         trim: true
       },
-      villa_time_share_id: {
-        notEmpty: {
-          errorMessage: USERS_MESSAGES.VILLA_TIME_SHARE_ID_IS_REQUIRED
-        },
-        isString: {
-          errorMessage: USERS_MESSAGES.VILLA_TIME_SHARE_ID_MUST_BE_A_STRING
-        },
-        trim: true
-      },
       price: {
         notEmpty: {
           errorMessage: USERS_MESSAGES.PRICE_IS_REQUIRED

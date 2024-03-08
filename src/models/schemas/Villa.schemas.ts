@@ -15,6 +15,7 @@ interface VillaType {
   stiff_price: number;
   villa_detail_id?: ObjectId;
   subdivision_id: ObjectId;
+  time_share_id?: ObjectId;
   villa_details?: VillaDetail[];
 }
 
@@ -29,6 +30,7 @@ export default class Villa {
   url_image: string[];
   fluctuates_price: number;
   stiff_price: number;
+  time_share_id?: ObjectId;
   villa_detail_id?: ObjectId;
   subdivision_id: ObjectId;
   villa_details: VillaDetail[];
@@ -46,5 +48,6 @@ export default class Villa {
     this.villa_detail_id = data.villa_detail_id;
     this.subdivision_id = data.subdivision_id;
     this.villa_details = data.villa_details || [];
+    this.time_share_id = data.time_share_id;
   }
 }

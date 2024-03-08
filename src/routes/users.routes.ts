@@ -118,7 +118,6 @@ usersRouter.patch('/contracts/:id', accessTokenValidator, wrapAsync(updateContra
 
 usersRouter.delete('/contracts/:id', accessTokenValidator, wrapAsync(deleteContractController));
 
-
 //------------------------------------------------------------
 
 export default usersRouter;

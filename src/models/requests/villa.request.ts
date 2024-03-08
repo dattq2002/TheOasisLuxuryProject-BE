@@ -6,10 +6,11 @@ export interface createVillaReq {
   status: VillaStatus;
   address: string;
   area: string;
-  url_image?: string[];
   fluctuates_price: number;
   stiff_price: number;
   villa_detail_id?: ObjectId;
+  start_date?: Date;
+  end_date?: Date;
   subdivision_id: string;
 }
 
@@ -33,7 +34,8 @@ export interface createVillaDetailReq {
 export interface createVillaTimeShareReq {
   villa_id: string;
   period_time?: number;
-  time_share_id: string;
+  start_date: Date;
+  end_date: Date;
 }
 
 export interface UploadImageQueryReq {

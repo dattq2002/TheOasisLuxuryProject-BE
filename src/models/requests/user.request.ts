@@ -59,10 +59,11 @@ export interface RefreshTokenReqBody {
 
 export interface OrderReqBody {
   user_id: string;
-  villa_time_share_id: string;
   price: number;
   start_date: Date;
+  end_date: Date;
   description?: string;
+  villa_id: string;
 }
 
 export interface PaymentReqBody {

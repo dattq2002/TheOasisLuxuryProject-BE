@@ -12,6 +12,7 @@ import VillaDetail from '~/models/schemas/VillaDetail.schemas';
 import { ErrorWithStatus } from '~/models/Error';
 import HTTP_STATUS from '~/constants/httpStatus';
 import { VILLAS_MESSAGES } from '~/constants/message';
+import TimeShare from '~/models/schemas/TimeShare.schemas';
 
 class VillaServices {
   async getVillas() {
@@ -30,16 +31,34 @@ class VillaServices {
   }
   async createVilla(payload: createVillaReq) {
     const _id = new ObjectId();
-
+    const { start_date, end_date } = payload;
     const result = await databaseService.villas.insertOne(
       new Villa({
         _id,
         ...payload,
-        url_image: payload.url_image || [],
         subdivision_id: new ObjectId(payload.subdivision_id),
         villa_detail_id: payload.villa_detail_id ? new ObjectId(payload.villa_detail_id) : undefined
       })
     );
+    if ([start_date, end_date].some((date) => date)) {
+      const time_share = await databaseService.timeshares.insertOne(
+        new TimeShare({
+          time_share_name: `Time share of ${payload.villa_name}`,
+          start_date: start_date ? new Date(start_date) : new Date(),
+          end_date: end_date ? new Date(end_date) : new Date()
+        })
+      );
+      await databaseService.villas.findOneAndUpdate(
+        {
+          _id: _id
+        },
+        {
+          $set: {
+            time_share_id: time_share.insertedId
+          }
+        }
+      );
+    }
     const countVilla = await databaseService.villas.countDocuments({
       subdivision_id: new ObjectId(payload.subdivision_id)
     });
@@ -52,7 +71,6 @@ class VillaServices {
           villas: new Villa({
             _id,
             ...payload,
-            url_image: payload.url_image || [],
             subdivision_id: new ObjectId(payload.subdivision_id),
             villa_detail_id: payload.villa_detail_id ? new ObjectId(payload.villa_detail_id) : undefined
           })
@@ -62,8 +80,7 @@ class VillaServices {
         }
       }
     );
-    const newVilla = await this.getVillaById(result.insertedId.toString());
-    return newVilla;
+    return result.insertedId;
   }
   async updateVilla(id: string, payload: updateVillaReq) {
     const villa = await this.getVillaById(id);
@@ -119,8 +136,7 @@ class VillaServices {
     const result = await databaseService.villaTimeShares.insertOne(
       new VillaTimeShare({
         ...payload,
-        villa_id: new ObjectId(payload.villa_id),
-        time_share_id: new ObjectId(payload.time_share_id)
+        villa_id: new ObjectId(payload.villa_id)
       })
     );
     const newVillaTimeShare = await databaseService.villaTimeShares.findOne({ _id: result.insertedId });

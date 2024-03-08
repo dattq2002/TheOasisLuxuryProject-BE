@@ -12,7 +12,7 @@ interface OrderType {
   invoice_id?: string;
   description?: string;
   start_date: Date;
-  end_date?: Date;
+  end_date: Date;
 }
 
 export default class Order {
@@ -25,7 +25,7 @@ export default class Order {
   invoice_id: string;
   description: string;
   start_date: Date;
-  end_date?: Date;
+  end_date: Date;
   status: string;
   villa_time_share_id: ObjectId;
   constructor(order: OrderType) {
