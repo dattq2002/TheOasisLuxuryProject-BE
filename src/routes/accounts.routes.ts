@@ -12,9 +12,9 @@ import { wrapAsync } from '~/utils/handlers';
 
 const accountRouter = Router();
 //API dành cho admin, quản lý tài khoản
-accountRouter.post('/', accessTokenValidator, accountValidator, wrapAsync(createAccountController));
+accountRouter.post('/', accessTokenValidator, wrapAsync(createAccountController));
 
-accountRouter.patch('/:id', accessTokenValidator, updateAccountValidator, wrapAsync(updateAccountController));
+accountRouter.patch('/:id', accessTokenValidator, wrapAsync(updateAccountController));
 
 accountRouter.get('/:id', accessTokenValidator, wrapAsync(getUserByIdController));
 

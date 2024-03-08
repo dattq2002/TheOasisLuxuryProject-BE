@@ -670,6 +670,39 @@ class UsersServices {
     );
     return villas ? villas : null;
   }
+
+  async confirmContract(id: string, status: ContractStatus) {
+    const contract = await this.getContractById(id);
+    await databaseService.contracts.updateOne(
+      {
+        _id: new ObjectId(id)
+      },
+      [
+        {
+          $set: {
+            status: status,
+            update_date: '$$NOW'
+          }
+        }
+      ]
+    );
+
+    await databaseService.orders.updateOne(
+      {
+        _id: contract.order_id
+      },
+      [
+        {
+          $set: {
+            status: status === ContractStatus.APPROVED ? OrderStatus.CONFIRMED : OrderStatus.CANCELLED,
+            update_date: '$$NOW'
+          }
+        }
+      ]
+    );
+
+    return { message: USERS_MESSAGES.CONFIRM_CONTRACT_SUCCESS };
+  }
 }
 const usersService = new UsersServices();
 export default usersService;

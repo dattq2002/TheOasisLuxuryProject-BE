@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import {
   changePasswordController,
+  confirmContractController,
   confirmPaymentController,
   createBlogController,
   createContractController,
@@ -109,6 +110,8 @@ usersRouter.post(
 
   wrapAsync(createContractController)
 );
+
+usersRouter.patch('/confirm-contract/:constractId', accessTokenValidator, wrapAsync(confirmContractController));
 
 usersRouter.get('/new/getContracts', accessTokenValidator, wrapAsync(getAllContractController));
 

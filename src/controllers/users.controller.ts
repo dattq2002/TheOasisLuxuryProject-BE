@@ -19,6 +19,7 @@ import {
   VerifyEmailReqBody,
   VerifyForgotPasswordReqBody,
   changePasswordReqBody,
+  confirmContractReqBody,
   updateContractReqBody,
   updateOrderReqBody
 } from '~/models/requests/user.request';
@@ -393,6 +394,18 @@ export const getUserOwnVillaController = async (req: Request, res: Response) => 
   const result = await usersService.getUserOwnVilla(user_id);
   return res.json({
     message: USERS_MESSAGES.GET_USER_OWN_VILLA_SUCCESS,
+    result
+  });
+};
+
+export const confirmContractController = async (
+  req: Request<ParamsDictionary, any, confirmContractReqBody>,
+  res: Response
+) => {
+  const { constractId } = req.params;
+  const result = await usersService.confirmContract(constractId, req.body.status);
+  return res.json({
+    message: USERS_MESSAGES.CONFIRM_CONTRACT_SUCCESS,
     result
   });
 };

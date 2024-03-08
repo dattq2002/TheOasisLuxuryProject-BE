@@ -89,7 +89,8 @@ export const USERS_MESSAGES = {
   STATUS_IS_REQUIRED: 'Status is required',
   STATUS_IS_WRONG_TYPE: 'Status is wrong type and must be in [PENDING, APPROVED, REJECTED]',
   STATUS_MUST_BE_A_STRING: 'Status must be a string',
-  GET_USER_OWN_VILLA_SUCCESS: 'Get user own villa success'
+  GET_USER_OWN_VILLA_SUCCESS: 'Get user own villa success',
+  CONFIRM_CONTRACT_SUCCESS: 'Confirm contract success'
 } as const;
 
 export const PROJECTS_MESSAGES = {
