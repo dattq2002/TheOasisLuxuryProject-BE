@@ -12,9 +12,9 @@ import { wrapAsync } from '~/utils/handlers';
 
 const projectRouter = Router();
 
-projectRouter.get('/', getProjectController);
+projectRouter.get('/', wrapAsync(getProjectController));
 
-projectRouter.get('/:id', getProjectByIdController);
+projectRouter.get('/:id', wrapAsync(getProjectByIdController));
 
 projectRouter.post('/', projectValidation, wrapAsync(createProjectController));
 

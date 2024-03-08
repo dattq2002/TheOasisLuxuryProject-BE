@@ -5,7 +5,7 @@ import { wrapAsync } from '~/utils/handlers';
 
 const ordersRouter = Router();
 
-ordersRouter.get('/', accessTokenValidator, getAllOrderController);
+ordersRouter.get('/', accessTokenValidator, wrapAsync(getAllOrderController));
 
 ordersRouter.patch('/:id', accessTokenValidator, updateOrderVidator, wrapAsync(updateOrderController));
 

@@ -13,9 +13,9 @@ import { wrapAsync } from '~/utils/handlers';
 
 const subdivisionRouter = Router();
 
-subdivisionRouter.get('/', getSubdivisionController);
+subdivisionRouter.get('/', wrapAsync(getSubdivisionController));
 
-subdivisionRouter.get('/:id', getSubdivisionByIdController);
+subdivisionRouter.get('/:id', wrapAsync(getSubdivisionByIdController));
 
 subdivisionRouter.post('/', subdivisionValidation, wrapAsync(createSubdivisionController));
 
@@ -23,6 +23,6 @@ subdivisionRouter.patch('/:id', updateSubdivisionValidation, wrapAsync(updateSub
 
 subdivisionRouter.delete('/:id', wrapAsync(deleteSubdivisionController));
 
-subdivisionRouter.get('/projects/:projectId', getSubdivisionByProjectIdController);
+subdivisionRouter.get('/projects/:projectId', wrapAsync(getSubdivisionByProjectIdController));
 
 export default subdivisionRouter;

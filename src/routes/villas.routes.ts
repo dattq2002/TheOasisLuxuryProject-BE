@@ -17,7 +17,7 @@ import { wrapAsync } from '~/utils/handlers';
 
 const villaRouter = Router();
 
-villaRouter.get('/', getVillasController);
+villaRouter.get('/', wrapAsync(getVillasController));
 
 villaRouter.get('/:id', wrapAsync(getVillaByIdController));
 
