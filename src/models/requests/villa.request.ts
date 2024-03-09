@@ -22,6 +22,8 @@ export interface updateVillaReq {
   url_image?: string[];
   fluctuates_price: number;
   stiff_price: number;
+  start_date?: Date;
+  end_date?: Date;
 }
 
 export interface createVillaDetailReq {

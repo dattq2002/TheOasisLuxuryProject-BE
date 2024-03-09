@@ -46,16 +46,7 @@ export const updateVillaController = async (
   next: NextFunction
 ) => {
   const { id } = req.params;
-  const { villa_name, status, address, area, url_image, fluctuates_price, stiff_price } = req.body;
-  const result = await villasServices.updateVilla(id, {
-    villa_name,
-    status,
-    address,
-    area,
-    url_image,
-    fluctuates_price,
-    stiff_price
-  });
+  const result = await villasServices.updateVilla(id, req.body);
   res.json({
     message: VILLAS_MESSAGES.UPDATE_VILLA_SUCCESS,
     result

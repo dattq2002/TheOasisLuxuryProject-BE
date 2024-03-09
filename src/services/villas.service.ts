@@ -84,6 +84,26 @@ class VillaServices {
   }
   async updateVilla(id: string, payload: updateVillaReq) {
     const villa = await this.getVillaById(id);
+    const { start_date, end_date } = payload;
+    if ([start_date, end_date].some((date) => date)) {
+      const time_share = await databaseService.timeshares.insertOne(
+        new TimeShare({
+          time_share_name: `Time share of ${payload.villa_name}`,
+          start_date: start_date ? new Date(start_date) : new Date(),
+          end_date: end_date ? new Date(end_date) : new Date()
+        })
+      );
+      await databaseService.villas.findOneAndUpdate(
+        {
+          _id: villa._id
+        },
+        {
+          $set: {
+            time_share_id: time_share.insertedId
+          }
+        }
+      );
+    }
     const result = await databaseService.villas.updateOne(
       {
         _id: villa._id
