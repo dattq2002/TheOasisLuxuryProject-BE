@@ -130,6 +130,8 @@ class VillaServices {
         }
       }
     });
+    //tìm và xoá timeshare của villa đó
+    await databaseService.timeshares.deleteOne({ _id: villa.time_share_id });
     if (!subdivision) return result;
     const countVilla = await databaseService.villas.countDocuments({
       subdivision_id: new ObjectId(subdivision._id)
