@@ -7,6 +7,7 @@ import {
   deleteVillaController,
   getVillaByIdController,
   getVillaBySubdivisionIdController,
+  getVillaTimeShareByIdController,
   getVillaTimeShareByVillaIdController,
   getVillasController,
   updateVillaController,
@@ -28,6 +29,8 @@ villaRouter.patch('/:id', wrapAsync(updateVillaController));
 villaRouter.delete('/:id', wrapAsync(deleteVillaController));
 
 villaRouter.post('/create-villa-time-share', wrapAsync(createVillaTimeShareController));
+
+villaRouter.get('/get-villa0time-share/:id', wrapAsync(getVillaTimeShareByIdController));
 
 villaRouter.get('/subdivision/:id', wrapAsync(getVillaBySubdivisionIdController));
 

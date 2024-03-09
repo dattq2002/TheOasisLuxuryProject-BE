@@ -9,13 +9,6 @@ import { TokenPayload } from '~/models/requests/user.request';
 import usersService from '~/services/users.service';
 
 export const createAccountController = async (req: Request<ParamsDictionary, any, createAccountReq>, res: Response) => {
-  const { user_id } = req.decoded_authorization as TokenPayload;
-  if ((await usersService.getRole(user_id)) !== RoleName.ADMIN) {
-    throw new ErrorWithStatus({
-      message: USERS_MESSAGES.USER_NOT_ACCESS,
-      status: HTTP_STATUS.UNAUTHORIZED
-    });
-  }
   const result = await usersService.createAccount(req.body);
   return res.json({
     message: USERS_MESSAGES.CREATE_ACCOUNT_SUCCESS,
@@ -26,13 +19,6 @@ export const createAccountController = async (req: Request<ParamsDictionary, any
 //update account dành cho admin by id
 export const updateAccountController = async (req: Request<ParamsDictionary, any, updateAccountReq>, res: Response) => {
   const { id } = req.params;
-  const { user_id } = req.decoded_authorization as TokenPayload;
-  if ((await usersService.getRole(user_id)) !== RoleName.ADMIN) {
-    throw new ErrorWithStatus({
-      message: USERS_MESSAGES.USER_NOT_ACCESS,
-      status: HTTP_STATUS.UNAUTHORIZED
-    });
-  }
   const result = await usersService.updateAccountById(id, req.body);
   return res.json({
     message: USERS_MESSAGES.UPDATE_ACCOUNT_SUCCESS,
@@ -42,13 +28,6 @@ export const updateAccountController = async (req: Request<ParamsDictionary, any
 
 //get account dành cho admin by id
 export const getAccountController = async (req: Request, res: Response) => {
-  const { user_id } = req.decoded_authorization as TokenPayload;
-  if ((await usersService.getRole(user_id)) !== RoleName.ADMIN) {
-    throw new ErrorWithStatus({
-      message: USERS_MESSAGES.USER_NOT_ACCESS,
-      status: HTTP_STATUS.UNAUTHORIZED
-    });
-  }
   const result = await usersService.getAccount();
   return res.json({
     message: USERS_MESSAGES.GET_ACCOUNT_SUCCESS,
@@ -57,13 +36,6 @@ export const getAccountController = async (req: Request, res: Response) => {
 };
 export const deleteAccountController = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { user_id } = req.decoded_authorization as TokenPayload;
-  if ((await usersService.getRole(user_id)) !== RoleName.ADMIN) {
-    throw new ErrorWithStatus({
-      message: USERS_MESSAGES.USER_NOT_ACCESS,
-      status: HTTP_STATUS.UNAUTHORIZED
-    });
-  }
   const result = await usersService.deleteAccountById(id);
   return res.json({
     message: USERS_MESSAGES.DELETE_ACCOUNT_SUCCESS,

@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { ValidationChain, validationResult } from 'express-validator';
 import { RunnableValidationChains } from 'express-validator/src/middlewares/schema';
+import HTTP_STATUS from '~/constants/httpStatus';
 import { EntityError, ErrorWithStatus } from '~/models/Error';
 
 export const validate = (validation: RunnableValidationChains<ValidationChain>) => {
@@ -16,7 +17,7 @@ export const validate = (validation: RunnableValidationChains<ValidationChain>) 
     for (const key in errorObject) {
       //lấy msg từ lỗi ra
       const { msg } = errorObject[key];
-      if (msg instanceof ErrorWithStatus && msg.status !== 422) {
+      if (msg instanceof ErrorWithStatus && msg.status !== HTTP_STATUS.UNPROCESSABLE_ENTITY) {
         return next(msg);
       }
       //nếu xuống đc đây thì lỗi là lỗi 422

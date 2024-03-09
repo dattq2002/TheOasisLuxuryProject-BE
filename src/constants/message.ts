@@ -90,7 +90,8 @@ export const USERS_MESSAGES = {
   STATUS_IS_WRONG_TYPE: 'Status is wrong type and must be in [PENDING, APPROVED, REJECTED]',
   STATUS_MUST_BE_A_STRING: 'Status must be a string',
   GET_USER_OWN_VILLA_SUCCESS: 'Get user own villa success',
-  CONFIRM_CONTRACT_SUCCESS: 'Confirm contract success'
+  CONFIRM_CONTRACT_SUCCESS: 'Confirm contract success',
+  ACCOUNT_IS_INACTIVE_OR_BANNED: 'Account is inactive or banned'
 } as const;
 
 export const PROJECTS_MESSAGES = {
@@ -123,7 +124,8 @@ export const VILLAS_MESSAGES = {
   CREATE_VILLA_DETAIL_SUCCESS: 'Create villa detail success',
   GET_VILLA_TIME_SHARE_BY_VILLA_ID_SUCCESS: 'Get villa time share by villa id success',
   VILLA_NOT_FOUND: 'Villa not found',
-  SUBDIVISION_NOT_FOUND: 'Subdivision not found'
+  SUBDIVISION_NOT_FOUND: 'Subdivision not found',
+  GET_VILLA_TIME_SHARE_BY_ID_SUCCESS: 'Get villa time share by id success'
 } as const;
 
 export const UTILITIES_MESSAGES = {

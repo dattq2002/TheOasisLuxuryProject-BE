@@ -13,10 +13,15 @@ import { ErrorWithStatus } from '~/models/Error';
 import HTTP_STATUS from '~/constants/httpStatus';
 import { VILLAS_MESSAGES } from '~/constants/message';
 import TimeShare from '~/models/schemas/TimeShare.schemas';
+import { VillaStatus } from '~/constants/enum';
 
 class VillaServices {
   async getVillas() {
-    const result = await databaseService.villas.find({}).toArray();
+    const result = await databaseService.villas
+      .find({
+        status: VillaStatus.ACTIVE
+      })
+      .toArray();
     return result;
   }
   async getVillaById(id: string) {
@@ -121,7 +126,16 @@ class VillaServices {
   }
   async deleteVillaById(id: string) {
     const villa = await this.getVillaById(id);
-    const result = await databaseService.villas.deleteOne({ _id: villa._id });
+    const result = await databaseService.villas.updateOne(
+      {
+        _id: villa._id
+      },
+      {
+        $set: {
+          status: VillaStatus.INACTIVE
+        }
+      }
+    );
     //tìm và xóa villa trong subdivision
     const subdivision = await databaseService.subdivisions.findOne({
       villas: {
@@ -175,7 +189,8 @@ class VillaServices {
     }
     const result = await databaseService.villas
       .find({
-        subdivision_id: new ObjectId(subdivisionId)
+        subdivision_id: new ObjectId(subdivisionId),
+        status: VillaStatus.ACTIVE
       })
       .toArray();
     return result;
@@ -196,6 +211,17 @@ class VillaServices {
         villa_id: new ObjectId(villaId)
       })
       .toArray();
+    return result;
+  }
+
+  async getVillaTimeShareById(id: string) {
+    const result = await databaseService.villaTimeShares.findOne({ _id: new ObjectId(id) });
+    if (!result) {
+      throw new ErrorWithStatus({
+        message: VILLAS_MESSAGES.VILLA_NOT_FOUND,
+        status: HTTP_STATUS.NOT_FOUND
+      });
+    }
     return result;
   }
 }

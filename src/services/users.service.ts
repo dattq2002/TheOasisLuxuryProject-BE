@@ -106,14 +106,11 @@ class UsersServices {
         email_verify_token: email_verify_token
       })
     );
-
-    //lay user_id từ user vừa tạo
     const [access_token, refresh_token] = await this.signAccessTokenAndRefreshToken({
       user_id: _id.toString(),
       verify: UserVerifyStatus.Unverified
     });
     const { exp, iat } = await this.decodeRefreshToken(refresh_token);
-    //lưu Refresh token vào db
     await databaseService.refreshTokens.insertOne(
       new RefreshToken({
         token: refresh_token,
@@ -122,11 +119,8 @@ class UsersServices {
         iat
       })
     );
-
-    // // giả lập gửi email verify token
     // console.log(email_verify_token);
     sendMail({ toEmail: payload.email, token: email_verify_token, type: 'verify-email' });
-
     return { access_token, refresh_token };
   }
   async getUserById(id: string) {
@@ -151,6 +145,14 @@ class UsersServices {
     return user;
   }
   async login({ user_id, verify }: { user_id: string; verify: UserVerifyStatus }) {
+    //check status của user
+    const user = await this.getUserById(user_id);
+    if ([AccountStatus.INACTIVE, AccountStatus.BAN].includes(user.status)) {
+      throw new ErrorWithStatus({
+        message: USERS_MESSAGES.ACCOUNT_IS_INACTIVE_OR_BANNED,
+        status: HTTP_STATUS.FORBIDDEN
+      });
+    }
     const [access_token, refresh_token] = await this.signAccessTokenAndRefreshToken({
       user_id,
       verify
@@ -231,11 +233,19 @@ class UsersServices {
     return result;
   }
   async deleteAccountById(id: string) {
-    const userAccount = await this.getRole(id);
-    if (userAccount === RoleName.ADMIN) {
-      throw new ErrorWithStatus({ message: USERS_MESSAGES.CANNOT_DELETE_ADMIN_ACCOUNT, status: HTTP_STATUS.FORBIDDEN });
-    }
-    const result = await databaseService.users.deleteOne({ _id: new ObjectId(id) });
+    const result = await databaseService.users.updateOne(
+      {
+        _id: new ObjectId(id)
+      },
+      [
+        {
+          $set: {
+            status: AccountStatus.INACTIVE,
+            update_date: '$$NOW'
+          }
+        }
+      ]
+    );
     if (!result.acknowledged)
       throw {
         message: USERS_MESSAGES.DELETE_ACCOUNT_FAIL

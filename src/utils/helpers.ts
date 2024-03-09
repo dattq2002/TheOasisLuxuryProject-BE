@@ -66,3 +66,8 @@ export function sendMailMobile({ toEmail, token, type }: { toEmail: string; toke
     }
   });
 }
+
+//hàm format date
+export function formatDate(date: Date) {
+  return new Date(date.toISOString().split('T')[0]);
+}

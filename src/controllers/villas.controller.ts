@@ -117,3 +117,12 @@ export const getVillaTimeShareByVillaIdController = async (req: Request, res: Re
     result
   });
 };
+
+export const getVillaTimeShareByIdController = async (req: Request, res: Response, next: NextFunction) => {
+  const { id } = req.params;
+  const result = await villasServices.getVillaTimeShareById(id);
+  res.json({
+    message: VILLAS_MESSAGES.GET_VILLA_TIME_SHARE_BY_ID_SUCCESS,
+    result
+  });
+};
