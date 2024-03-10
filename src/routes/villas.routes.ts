@@ -9,6 +9,7 @@ import {
   getVillaBySubdivisionIdController,
   getVillaTimeShareByIdController,
   getVillaTimeShareByVillaIdController,
+  getVillaTimeShareController,
   getVillasController,
   updateVillaController,
   uploadImageVillaController
@@ -30,7 +31,9 @@ villaRouter.delete('/:id', wrapAsync(deleteVillaController));
 
 villaRouter.post('/create-villa-time-share', wrapAsync(createVillaTimeShareController));
 
-villaRouter.get('/get-villa0time-share/:id', wrapAsync(getVillaTimeShareByIdController));
+villaRouter.get('/get/villa-time-share', wrapAsync(getVillaTimeShareController));
+
+villaRouter.get('/get-villa-time-share/:id', wrapAsync(getVillaTimeShareByIdController));
 
 villaRouter.get('/subdivision/:id', wrapAsync(getVillaBySubdivisionIdController));
 

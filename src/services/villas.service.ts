@@ -224,6 +224,12 @@ class VillaServices {
     }
     return result;
   }
+
+  async getVillaTimeShare() {
+    const result = await databaseService.villaTimeShares.find().toArray();
+    const count = await databaseService.villaTimeShares.countDocuments();
+    return { count, result };
+  }
 }
 
 const villasServices = new VillaServices();
