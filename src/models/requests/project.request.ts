@@ -9,6 +9,7 @@ export interface createProjectReq {
   status: ProjectStatus;
   description: string;
   subdivisions?: Subdivision[];
+  url_image?: string;
 }
 
 export interface updateProjectReq {
@@ -17,6 +18,7 @@ export interface updateProjectReq {
   end_date: Date;
   status: ProjectStatus;
   description: string;
+  url_image?: string;
 }
 
 export interface addSubdivisionToProjectReq {

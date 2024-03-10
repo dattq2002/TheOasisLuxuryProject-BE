@@ -7,6 +7,7 @@ export interface createSubdivisionReq {
   quantityVilla?: number;
   status: SubdivisionStatus;
   project_id: string;
+  url_image?: string;
 }
 
 export interface updateSubdivisionReq {
@@ -14,4 +15,5 @@ export interface updateSubdivisionReq {
   location: string;
   quantityVilla?: number;
   status: SubdivisionStatus;
+  url_image?: string;
 }
