@@ -13,6 +13,7 @@ import {
   getAllBlogPostsController,
   getAllContractController,
   getAllOrderController,
+  getAllPaymentController,
   getContractByIdController,
   getUserByIdController,
   getUserOwnVillaController,
@@ -107,6 +108,8 @@ usersRouter.post(
   confirmPaymentValidator,
   wrapAsync(confirmPaymentController)
 );
+
+usersRouter.get('/getPayments', accessTokenValidator, wrapAsync(getAllPaymentController));
 
 usersRouter.post('/create-blog', accessTokenValidator, createBlogValidator, wrapAsync(createBlogController));
 

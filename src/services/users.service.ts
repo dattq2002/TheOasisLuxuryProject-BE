@@ -791,6 +791,10 @@ class UsersServices {
     );
     return { message: USERS_MESSAGES.RESET_PASSWORD_SUCCESS };
   }
+  async getAllPayment() {
+    const result = await databaseService.payments.find({}).toArray();
+    return result;
+  }
 }
 const usersService = new UsersServices();
 export default usersService;

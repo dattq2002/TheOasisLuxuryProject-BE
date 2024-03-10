@@ -91,7 +91,8 @@ export const USERS_MESSAGES = {
   STATUS_MUST_BE_A_STRING: 'Status must be a string',
   GET_USER_OWN_VILLA_SUCCESS: 'Get user own villa success',
   CONFIRM_CONTRACT_SUCCESS: 'Confirm contract success',
-  ACCOUNT_IS_INACTIVE_OR_BANNED: 'Account is inactive or banned'
+  ACCOUNT_IS_INACTIVE_OR_BANNED: 'Account is inactive or banned',
+  GET_ALL_PAYMENT_SUCCESS: 'Get all payment success'
 } as const;
 
 export const PROJECTS_MESSAGES = {

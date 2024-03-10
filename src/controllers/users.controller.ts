@@ -435,3 +435,11 @@ export const resetPasswordMobileController = async (
   const result = await usersService.resetPasswordMobile({ email, password, confirm_password });
   return res.json(result);
 };
+
+export const getAllPaymentController = async (req: Request, res: Response) => {
+  const result = await usersService.getAllPayment();
+  return res.json({
+    message: USERS_MESSAGES.GET_ALL_PAYMENT_SUCCESS,
+    result
+  });
+};
