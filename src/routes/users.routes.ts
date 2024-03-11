@@ -15,6 +15,7 @@ import {
   getAllOrderController,
   getAllPaymentController,
   getContractByIdController,
+  getPaymentByOrderIdController,
   getUserByIdController,
   getUserOwnVillaController,
   loginController,
