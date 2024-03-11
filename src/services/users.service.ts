@@ -797,6 +797,12 @@ class UsersServices {
     const result = await databaseService.payments.find({}).toArray();
     return result;
   }
+
+  async deleteOrder(id: string) {
+    const order = await this.getOrderById(id);
+    const result = await databaseService.orders.deleteOne({ _id: new ObjectId(id) });
+    return result.acknowledged ? order._id : null;
+  }
 }
 const usersService = new UsersServices();
 export default usersService;
