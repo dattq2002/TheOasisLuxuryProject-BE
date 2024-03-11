@@ -419,7 +419,22 @@ class UsersServices {
         status: ContractStatus.PENDING
       })
     );
-    return { villa_time_share: villa_time_share.insertedId, order: order.insertedId, contract: contract.insertedId };
+    // tạo payment
+    const payment = await databaseService.payments.insertOne(
+      new Payment({
+        _id: new ObjectId(),
+        payment_type: 'Thanh toán chuyển khoản',
+        order_id: new ObjectId(order.insertedId),
+        amount: req.price,
+        status: PaymentStatus.PENDING
+      })
+    );
+    return {
+      villa_time_share: villa_time_share.insertedId,
+      order: order.insertedId,
+      contract: contract.insertedId,
+      payment: payment.insertedId
+    };
   }
 
   async payment(req: PaymentReqBody) {
@@ -802,6 +817,11 @@ class UsersServices {
     const order = await this.getOrderById(id);
     const result = await databaseService.orders.deleteOne({ _id: new ObjectId(id) });
     return result.acknowledged ? order._id : null;
+  }
+
+  async getPaymentByOrderId(order_id: string) {
+    const payment = await databaseService.payments.findOne({ order_id: new ObjectId(order_id) });
+    return payment;
   }
 }
 const usersService = new UsersServices();

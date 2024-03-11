@@ -109,6 +109,8 @@ usersRouter.post(
   wrapAsync(confirmPaymentController)
 );
 
+usersRouter.get('/getPayments/:id', accessTokenValidator, wrapAsync(getPaymentByOrderIdController));
+
 usersRouter.get('/getPayments', accessTokenValidator, wrapAsync(getAllPaymentController));
 
 usersRouter.post('/create-blog', accessTokenValidator, createBlogValidator, wrapAsync(createBlogController));

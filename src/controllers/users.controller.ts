@@ -448,3 +448,9 @@ export const deleteOrderController = async (req: Request, res: Response) => {
   const result = await usersService.deleteOrder(id);
   return res.json(result);
 };
+
+export const getPaymentByOrderIdController = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const result = await usersService.getPaymentByOrderId(id);
+  return res.json(result);
+};
