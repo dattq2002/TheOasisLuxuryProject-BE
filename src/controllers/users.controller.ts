@@ -364,7 +364,6 @@ export const deleteContractController = async (req: Request, res: Response) => {
 };
 
 export const getOrderByIdController = async (req: Request, res: Response) => {
-  const { user_id } = req.decoded_authorization as TokenPayload;
   const { id } = req.params;
   const result = await usersService.getOrderById(id);
   return res.json(result);

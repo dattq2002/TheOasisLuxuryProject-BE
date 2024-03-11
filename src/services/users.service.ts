@@ -447,7 +447,7 @@ class UsersServices {
       [
         {
           $set: {
-            status: OrderStatus.CONFIRMED,
+            status: OrderStatus.COMPLETED,
             payment_id: new ObjectId(payment_id),
             update_date: '$$NOW'
           }
@@ -641,7 +641,9 @@ class UsersServices {
   async getOrderById(id: string) {
     const order = await databaseService.orders.findOne({ _id: new ObjectId(id) });
     if (!order) throw new ErrorWithStatus({ message: 'Order not found', status: HTTP_STATUS.NOT_FOUND });
-    return order;
+    const user = await databaseService.users.findOne({ _id: new ObjectId(order.user_id) });
+    user?.full_name;
+    return { ...order, user };
   }
   async getAllBlogPosts() {
     const result = await databaseService.blogPosts
