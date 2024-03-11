@@ -20,8 +20,8 @@ export const subdivisionValidation = validate(
         trim: true,
         isString: true,
         isLength: {
-          errorMessage: 'Location should be at least 3 chars long',
-          options: { min: 3, max: 50 }
+          errorMessage: 'Location should be at least 3 chars long and at most 250 chars long',
+          options: { min: 3, max: 250 }
         },
         notEmpty: {
           errorMessage: 'Location is required'
