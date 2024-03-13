@@ -92,6 +92,7 @@ export interface CreateBlogReqBody {
   user_id: string;
   title: string;
   description_detail: string;
+  url_image?: string;
 }
 
 export interface CreateContractReqBody {

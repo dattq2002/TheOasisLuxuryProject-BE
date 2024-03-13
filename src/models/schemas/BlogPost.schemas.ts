@@ -8,6 +8,7 @@ interface BlogPostType {
   insert_date?: Date;
   update_date?: Date;
   deflag?: boolean;
+  url_image?: string;
 }
 
 export default class BlogPost {
@@ -18,6 +19,8 @@ export default class BlogPost {
   insert_date: Date;
   update_date: Date;
   deflag: boolean;
+  url_image: string;
+
   constructor(blogPost: BlogPostType) {
     this._id = blogPost._id;
     this.title = blogPost.title;
@@ -26,5 +29,6 @@ export default class BlogPost {
     this.update_date = blogPost.update_date || new Date();
     this.deflag = blogPost.deflag || false;
     this.user_id = blogPost.user_id;
+    this.url_image = blogPost.url_image || '';
   }
 }

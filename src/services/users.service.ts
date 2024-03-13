@@ -133,9 +133,12 @@ class UsersServices {
     }
     //tìm tất cả các blog post của user này
     const blog_posts = await databaseService.blogPosts.find({ user_id: new ObjectId(id) }).toArray();
-    //tìm tất cả các contract của user này
-    const contracts = await databaseService.contracts.find({ user_id: new ObjectId(id) }).toArray();
     const orders = await databaseService.orders.find({ user_id: new ObjectId(id) }).toArray();
+    const contracts: Contract[] = [];
+    for (const order of orders) {
+      const contract = await databaseService.contracts.findOne({ order_id: order._id });
+      if (contract) contracts.push(contract);
+    }
     //assign tất cả blogpost vào user
     if (user) {
       user.blog_posts = blog_posts;
