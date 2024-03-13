@@ -640,20 +640,8 @@ class UsersServices {
 
   async deleteContract(id: string) {
     const constract = await this.getContractById(id);
-    const result = await databaseService.contracts.updateOne(
-      {
-        _id: new ObjectId(id)
-      },
-      [
-        {
-          $set: {
-            deflag: true,
-            update_date: '$$NOW'
-          }
-        }
-      ]
-    );
-    return constract ? result.upsertedId : null;
+    const result = await databaseService.contracts.deleteOne({ _id: new ObjectId(id) });
+    return result.acknowledged ? constract._id : null;
   }
 
   async getOrderById(id: string) {
