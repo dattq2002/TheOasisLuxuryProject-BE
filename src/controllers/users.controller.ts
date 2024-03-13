@@ -22,6 +22,7 @@ import {
   VerifyOTPReqBody,
   changePasswordReqBody,
   confirmContractReqBody,
+  sendEmailConfirmContractReqBody,
   updateContractReqBody,
   updateOrderReqBody
 } from '~/models/requests/user.request';
@@ -450,5 +451,15 @@ export const deleteOrderController = async (req: Request, res: Response) => {
 export const getPaymentByOrderIdController = async (req: Request, res: Response) => {
   const { id } = req.params;
   const result = await usersService.getPaymentByOrderId(id);
+  return res.json(result);
+};
+
+export const sendEmailConfirmContractController = async (
+  req: Request<ParamsDictionary, any, sendEmailConfirmContractReqBody>,
+  res: Response
+) => {
+  const { contractId } = req.params;
+  const { text } = req.body;
+  const result = await usersService.sendEmailConfirmContract(contractId, text);
   return res.json(result);
 };

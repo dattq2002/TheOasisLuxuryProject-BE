@@ -35,7 +35,14 @@ export const getAccountController = async (req: Request, res: Response) => {
   });
 };
 export const deleteAccountController = async (req: Request, res: Response) => {
+  const { user_id } = req.decoded_authorization as TokenPayload;
   const { id } = req.params;
+  if (user_id === id) {
+    throw new ErrorWithStatus({
+      message: USERS_MESSAGES.CANNOT_DELETE_ADMIN_ACCOUNT,
+      status: HTTP_STATUS.UNAUTHORIZED
+    });
+  }
   const result = await usersService.deleteAccountById(id);
   return res.json({
     message: USERS_MESSAGES.DELETE_ACCOUNT_SUCCESS,

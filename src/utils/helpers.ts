@@ -67,6 +67,33 @@ export function sendMailMobile({ toEmail, token, type }: { toEmail: string; toke
   });
 }
 
+export function SendMailOptions({ toEmail, text, type }: { toEmail: string; text: string; type: string }) {
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: `${process.env.USER_NAME_EMAIL}`,
+      pass: `${process.env.PASSWORD_EMAIL}`
+    }
+  });
+
+  // Tạo một đối tượng email
+  const mailOptions: nodemailer.SendMailOptions = {
+    from: `${process.env.USER_NAME_EMAIL}`,
+    to: toEmail,
+    subject: `Xác thực ${type} của bạn`,
+    text: `${text}`
+  };
+
+  // Gửi email
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error(error);
+    } else {
+      console.log('Email sent: OK sucessfully !!!');
+    }
+  });
+}
+
 //hàm format date
 export function formatDate(date: Date) {
   return new Date(date.toISOString().split('T')[0]);

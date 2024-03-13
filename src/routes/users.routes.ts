@@ -27,11 +27,13 @@ import {
   resendEmailVerifyController,
   resetPasswordController,
   resetPasswordMobileController,
+  sendEmailConfirmContractController,
   updateContractController,
   updateUserByIdController,
   verifyForgotPasswordTokenController,
   verifyOTPController
 } from '~/controllers/users.controller';
+import { checkRoleStaff } from '~/middlewares/auth.middleware';
 import {
   accessTokenValidator,
   changePasswordValidator,
@@ -112,7 +114,7 @@ usersRouter.post(
 
 usersRouter.get('/getPayments/:id', accessTokenValidator, wrapAsync(getPaymentByOrderIdController));
 
-usersRouter.get('/getPayments', accessTokenValidator, wrapAsync(getAllPaymentController));
+usersRouter.get('/get/Payments', accessTokenValidator, wrapAsync(getAllPaymentController));
 
 usersRouter.post('/create-blog', accessTokenValidator, createBlogValidator, wrapAsync(createBlogController));
 
@@ -137,6 +139,13 @@ usersRouter.get('/contracts/:id', accessTokenValidator, wrapAsync(getContractByI
 usersRouter.patch('/contracts/:id', accessTokenValidator, wrapAsync(updateContractController));
 
 usersRouter.delete('/contracts/:id', accessTokenValidator, wrapAsync(deleteContractController));
+
+usersRouter.post(
+  '/contract/send-email/:contractId',
+  accessTokenValidator,
+  checkRoleStaff,
+  wrapAsync(sendEmailConfirmContractController)
+);
 
 //------------------------------------------------------------
 

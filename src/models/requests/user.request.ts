@@ -121,3 +121,7 @@ export interface changePasswordReqBody {
 export interface confirmContractReqBody {
   status: string;
 }
+
+export interface sendEmailConfirmContractReqBody {
+  text: string;
+}

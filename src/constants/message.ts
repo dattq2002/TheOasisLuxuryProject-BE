@@ -93,7 +93,8 @@ export const USERS_MESSAGES = {
   CONFIRM_CONTRACT_SUCCESS: 'Confirm contract success',
   ACCOUNT_IS_INACTIVE_OR_BANNED: 'Account is inactive or banned',
   GET_ALL_PAYMENT_SUCCESS: 'Get all payment success',
-  USER_NEED_TO_BE_VERIFIED: 'User need to be verified'
+  USER_NEED_TO_BE_VERIFIED: 'User need to be verified',
+  SEND_EMAIL_CONFIRM_CONTRACT_SUCCESS: 'Send email confirm contract success'
 } as const;
 
 export const PROJECTS_MESSAGES = {

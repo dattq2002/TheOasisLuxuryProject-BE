@@ -21,7 +21,7 @@ import {
   TokenType,
   UserVerifyStatus
 } from '~/constants/enum';
-import { hashPassword, sendMail, sendMailMobile } from '~/utils/helpers';
+import { SendMailOptions, hashPassword, sendMail, sendMailMobile } from '~/utils/helpers';
 import { signToken, verifyToken } from '~/utils/jwt';
 import User from '~/models/schemas/User.schemas';
 import RefreshToken from '~/models/schemas/RefreshToken.schema';
@@ -825,6 +825,14 @@ class UsersServices {
   async getPaymentByOrderId(order_id: string) {
     const payment = await databaseService.payments.findOne({ order_id: new ObjectId(order_id) });
     return payment;
+  }
+
+  async sendEmailConfirmContract(contractId: string, text: string) {
+    const contract = await this.getContractById(contractId);
+    const order = await this.getOrderById(contract.order_id.toString());
+    const user = await this.getUserById(order.user_id.toString());
+    SendMailOptions({ toEmail: user.email, text, type: 'confirm-contract' });
+    return { message: USERS_MESSAGES.SEND_EMAIL_CONFIRM_CONTRACT_SUCCESS };
   }
 }
 const usersService = new UsersServices();
