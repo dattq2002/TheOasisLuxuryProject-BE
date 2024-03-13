@@ -432,11 +432,28 @@ class UsersServices {
         status: PaymentStatus.PENDING
       })
     );
+    //push start_date và end_date vào timeshare
+    const timeshare = await databaseService.timeshares.updateOne(
+      {
+        _id: new ObjectId(villa.time_share_id)
+      },
+      [
+        {
+          $push: {
+            start_date: new Date(req.start_date),
+            end_date: new Date(req.end_date),
+            user_id: new ObjectId(req.user_id)
+          }
+        }
+      ]
+    );
+
     return {
       villa_time_share: villa_time_share.insertedId,
       order: order.insertedId,
       contract: contract.insertedId,
-      payment: payment.insertedId
+      payment: payment.insertedId,
+      timeshare: timeshare.upsertedId
     };
   }
 
@@ -456,7 +473,7 @@ class UsersServices {
     return newPayment;
   }
 
-  async confirmPayment({ order_id, payment_id }: { order_id: string; payment_id: string }) {
+  async confirmPayment({ order_id, payment_id, status }: { order_id: string; payment_id: string; status: string }) {
     const order = await this.getOrderById(order_id);
     await databaseService.orders.updateOne(
       {
@@ -465,7 +482,7 @@ class UsersServices {
       [
         {
           $set: {
-            status: OrderStatus.COMPLETED,
+            status: status === PaymentStatus.PAID ? OrderStatus.COMPLETED : OrderStatus.CANCELLED,
             payment_id: new ObjectId(payment_id),
             update_date: '$$NOW'
           }
@@ -479,7 +496,7 @@ class UsersServices {
       [
         {
           $set: {
-            status: PaymentStatus.PAID,
+            status: status,
             update_date: '$$NOW'
           }
         }
@@ -691,6 +708,8 @@ class UsersServices {
 
   async confirmContract(id: string, status: ContractStatus) {
     const contract = await this.getContractById(id);
+    const order = await this.getOrderById(contract.order_id.toString());
+    const user = await this.getUserById(order.user_id.toString());
     await databaseService.contracts.updateOne(
       {
         _id: new ObjectId(id)
@@ -718,7 +737,11 @@ class UsersServices {
         }
       ]
     );
-
+    SendMailOptions({
+      toEmail: user.email,
+      text: `Hợp đồng của bạn tại villa ${order.order_name} đã được ${status === ContractStatus.APPROVED ? 'chấp nhận' : 'từ chối'}`,
+      type: 'contract'
+    });
     return { message: USERS_MESSAGES.CONFIRM_CONTRACT_SUCCESS };
   }
   async forgotPasswordMobile(email: string) {

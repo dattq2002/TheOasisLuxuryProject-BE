@@ -86,6 +86,7 @@ export interface PaymentReqBody {
 export interface ConfirmPaymentReqBody {
   payment_id: string;
   order_id: string;
+  status: string;
 }
 
 export interface CreateBlogReqBody {

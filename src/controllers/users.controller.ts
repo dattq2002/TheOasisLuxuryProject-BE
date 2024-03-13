@@ -231,8 +231,8 @@ export const confirmPaymentController = async (
       status: HTTP_STATUS.UNAUTHORIZED
     });
   }
-  const { payment_id, order_id } = req.body;
-  const result = await usersService.confirmPayment({ payment_id, order_id });
+  const { payment_id, order_id, status } = req.body;
+  const result = await usersService.confirmPayment({ payment_id, order_id, status });
   return res.json({
     message: USERS_MESSAGES.CONFIRM_PAYMENT_SUCCESS,
     result
@@ -258,25 +258,11 @@ export const createContractController = async (
   req: Request<ParamsDictionary, any, CreateContractReqBody>,
   res: Response
 ) => {
-  const { user_id } = req.decoded_authorization as TokenPayload;
-  if ((await usersService.getRole(user_id)) !== RoleName.USER) {
-    throw new ErrorWithStatus({
-      message: USERS_MESSAGES.USER_NOT_ACCESS,
-      status: HTTP_STATUS.UNAUTHORIZED
-    });
-  }
   const result = await usersService.createContract(req.body);
   return res.json(result);
 };
 
 export const getAllOrderController = async (req: Request, res: Response) => {
-  const { user_id } = req.decoded_authorization as TokenPayload;
-  if ((await usersService.getRole(user_id)) !== RoleName.ADMIN) {
-    throw new ErrorWithStatus({
-      message: USERS_MESSAGES.USER_NOT_ACCESS,
-      status: HTTP_STATUS.UNAUTHORIZED
-    });
-  }
   const result = await usersService.getAllOrder();
   return res.json({
     message: USERS_MESSAGES.GET_ALL_ORDER_SUCCESS,
@@ -285,14 +271,7 @@ export const getAllOrderController = async (req: Request, res: Response) => {
 };
 
 export const updateOrderController = async (req: Request<ParamsDictionary, any, updateOrderReqBody>, res: Response) => {
-  const { user_id } = req.decoded_authorization as TokenPayload;
   const { id } = req.params;
-  if (![RoleName.ADMIN, RoleName.USER].includes(await usersService.getRole(user_id))) {
-    throw new ErrorWithStatus({
-      message: USERS_MESSAGES.USER_NOT_ACCESS,
-      status: HTTP_STATUS.UNAUTHORIZED
-    });
-  }
   const { status, price, order_name } = req.body;
   const result = await usersService.updateOrder(id, { status, order_name, price });
   return res.json({
@@ -302,13 +281,6 @@ export const updateOrderController = async (req: Request<ParamsDictionary, any, 
 };
 
 export const getAllContractController = async (req: Request, res: Response) => {
-  const { user_id } = req.decoded_authorization as TokenPayload;
-  if (![RoleName.ADMIN, RoleName.STAFF].includes(await usersService.getRole(user_id))) {
-    throw new ErrorWithStatus({
-      message: USERS_MESSAGES.USER_NOT_ACCESS,
-      status: HTTP_STATUS.UNAUTHORIZED
-    });
-  }
   const result = await usersService.getAllContract();
   return res.json({
     message: USERS_MESSAGES.GET_ALL_CONTRACT_SUCCESS,
@@ -336,21 +308,13 @@ export const updateContractController = async (
   req: Request<ParamsDictionary, any, updateContractReqBody>,
   res: Response
 ) => {
-  const { user_id } = req.decoded_authorization as TokenPayload;
   const { id } = req.params;
   const result = await usersService.updateContract(id, req.body);
   return res.json(result);
 };
 
 export const deleteContractController = async (req: Request, res: Response) => {
-  const { user_id } = req.decoded_authorization as TokenPayload;
   const { id } = req.params;
-  if (![RoleName.ADMIN, RoleName.STAFF].includes(await usersService.getRole(user_id))) {
-    throw new ErrorWithStatus({
-      message: USERS_MESSAGES.USER_NOT_ACCESS,
-      status: HTTP_STATUS.UNAUTHORIZED
-    });
-  }
   const result = await usersService.deleteContract(id);
   return res.json(result);
 };
