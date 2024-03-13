@@ -327,14 +327,7 @@ export const changePasswordController = async (
 };
 
 export const getContractByIdController = async (req: Request, res: Response) => {
-  const { user_id } = req.decoded_authorization as TokenPayload;
   const { id } = req.params;
-  if (![RoleName.ADMIN, RoleName.STAFF].includes(await usersService.getRole(user_id))) {
-    throw new ErrorWithStatus({
-      message: USERS_MESSAGES.USER_NOT_ACCESS,
-      status: HTTP_STATUS.UNAUTHORIZED
-    });
-  }
   const result = await usersService.getContractById(id);
   return res.json(result);
 };
