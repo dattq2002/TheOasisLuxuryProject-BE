@@ -434,7 +434,27 @@ export const orderValidator = validate(
         isString: {
           errorMessage: USERS_MESSAGES.USER_ID_MUST_BE_A_STRING
         },
-        trim: true
+        trim: true,
+        custom: {
+          options: async (value, { req }) => {
+            const user = await databaseService.users.findOne({
+              _id: new ObjectId(value)
+            });
+            if (!user) {
+              throw new ErrorWithStatus({
+                message: USERS_MESSAGES.USER_NOT_FOUND,
+                status: HTTP_STATUS.NOT_FOUND
+              });
+            }
+            if ([UserVerifyStatus.Banned, UserVerifyStatus.Unverified].includes(user.verify)) {
+              throw new ErrorWithStatus({
+                message: USERS_MESSAGES.USER_NEED_TO_BE_VERIFIED,
+                status: HTTP_STATUS.UNAUTHORIZED
+              });
+            }
+            return true;
+          }
+        }
       },
       price: {
         notEmpty: {
