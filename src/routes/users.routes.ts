@@ -140,12 +140,7 @@ usersRouter.patch('/contracts/:id', accessTokenValidator, wrapAsync(updateContra
 
 usersRouter.delete('/contracts/:id', accessTokenValidator, wrapAsync(deleteContractController));
 
-usersRouter.post(
-  '/contract/send-email/:contractId',
-  accessTokenValidator,
-  checkRoleStaff,
-  wrapAsync(sendEmailConfirmContractController)
-);
+usersRouter.post('/contract/send-email/:contractId', accessTokenValidator, sendEmailConfirmContractController);
 
 //------------------------------------------------------------
 
