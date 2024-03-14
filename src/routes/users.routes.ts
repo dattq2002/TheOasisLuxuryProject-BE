@@ -118,7 +118,7 @@ usersRouter.get('/get/Payments', accessTokenValidator, wrapAsync(getAllPaymentCo
 
 usersRouter.post('/create-blog', accessTokenValidator, createBlogValidator, wrapAsync(createBlogController));
 
-usersRouter.get('/get/blogPosts', accessTokenValidator, wrapAsync(getAllBlogPostsController));
+usersRouter.get('/get/blogPosts', wrapAsync(getAllBlogPostsController));
 
 usersRouter.delete('/blogPosts/:id', accessTokenValidator, wrapAsync(deleteBlogPostController));
 
