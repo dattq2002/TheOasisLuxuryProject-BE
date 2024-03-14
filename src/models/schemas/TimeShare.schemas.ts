@@ -14,16 +14,19 @@ interface TimeShareChildType {
   start_date: Date;
   end_date: Date;
   user_id: ObjectId;
+  deflag?: boolean;
 }
 
 export class TimeShareChild {
   start_date: Date;
   end_date: Date;
   user_id: ObjectId;
+  deflag: boolean;
   constructor(timeShareChild: TimeShareChild) {
     this.start_date = timeShareChild.start_date;
     this.end_date = timeShareChild.end_date;
     this.user_id = timeShareChild.user_id;
+    this.deflag = timeShareChild.deflag || false;
   }
 }
 

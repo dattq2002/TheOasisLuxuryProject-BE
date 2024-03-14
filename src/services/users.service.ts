@@ -443,7 +443,8 @@ class UsersServices {
           time_share_child: new TimeShareChild({
             start_date: new Date(req.start_date),
             end_date: new Date(req.end_date),
-            user_id: new ObjectId(user._id)
+            user_id: new ObjectId(user._id),
+            deflag: false
           })
         }
       }
@@ -523,6 +524,26 @@ class UsersServices {
         }
       ]
     );
+    //
+    const villa = await databaseService.villas.findOne({ _id: new ObjectId(villaTimeShare.villa_id) });
+    if (!villa) {
+      throw new ErrorWithStatus({
+        message: 'Villa not found',
+        status: HTTP_STATUS.NOT_FOUND
+      });
+    }
+    const timeShare = await databaseService.timeshares.findOne({ _id: villa.time_share_id });
+    if (!timeShare) {
+      throw new ErrorWithStatus({
+        message: 'Time share not found',
+        status: HTTP_STATUS.NOT_FOUND
+      });
+    }
+    for (const timeShareChild of timeShare.time_share_child) {
+      if (timeShareChild.user_id.toString() === order.user_id.toString()) {
+        timeShareChild.deflag = true;
+      }
+    }
     return { message: USERS_MESSAGES.CONFIRM_PAYMENT_SUCCESS };
   }
 
