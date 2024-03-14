@@ -34,6 +34,7 @@ import Contract from '~/models/schemas/Contract.schemas';
 import { ErrorWithStatus } from '~/models/Error';
 import HTTP_STATUS from '~/constants/httpStatus';
 import VillaTimeShare from '~/models/schemas/VillaTimeShare.schemas';
+import { TimeShareChild } from '~/models/schemas/TimeShare.schemas';
 
 config();
 
@@ -432,20 +433,20 @@ class UsersServices {
         status: PaymentStatus.PENDING
       })
     );
-    //push start_date và end_date vào timeshare
-    const timeshare = await databaseService.timeshares.updateOne(
+    //push start_date và end_date, userid vào timesharechild
+    const timeshare = await databaseService.timeshares.findOneAndUpdate(
       {
-        _id: new ObjectId(villa.time_share_id)
+        _id: villa.time_share_id
       },
-      [
-        {
-          $push: {
+      {
+        $push: {
+          time_share_child: new TimeShareChild({
             start_date: new Date(req.start_date),
             end_date: new Date(req.end_date),
-            user_id: new ObjectId(req.user_id)
-          }
+            user_id: new ObjectId(user._id)
+          })
         }
-      ]
+      }
     );
 
     return {
@@ -453,7 +454,7 @@ class UsersServices {
       order: order.insertedId,
       contract: contract.insertedId,
       payment: payment.insertedId,
-      timeshare: timeshare.upsertedId
+      timeshare: timeshare?._id
     };
   }
 

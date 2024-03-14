@@ -200,7 +200,6 @@ export const orderController = async (req: Request<ParamsDictionary, any, OrderR
       status: HTTP_STATUS.UNAUTHORIZED
     });
   }
-  req.body.user_id = user_id;
   const result = await usersService.order(req.body);
   return res.json({
     message: USERS_MESSAGES.ORDER_SUCCESS,

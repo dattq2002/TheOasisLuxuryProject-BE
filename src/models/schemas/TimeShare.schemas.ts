@@ -7,13 +7,24 @@ interface TimeShareType {
   start_date: Date;
   end_date: Date;
   deflag?: boolean;
-  time_share_child?: TimeShareChild[];
+  time_share_child?: TimeShareChildType[];
 }
 
-interface TimeShareChild {
+interface TimeShareChildType {
   start_date: Date;
   end_date: Date;
-  user_id: string;
+  user_id: ObjectId;
+}
+
+export class TimeShareChild {
+  start_date: Date;
+  end_date: Date;
+  user_id: ObjectId;
+  constructor(timeShareChild: TimeShareChild) {
+    this.start_date = timeShareChild.start_date;
+    this.end_date = timeShareChild.end_date;
+    this.user_id = timeShareChild.user_id;
+  }
 }
 
 export default class TimeShare {
@@ -22,7 +33,7 @@ export default class TimeShare {
   start_date: Date;
   end_date: Date;
   deflag: boolean;
-  time_share_child: TimeShareChild[];
+  time_share_child: TimeShareChildType[];
   constructor(timeShare: TimeShareType) {
     this._id = timeShare._id;
     this.time_share_name = timeShare.time_share_name;
