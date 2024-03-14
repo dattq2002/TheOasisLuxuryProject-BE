@@ -223,13 +223,6 @@ export const confirmPaymentController = async (
   req: Request<ParamsDictionary, any, ConfirmPaymentReqBody>,
   res: Response
 ) => {
-  const { user_id } = req.decoded_authorization as TokenPayload;
-  if ((await usersService.getRole(user_id)) !== RoleName.USER) {
-    throw new ErrorWithStatus({
-      message: USERS_MESSAGES.USER_NOT_ACCESS,
-      status: HTTP_STATUS.UNAUTHORIZED
-    });
-  }
   const { payment_id, order_id, status } = req.body;
   const result = await usersService.confirmPayment({ payment_id, order_id, status });
   return res.json({
